@@ -1,5 +1,6 @@
 //main.cpp
 
+#include <vld.h>
 #include "stdafx.h"
 #include <system\Engine.hpp>
 
