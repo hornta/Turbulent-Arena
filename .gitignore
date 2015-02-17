@@ -3,10 +3,12 @@
 *.lo
 *.o
 *.obj
+*.idb
 
 # Precompiled Headers
 *.gch
 *.pch
+*.ipch
 
 # Compiled Dynamic libraries
 *.so
@@ -26,3 +28,14 @@
 *.exe
 *.out
 *.app
+
+# Project files
+*.sdf
+*.opensdf
+*.suo
+
+# Directories
+build/
+lib/
+bin/
+_ipch/
