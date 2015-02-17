@@ -35,6 +35,7 @@
 *.suo
 
 # Directories
+TurbulentArena/Debug/
 Debug/
 build/
 lib/
