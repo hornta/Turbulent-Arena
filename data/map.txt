@@ -1,0 +1,61 @@
+# Size of map
+w 40
+h 20
+ts 32
+t ../data/tileset.png
+
+# Number of tile definition and layers
+ntd 5
+nl 2
+
+# Tile definitions
+td .
+td I 1 0 0
+td O 0 32 0
+td # 0 64 0
+td H 0 96 0
+
+# Layers
+l ground
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+
+l objects
+d ########################################
+d #......................................#
+d #......................................#
+d #......................................#
+d #.............#........................#
+d #.............#........................#
+d #...........###........................#
+d #........HHH...........................#
+d #........HHH...........................#
+d #........HHH...........................#
+d #......................................#
+d #......................................#
+d #......................................#
+d #......................................#
+d #......................................#
+d #......................................#
+d #......................................#
+d #......................................#
+d #......................................#
+d ########################################

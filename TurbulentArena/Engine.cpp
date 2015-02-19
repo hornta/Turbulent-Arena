@@ -3,14 +3,16 @@
 #include "stdafx.h"
 #include "Engine.hpp"
 #include "ServiceLocator.hpp"
+#include "Map.hpp"
 
 namespace bjoernligan
 {
 	namespace system
 	{
 		Engine::Engine()
+			: m_map(nullptr)
 		{
-
+			
 		}
 
 		Engine::~Engine()
@@ -32,6 +34,8 @@ namespace bjoernligan
 
 			if (!m_xDrawManager->Initialize())
 				return false;
+
+			m_map = new Map("../data/map.txt");
 
 			return m_bRunning = true;
 		}
@@ -56,6 +60,7 @@ namespace bjoernligan
 				//Draw
 				m_xDrawManager->ClearScr();
 				//insert stuff to draw
+				m_xDrawManager->Draw(m_map);
 				m_xDrawManager->Display();
 			}
 		}
