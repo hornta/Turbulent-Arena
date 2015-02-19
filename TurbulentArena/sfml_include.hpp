@@ -2,8 +2,6 @@
 
 #pragma once
 
-#pragma warning(disable:4099)
-
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>

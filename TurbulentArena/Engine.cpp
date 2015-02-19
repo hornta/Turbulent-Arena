@@ -10,7 +10,7 @@ namespace bjoernligan
 	{
 		Engine::Engine()
 		{
-
+			m_xB2World = nullptr;
 		}
 
 		Engine::~Engine()
@@ -33,12 +33,15 @@ namespace bjoernligan
 			if (!m_xDrawManager->Initialize())
 				return false;
 
+			m_xB2World = new b2World(b2Vec2(0.0f, 0.0f));
+
 			return m_bRunning = true;
 		}
 
 		void Engine::CleanUp()
 		{
-			
+			delete m_xB2World;
+			m_xB2World = nullptr;
 		}
 
 		void Engine::RunLoop()

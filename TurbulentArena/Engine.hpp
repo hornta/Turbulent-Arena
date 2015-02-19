@@ -5,6 +5,7 @@
 #include "SpriteManager.hpp"
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
+#include <Box2D\box2d.h>
 
 namespace bjoernligan
 {
@@ -32,6 +33,9 @@ namespace bjoernligan
 
 			sf::Clock m_xDeltaClock;
 			float m_fDeltaTime;
+
+			//Box2D
+			b2World* m_xB2World;
 		};
 	}
 }

@@ -2,6 +2,7 @@
 
 #pragma once
 #include <SFML\Graphics.hpp>
+#include <Box2D\box2d.h>
 
 namespace bjoernligan
 {
@@ -16,5 +17,10 @@ namespace bjoernligan
 
 	protected:
 		sf::Vector2f m_xPos;
+
+		//Box2D
+		b2CircleShape * m_xB2dCircleShape;
+		b2Body* m_xB2dBody;
+		b2Fixture* m_xB2dFixture;
 	};
 }
