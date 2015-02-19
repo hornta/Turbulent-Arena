@@ -4,13 +4,15 @@
 #include "Engine.hpp"
 #include "ServiceLocator.hpp"
 #include "Map.hpp"
+#include "Pathfinder.hpp"
 
 namespace bjoernligan
 {
 	namespace system
 	{
 		Engine::Engine()
-			: m_map(nullptr)
+			: m_map(nullptr),
+			m_pathfinder(nullptr)
 		{
 			m_xDrawManager = nullptr;
 			m_xSpriteManager = nullptr;
@@ -22,7 +24,6 @@ namespace bjoernligan
 
 		Engine::~Engine()
 		{
-
 		}
 
 		bool Engine::Initialize()
@@ -45,6 +46,48 @@ namespace bjoernligan
 			m_xB2World = new b2World(b2Vec2(0.0f, 0.0f));
 			
 			m_map = new Map("../data/map.txt");
+			m_pathfinder = new Pathfinder(m_map->getSize());
+			
+			// Set weight and walkable flag for pathfinder
+			for (int x = 0; x < m_map->getWidth(); ++x)
+			{
+				for (int y = 0; y < m_map->getHeight(); ++y)
+				{
+					Map::Tile* tile = m_map->getTopmostTile(x, y);
+					if (tile != nullptr)
+					{
+						m_pathfinder->getGrid().setWalkableAt(x, y, tile->isWalkable());
+					}
+				}
+			}
+
+			// Example of finding a path with astar
+			for (int i = 0; i < 20; ++i)
+			{
+				Pathfinder::Path path;
+				m_pathfinder->setStart(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
+				m_pathfinder->setGoal(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
+				if (m_pathfinder->findPath(path) == PathfinderInfo::PATHRESULT_SUCCEEDED)
+				{
+					std::cout << "A*: Path found with length: " << path.length << " and it took " << path.time.asSeconds() << " seconds!" << std::endl;
+				}
+			}
+
+			// JPS
+			for (int i = 0; i < 20; ++i)
+			{
+				Pathfinder::Path path;
+				Pathfinder::Options options;
+				options.algorithm = PathfinderInfo::ALGORITHM_JPS;
+				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
+
+				m_pathfinder->setStart(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
+				m_pathfinder->setGoal(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
+				if (m_pathfinder->findPath(path, options) == PathfinderInfo::PATHRESULT_SUCCEEDED)
+				{
+					std::cout << "JPS: Path found with length: " << path.length << " and it took " << path.time.asSeconds() << " seconds!" << std::endl;
+				}
+			}
 
 			return m_bRunning = true;
 		}
@@ -56,6 +99,9 @@ namespace bjoernligan
 
 			delete m_map;
 			m_map = nullptr;
+
+			delete m_pathfinder;
+			m_pathfinder = nullptr;
 		}
 
 		void Engine::RunLoop()

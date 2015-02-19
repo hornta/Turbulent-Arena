@@ -20,6 +20,7 @@ namespace bjoernligan
 			bool m_null;
 			sf::Vector2f m_uv;
 		};
+
 		class Tile
 		{
 			friend class Map;
@@ -43,6 +44,8 @@ namespace bjoernligan
 			Layer(const sf::Vector2i& size, const std::string& name);
 			~Layer();
 
+			Tile* getTile(int x, int y);
+			Tile* getTile(const sf::Vector2i& position);
 		private:
 			std::string m_name;
 			Tile** m_tiles;
@@ -56,6 +59,12 @@ namespace bjoernligan
 		bool parseMap(const std::string& file);
 		TileDefinition* getTileDefinition(char ID) const;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		sf::Vector2i getSize() const;
+		int getWidth() const;
+		int getHeight() const;
+		int getTileSize() const;
+		Tile* getTopmostTile(int x, int y) const;
+		Tile* getTopmostTile(const sf::Vector2i& position) const;
 
 	private:
 		bool beginsWith(const std::string& id, const std::vector<std::string>& parts);

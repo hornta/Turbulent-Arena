@@ -11,6 +11,7 @@
 namespace bjoernligan
 {
 	class Map;
+	class Pathfinder;
 	namespace system
 	{
 		class Engine
@@ -38,6 +39,7 @@ namespace bjoernligan
 			float m_fDeltaTime;
 
 			Map* m_map;
+			Pathfinder* m_pathfinder;
 
 			//Box2D
 			b2World* m_xB2World;			

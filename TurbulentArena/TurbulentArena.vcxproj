@@ -96,6 +96,7 @@
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Mouse.hpp" />
+    <ClInclude Include="Pathfinder.hpp" />
     <ClInclude Include="ServiceLocator.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="sfml_include.hpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Agent.cpp" />

@@ -67,6 +67,17 @@ namespace bjoernligan
 		}
 	}
 
+	Map::Tile* Map::Layer::getTile(int x, int y)
+	{
+		int index = x + y * m_size.x;
+		return m_tiles[index];
+	}
+
+	Map::Tile* Map::Layer::getTile(const sf::Vector2i& position)
+	{
+		return getTile(position.x, position.y);
+	}
+
 	/* MAP */
 	Map::Map(const std::string& file)
 	{
@@ -203,6 +214,44 @@ namespace bjoernligan
 			states.texture = &m_texture;
 			target.draw(m_layers[i]->m_vertices, states);
 		}
+	}
+
+	sf::Vector2i Map::getSize() const
+	{
+		return m_size;
+	}
+
+	int Map::getWidth() const
+	{
+		return m_size.x;
+	}
+
+	int Map::getHeight() const
+	{
+		return m_size.y;
+	}
+
+	int Map::getTileSize() const
+	{
+		return m_tileSize;
+	}
+
+	Map::Tile* Map::getTopmostTile(int x, int y) const
+	{
+		Tile* tmp = nullptr;
+		for (std::size_t i = m_numLayers - 1; i > 0; --i)
+		{
+			if ((tmp = m_layers[i]->getTile(x, y)) != nullptr)
+			{
+				return tmp;
+			}
+		}
+		return tmp;
+	}
+
+	Map::Tile* Map::getTopmostTile(const sf::Vector2i& position) const
+	{
+		return getTopmostTile(position.x, position.y);
 	}
 
 	bool Map::beginsWith(const std::string& id, const std::vector<std::string>& parts)
