@@ -81,8 +81,7 @@ namespace bjoernligan
 
 				if (p_xEvent.type == sf::Event::MouseMoved)
 				{
-					m_xMouse->m_xPos.x = sf::Mouse::getPosition(*m_xDrawManager->m_xWindow).x;
-					m_xMouse->m_xPos.y = sf::Mouse::getPosition(*m_xDrawManager->m_xWindow).y;
+					m_xMouse->m_xPos = sf::Mouse::getPosition(*m_xDrawManager->m_xWindow);
 				}
 
 				//keyboard keys pressed or released
