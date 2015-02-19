@@ -13,6 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\system">
+      <UniqueIdentifier>{34ae589d-dcb2-4cf1-bb15-a5d7d6a044ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\system">
+      <UniqueIdentifier>{5384629e-6efd-4ad8-9991-7b3b8a8200a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{9a65f245-fddd-426d-9599-0314923dfc1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{af814d0b-3f0e-497d-8637-03cd39e935ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\objects">
+      <UniqueIdentifier>{7bd8750a-4327-49f5-996b-164c7f5b21ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects">
+      <UniqueIdentifier>{16ef05bc-e1ee-40f2-8286-5ec17a9b2cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{dbfebe71-336b-478f-a415-0203677fb665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{6f28d86c-eab9-48b2-bbfc-e7a9d449fc55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\BT">
+      <UniqueIdentifier>{69672b27-c6b0-486f-b038-cb1374781dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BT">
+      <UniqueIdentifier>{5778a1c3-49c6-4548-af80-039758a6efd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -56,6 +86,23 @@
     </ClInclude>
     <ClInclude Include="Utils.hpp">
       <Filter>Header Files</Filter>
+    <ClInclude Include="Object.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingObject.hpp">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree.hpp">
+      <Filter>Header Files\AI\BT</Filter>
+    </ClInclude>
+    <ClInclude Include="AIObserver.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AISubject.hpp">
+      <Filter>Header Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +135,20 @@
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingObject.cpp">
+      <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree.cpp">
+      <Filter>Source Files\AI\BT</Filter>
+    </ClCompile>
+    <ClCompile Include="AISubject.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

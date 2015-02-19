@@ -6,6 +6,8 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	argc, argv;
+
 	bjoernligan::system::Engine xEngine;
 
 	if (!xEngine.Initialize())

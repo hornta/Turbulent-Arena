@@ -2,11 +2,13 @@
 
 #pragma once
 
+#pragma warning(disable:4099)
+
 #include <SFML\Graphics.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
+#include <SFML\Audio.hpp>
+#include <SFML\Network.hpp>
 
 #if defined(_DEBUG) || defined(DEBUG)
 	#if defined(SFML_STATIC)
