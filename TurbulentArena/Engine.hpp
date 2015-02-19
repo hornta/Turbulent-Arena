@@ -9,6 +9,7 @@
 
 namespace bjoernligan
 {
+	class Map;
 	namespace system
 	{
 		class Engine
@@ -34,8 +35,10 @@ namespace bjoernligan
 			sf::Clock m_xDeltaClock;
 			float m_fDeltaTime;
 
+			Map* m_map;
+
 			//Box2D
-			b2World* m_xB2World;
+			b2World* m_xB2World;			
 		};
 	}
 }
