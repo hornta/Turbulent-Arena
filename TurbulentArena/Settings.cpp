@@ -1,7 +1,7 @@
 //Settings.cpp
 
 #include "stdafx.h"
-#include <Settings.hpp>
+#include "Settings.hpp"
 
 namespace bjoernligan
 {

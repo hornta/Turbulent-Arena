@@ -1,8 +1,8 @@
 //SpriteManager.cpp
 
 #include "stdafx.h"
-#include <system\SpriteManager.hpp>
-#include <Settings.hpp>
+#include "SpriteManager.hpp"
+#include "Settings.hpp"
 #include <fstream>
 
 namespace bjoernligan

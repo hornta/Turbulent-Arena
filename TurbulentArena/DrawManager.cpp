@@ -1,8 +1,8 @@
 //DrawManager.cpp
 
 #include "stdafx.h"
-#include <Settings.hpp>
-#include <system\DrawManager.hpp>
+#include "Settings.hpp"
+#include "DrawManager.hpp"
 #include <string>
 
 namespace bjoernligan

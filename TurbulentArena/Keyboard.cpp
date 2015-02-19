@@ -1,7 +1,7 @@
 //Keyboard.cpp
 
 #include "stdafx.h"
-#include <input\Keyboard.hpp>
+#include "Keyboard.hpp"
 
 namespace bjoernligan
 {
