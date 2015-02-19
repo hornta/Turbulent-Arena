@@ -1,10 +1,10 @@
 //Engine.hpp
 
 #pragma once
-#include <system/DrawManager.hpp>
-#include <system/SpriteManager.hpp>
-#include <input/Mouse.hpp>
-#include <input/Keyboard.hpp>
+#include "DrawManager.hpp"
+#include "SpriteManager.hpp"
+#include "Mouse.hpp"
+#include "Keyboard.hpp"
 
 namespace bjoernligan
 {

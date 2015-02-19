@@ -54,6 +54,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../external/SFML/include;../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>../external/SFML/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,7 +70,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../external/SFML/include;../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../external/SFML/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -83,38 +84,38 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\input\Keyboard.hpp" />
-    <ClInclude Include="..\include\input\Mouse.hpp" />
-    <ClInclude Include="..\include\ServiceLocator.hpp" />
-    <ClInclude Include="..\include\Settings.hpp" />
-    <ClInclude Include="..\include\sfml_include.hpp" />
-    <ClInclude Include="..\include\stdafx.h" />
-    <ClInclude Include="..\include\system\DrawManager.hpp" />
-    <ClInclude Include="..\include\system\Engine.hpp" />
-    <ClInclude Include="..\include\system\SpriteManager.hpp" />
-    <ClInclude Include="..\include\targetver.h" />
-    <ClInclude Include="..\include\Timer.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="BehaviorTree.hpp" />
     <ClInclude Include="MovingObject.hpp" />
     <ClInclude Include="Object.hpp" />
+    <ClInclude Include="DrawManager.hpp" />
+    <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="Keyboard.hpp" />
+    <ClInclude Include="Mouse.hpp" />
+    <ClInclude Include="ServiceLocator.hpp" />
+    <ClInclude Include="Settings.hpp" />
+    <ClInclude Include="sfml_include.hpp" />
+    <ClInclude Include="SpriteManager.hpp" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Timer.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\input\Keyboard.cpp" />
-    <ClCompile Include="..\source\input\Mouse.cpp" />
-    <ClCompile Include="..\source\Settings.cpp" />
-    <ClCompile Include="..\source\stdafx.cpp">
+    <ClCompile Include="DrawManager.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="BehaviorTree.cpp" />
+    <ClCompile Include="MovingObject.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\source\system\DrawManager.cpp" />
-    <ClCompile Include="..\source\system\Engine.cpp" />
-    <ClCompile Include="..\source\system\SpriteManager.cpp" />
-    <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="BehaviorTree.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MovingObject.cpp" />
-    <ClCompile Include="Object.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

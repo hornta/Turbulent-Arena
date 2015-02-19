@@ -1,9 +1,8 @@
 //Engine.cpp
 
 #include "stdafx.h"
-#include <system\Engine.hpp>
-#include <ServiceLocator.hpp>
-#include <Windows.h>
+#include "Engine.hpp"
+#include "ServiceLocator.hpp"
 
 namespace bjoernligan
 {
@@ -58,8 +57,6 @@ namespace bjoernligan
 				m_xDrawManager->ClearScr();
 				//insert stuff to draw
 				m_xDrawManager->Display();
-
-				::Sleep(2);
 			}
 		}
 

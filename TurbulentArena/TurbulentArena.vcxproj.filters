@@ -48,38 +48,38 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\stdafx.h">
+    <ClInclude Include="DrawManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\targetver.h">
+    <ClInclude Include="Engine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\sfml_include.hpp">
+    <ClInclude Include="Keyboard.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\system\Engine.hpp">
-      <Filter>Header Files\system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\system\DrawManager.hpp">
-      <Filter>Header Files\system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\system\SpriteManager.hpp">
-      <Filter>Header Files\system</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Settings.hpp">
+    <ClInclude Include="Mouse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ServiceLocator.hpp">
+    <ClInclude Include="ServiceLocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Timer.hpp">
+    <ClInclude Include="Settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\input\Keyboard.hpp">
-      <Filter>Header Files\input</Filter>
+    <ClInclude Include="sfml_include.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\input\Mouse.hpp">
-      <Filter>Header Files\input</Filter>
+    <ClInclude Include="SpriteManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Object.hpp">
       <Filter>Header Files\objects</Filter>
@@ -95,29 +95,29 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DrawManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\stdafx.cpp">
+    <ClCompile Include="Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\system\Engine.cpp">
-      <Filter>Source Files\system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\system\DrawManager.cpp">
-      <Filter>Source Files\system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\system\SpriteManager.cpp">
-      <Filter>Source Files\system</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Settings.cpp">
+    <ClCompile Include="Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\input\Keyboard.cpp">
-      <Filter>Source Files\input</Filter>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\input\Mouse.cpp">
-      <Filter>Source Files\input</Filter>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\objects</Filter>

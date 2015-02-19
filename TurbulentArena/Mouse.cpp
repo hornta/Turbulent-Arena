@@ -1,7 +1,7 @@
 //Mouse.cpp
 
 #include "stdafx.h"
-#include <input\Mouse.hpp>
+#include "Mouse.hpp"
 
 namespace bjoernligan
 {
