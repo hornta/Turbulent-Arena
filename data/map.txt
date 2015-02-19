@@ -10,7 +10,7 @@ nl 2
 
 # Tile definitions
 td .
-td I 1 0 0
+td I 1 0 0 0
 td O 0 32 0
 td # 0 64 0
 td H 0 96 0
