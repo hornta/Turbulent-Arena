@@ -12,6 +12,11 @@ namespace bjoernligan
 		Engine::Engine()
 			: m_map(nullptr)
 		{
+			m_xDrawManager = nullptr;
+			m_xSpriteManager = nullptr;
+			m_xKeyboard = nullptr;
+			m_xMouse = nullptr;
+			m_xUtility = nullptr;
 			m_xB2World = nullptr;
 		}
 
@@ -26,11 +31,13 @@ namespace bjoernligan
 			m_xSpriteManager = SpriteManager::Create();
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
+			m_xUtility = Utility::Create();
 
 			ServiceLocator<DrawManager>::SetService(m_xDrawManager.get());
 			ServiceLocator<SpriteManager>::SetService(m_xSpriteManager.get());
 			ServiceLocator<input::Keyboard>::SetService(m_xKeyboard.get());
 			ServiceLocator<input::Mouse>::SetService(m_xMouse.get());
+			ServiceLocator<Utility>::SetService(m_xUtility.get());
 
 			if (!m_xDrawManager->Initialize())
 				return false;
@@ -46,6 +53,9 @@ namespace bjoernligan
 		{
 			delete m_xB2World;
 			m_xB2World = nullptr;
+
+			delete m_map;
+			m_map = nullptr;
 		}
 
 		void Engine::RunLoop()

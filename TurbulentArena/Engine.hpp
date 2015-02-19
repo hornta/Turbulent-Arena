@@ -5,6 +5,7 @@
 #include "SpriteManager.hpp"
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
+#include "Utility.hpp"
 #include <Box2D\box2d.h>
 
 namespace bjoernligan
@@ -31,6 +32,7 @@ namespace bjoernligan
 			DrawManager::Ptr m_xDrawManager;
 			input::Keyboard::Ptr m_xKeyboard;
 			input::Mouse::Ptr m_xMouse;
+			Utility::Ptr m_xUtility;
 
 			sf::Clock m_xDeltaClock;
 			float m_fDeltaTime;

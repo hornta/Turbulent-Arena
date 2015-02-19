@@ -7,13 +7,16 @@ namespace bjoernligan
 	{
 		std::vector<std::string> parts;
 		std::size_t oldPos = 0;
-		while (true)
+
+		bool bRunning = true;
+		while (bRunning)
 		{
 			std::size_t newPos = string.find(delimeter, oldPos);
 			if (newPos == std::string::npos)
 			{
 				parts.push_back(string.substr(oldPos, newPos - oldPos));
-				break;
+				bRunning = false;
+				continue;
 			}
 			parts.push_back(string.substr(oldPos, newPos - oldPos));
 			oldPos = newPos + 1;
