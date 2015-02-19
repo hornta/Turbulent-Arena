@@ -42,6 +42,9 @@ namespace bjoernligan
 		m_size(size)
 	{
 		m_tiles = new Tile*[m_size.x * m_size.y];
+		for (int i = 0; i < m_size.x * m_size.y; ++i)
+			m_tiles[i] = nullptr;
+
 		m_vertices.setPrimitiveType(sf::Quads);
 		m_vertices.resize(m_size.x * m_size.y * 4);
 	}
@@ -50,12 +53,18 @@ namespace bjoernligan
 	{
 		for (int i = 0; i < m_size.x * m_size.y; ++i)
 		{
-			delete m_tiles[i];
-			m_tiles[i] = nullptr;
+			if (m_tiles[i])
+			{
+				delete m_tiles[i];
+				m_tiles[i] = nullptr;
+			}
 		}
-		
-		delete[] m_tiles;
-		m_tiles = nullptr;
+
+		if (m_tiles)
+		{
+			delete[] m_tiles;
+			m_tiles = nullptr;
+		}
 	}
 
 	/* MAP */
@@ -120,7 +129,7 @@ namespace bjoernligan
 			}
 			else if (beginsWith("ts", parts))
 			{
-				m_tileSize = std::stof(parts[1]);
+				m_tileSize = (int)std::stof(parts[1]);
 			}
 			else if (beginsWith("ntd", parts))
 			{
@@ -145,7 +154,7 @@ namespace bjoernligan
 			}
 			else if (beginsWith("d", parts))
 			{
-				for (int i = 0; i < parts[1].length() - 1; ++i)
+				for (uint32_t i = 0; i < parts[1].length() - 1; ++i)
 				{
 					char ID = static_cast<char>(parts[1][i]);
 					TileDefinition* td = getTileDefinition(ID);
@@ -158,10 +167,10 @@ namespace bjoernligan
 					Tile* tile = new Tile(sf::Vector2i(i, currentRow), td);
 					tile->m_vertices = &currentLayer->m_vertices[index * 4];
 
-					tile->m_vertices[0].position = sf::Vector2f(i * m_tileSize, currentRow * m_tileSize);
-					tile->m_vertices[1].position = sf::Vector2f((i + 1) * m_tileSize, currentRow * m_tileSize);
-					tile->m_vertices[2].position = sf::Vector2f((i + 1) * m_tileSize, (currentRow + 1) * m_tileSize);
-					tile->m_vertices[3].position = sf::Vector2f(i * m_tileSize, (currentRow + 1) * m_tileSize);
+					tile->m_vertices[0].position = sf::Vector2f((float)i * m_tileSize, (float)currentRow * m_tileSize);
+					tile->m_vertices[1].position = sf::Vector2f((float)(i + 1) * m_tileSize, (float)currentRow * m_tileSize);
+					tile->m_vertices[2].position = sf::Vector2f((float)(i + 1) * m_tileSize, (float)(currentRow + 1) * m_tileSize);
+					tile->m_vertices[3].position = sf::Vector2f((float)i * m_tileSize, (float)(currentRow + 1) * m_tileSize);
 
 					tile->m_vertices[0].texCoords = sf::Vector2f(td->m_uv.x, td->m_uv.y);
 					tile->m_vertices[1].texCoords = sf::Vector2f(td->m_uv.x + m_tileSize, td->m_uv.y);

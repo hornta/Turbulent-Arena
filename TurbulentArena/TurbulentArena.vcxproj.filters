@@ -43,9 +43,9 @@
     <Filter Include="Source Files\AI\BT">
       <UniqueIdentifier>{5778a1c3-49c6-4548-af80-039758a6efd5}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <Filter Include="Header Files\externals">
+      <UniqueIdentifier>{e295ce2d-4549-43fa-b6a2-c4d2bb7430f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawManager.hpp">
@@ -64,9 +64,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sfml_include.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpriteManager.hpp">
@@ -98,6 +95,15 @@
     </ClInclude>
     <ClInclude Include="BehaviorTree.hpp">
       <Filter>Header Files\AI\BT</Filter>
+    </ClInclude>
+    <ClInclude Include="sfml_include.hpp">
+      <Filter>Header Files\externals</Filter>
+    </ClInclude>
+    <ClInclude Include="box2d_include.hpp">
+      <Filter>Header Files\externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AIObserver.hpp">
       <Filter>Header Files\AI</Filter>
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="BehaviorTree.cpp">
       <Filter>Source Files\AI\BT</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AISubject.cpp">
       <Filter>Source Files\AI</Filter>
