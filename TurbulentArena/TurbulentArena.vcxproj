@@ -48,11 +48,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>SFML_STATIC;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../external/SFML/include;../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -61,7 +62,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -69,6 +70,7 @@
       <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../external/SFML/include;../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,6 +94,10 @@
     <ClInclude Include="..\include\system\SpriteManager.hpp" />
     <ClInclude Include="..\include\targetver.h" />
     <ClInclude Include="..\include\Timer.hpp" />
+    <ClInclude Include="Agent.hpp" />
+    <ClInclude Include="BehaviorTree.hpp" />
+    <ClInclude Include="MovingObject.hpp" />
+    <ClInclude Include="Object.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\input\Keyboard.cpp" />
@@ -104,7 +110,11 @@
     <ClCompile Include="..\source\system\DrawManager.cpp" />
     <ClCompile Include="..\source\system\Engine.cpp" />
     <ClCompile Include="..\source\system\SpriteManager.cpp" />
+    <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="BehaviorTree.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MovingObject.cpp" />
+    <ClCompile Include="Object.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

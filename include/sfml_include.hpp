@@ -8,6 +8,8 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#pragma warning(disable:4099)
+
 #if defined(_DEBUG) || defined(DEBUG)
 	#if defined(SFML_STATIC)
 		#pragma comment(lib,"../external/SFML/lib/sfml-graphics-s-d.lib")
