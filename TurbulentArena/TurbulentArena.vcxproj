@@ -84,6 +84,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AISubject.hpp" />
+    <ClInclude Include="AIObserver.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="BehaviorTree.hpp" />
     <ClInclude Include="MovingObject.hpp" />
@@ -101,6 +103,7 @@
     <ClInclude Include="Timer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Keyboard.cpp" />

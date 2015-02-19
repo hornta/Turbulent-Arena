@@ -93,6 +93,12 @@
     <ClInclude Include="BehaviorTree.hpp">
       <Filter>Header Files\AI\BT</Filter>
     </ClInclude>
+    <ClInclude Include="AIObserver.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AISubject.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawManager.cpp">
@@ -130,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="BehaviorTree.cpp">
       <Filter>Source Files\AI\BT</Filter>
+    </ClCompile>
+    <ClCompile Include="AISubject.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
