@@ -65,6 +65,7 @@ namespace bjoernligan
 		int getTileSize() const;
 		Tile* getTopmostTile(int x, int y) const;
 		Tile* getTopmostTile(const sf::Vector2i& position) const;
+		Layer* getLayer(const std::string& name);
 
 	private:
 		bool beginsWith(const std::string& id, const std::vector<std::string>& parts);

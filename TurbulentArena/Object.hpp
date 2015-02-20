@@ -17,7 +17,6 @@ namespace bjoernligan
 
 	protected:
 		sf::Vector2f m_xPos;
-		sf::Sprite m_sprite;
 
 		//Box2D
 		b2CircleShape* m_xB2dCircleShape;

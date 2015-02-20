@@ -12,6 +12,9 @@ namespace bjoernligan
 {
 	class Map;
 	class Pathfinder;
+	class Visibility;
+	class Clan;
+
 	namespace system
 	{
 		class Engine
@@ -40,6 +43,8 @@ namespace bjoernligan
 
 			Map* m_map;
 			Pathfinder* m_pathfinder;
+			Visibility* m_visibility;
+			std::vector<Clan*> m_clans;
 
 			//Box2D
 			b2World* m_xB2World;			

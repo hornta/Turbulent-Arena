@@ -41,5 +41,15 @@ namespace bjoernligan
 		{
 			m_xBT = p_xBT;
 		}
+
+		void Agent::setSenseRadius(float p_senseRadius)
+		{
+			m_senseRadius = p_senseRadius;
+		}
+
+		void Agent::setSenseVisibleArea(Visibility::Light* p_senseVisibleArea)
+		{
+			m_senseVisibleArea = p_senseVisibleArea;
+		}
 	}
 }
