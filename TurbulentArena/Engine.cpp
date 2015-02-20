@@ -8,10 +8,10 @@
 #include "ContactListener.hpp"
 #include "Box2DWorldDraw.h"
 #include "Object.hpp"
-#include <iomanip>
-#include <Windows.h>
 #include "Visibility.hpp"
 #include "ClanManager.hpp"
+#include "Clan.hpp"
+#include "Scout.hpp"
 
 namespace bjoernligan
 {
@@ -55,7 +55,7 @@ namespace bjoernligan
 
 			if (!m_xDrawManager->Initialize())
 				return false;
-			
+
 			m_xContactListener = new ContactListener;
 			m_xB2World->SetContactListener(m_xContactListener);
 
@@ -135,6 +135,7 @@ namespace bjoernligan
 
 			delete mB2DebugDraw;
 			mB2DebugDraw = nullptr;
+
 			delete m_visibility;
 			m_visibility = nullptr;
 		}
@@ -142,14 +143,54 @@ namespace bjoernligan
 		void Engine::RunLoop()
 		{
 			static Object* xObject = new Object;
-			xObject->CreateBody(b2BodyType::b2_dynamicBody);
-			xObject->CreateB2Shape(sf::Vector2i(32,32));
-			xObject->SetPos(sf::Vector2f(50.0f, 50.0f), true);
+
+			{
+				PhysicsParams xParams;
+
+				xParams.m_xBodyDef.type = b2_dynamicBody;
+				xParams.m_xBodyDef.gravityScale = 1.0f;
+				xParams.m_xBodyDef.fixedRotation = false;
+				xParams.m_xBodyDef.bullet = false;
+
+				xParams.m_xFixtureDef.friction = 1.0f;
+				xParams.m_xFixtureDef.density = 1.0f;
+				xParams.m_xFixtureDef.restitution = 1.0f;
+				xParams.m_xFixtureDef.isSensor = false;
+
+				xParams.m_eShapeType = EB2ShapeType::Box;
+				xParams.m_xShapeSize.m_xBox.x = 64;
+				xParams.m_xShapeSize.m_xBox.y = 32;
+
+				PhysicsBody* xPhysBody = new PhysicsBody;
+				xPhysBody->CreateBody(xParams);
+
+				xObject->SetPhysicsBody(xPhysBody);
+				xObject->SetPos(sf::Vector2f(50.0f, 50.0f), true);
+			}
 
 			static Object* xObject2 = new Object;
-			xObject2->CreateBody(b2BodyType::b2_staticBody);
-			xObject2->CreateB2Shape(sf::Vector2i(32, 32));
-			xObject2->SetPos(sf::Vector2f(50.0f, 400.0f), true);
+			{
+				PhysicsParams xParams;
+
+				xParams.m_xBodyDef.type = b2_staticBody;
+				xParams.m_xBodyDef.gravityScale = 1.0f;
+				xParams.m_xBodyDef.fixedRotation = false;
+				xParams.m_xBodyDef.bullet = false;
+
+				xParams.m_xFixtureDef.friction = 1.0f;
+				xParams.m_xFixtureDef.density = 1.0f;
+				xParams.m_xFixtureDef.restitution = 0.5f;
+				xParams.m_xFixtureDef.isSensor = false;
+
+				xParams.m_eShapeType = EB2ShapeType::Circle;
+				xParams.m_xShapeSize.m_fCircleRadius = 12.0f;
+
+				PhysicsBody* xPhysBody = new PhysicsBody;
+				xPhysBody->CreateBody(xParams);
+
+				xObject2->SetPhysicsBody(xPhysBody);
+				xObject2->SetPos(sf::Vector2f(49.0f, 400.0f), true);
+			}
 
 			while (m_bRunning && m_xDrawManager->m_xWindow->isOpen())
 			{
@@ -163,7 +204,6 @@ namespace bjoernligan
 				m_xB2World->Step(m_fDeltaTime, 10, 10);
 				xObject->Update(m_fDeltaTime);
 				xObject2->Update(m_fDeltaTime);
-				std::cout << std::fixed << std::setprecision(5) << m_fDeltaTime << std::endl;
 				m_visibility->update();
 
 				//Draw
@@ -179,8 +219,6 @@ namespace bjoernligan
 
 			delete xObject;
 			xObject = nullptr;
-			delete xObject2;
-			xObject2 = nullptr;
 		}
 
 		void Engine::UpdateDeltaTime()
