@@ -20,7 +20,7 @@ namespace bjoernligan
 		sf::Sprite m_sprite;
 
 		//Box2D
-		b2CircleShape * m_xB2dCircleShape;
+		b2CircleShape* m_xB2dCircleShape;
 		b2Body* m_xB2dBody;
 		b2Fixture* m_xB2dFixture;
 	};

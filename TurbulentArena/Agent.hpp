@@ -15,8 +15,11 @@ namespace bjoernligan
 			Agent();
 			virtual ~Agent();
 
-			virtual void Update(const float &p_fDeltaTime);
-			virtual void OnNotify(/*Add Parameters here*/);
+			void Sense();
+			void Decide();
+			//acting is performed by owner object
+
+			virtual void OnNotify(const AIEvent &p_xEvent);
 
 			void SetBehaviorTree(BehaviorTree* p_xBT);
 

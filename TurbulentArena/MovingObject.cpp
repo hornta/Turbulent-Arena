@@ -26,7 +26,10 @@ namespace bjoernligan
 		m_xPos += m_xVelocity * p_fDeltaTime;
 
 		if (m_xAgent)
-			m_xAgent->Update(p_fDeltaTime);
+		{
+			m_xAgent->Sense();
+			m_xAgent->Decide();
+		}
 	}
 
 	void MovingObject::SetVelocity(const sf::Vector2f &p_xVel)

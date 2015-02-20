@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 #include "Agent.hpp"
+#include "BehaviorTree.hpp"
 
 namespace bjoernligan
 {
@@ -17,14 +18,25 @@ namespace bjoernligan
 
 		}
 
-		void Agent::Update(const float &p_fDeltaTime)
+		void Agent::Sense()
 		{
-			p_fDeltaTime;
+
 		}
-		void Agent::OnNotify(/*Add Parameters here*/)
+
+		void Agent::Decide()
 		{
-			//Add stuff here, remember to add subject who send notifications.
+			m_xBT->Process();
 		}
+
+		void Agent::OnNotify(const AIEvent &p_xEvent)
+		{
+			if (p_xEvent.m_eType == AIEventType::MoveTarget)
+			{
+				//find path to move target
+				//unless already on path to THAT target
+			}
+		}
+
 		void Agent::SetBehaviorTree(BehaviorTree* p_xBT)
 		{
 			m_xBT = p_xBT;

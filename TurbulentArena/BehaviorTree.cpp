@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 #include "BehaviorTree.hpp"
+#include "BNode.hpp"
 
 namespace bjoernligan
 {
@@ -10,16 +11,23 @@ namespace bjoernligan
 		BehaviorTree::BehaviorTree()
 		{
 			m_xRoot = nullptr;
+			m_xCurrentRunning = nullptr;
 		}
 
 		BehaviorTree::~BehaviorTree()
 		{
-			//nodes need a cleanup method to free allocated memory
+			if (m_xRoot)
+				m_xRoot->CleanUp();
+		}
+
+		void BehaviorTree::Break()
+		{
+			m_xCurrentRunning = nullptr;
 		}
 
 		void BehaviorTree::Process()
 		{
-			//m_xRoot->Process();
+			m_xRoot->Process();
 		}
 
 		void BehaviorTree::SetRoot(BNode* p_xRoot)

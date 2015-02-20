@@ -46,18 +46,36 @@
     <Filter Include="Header Files\externals">
       <UniqueIdentifier>{e295ce2d-4549-43fa-b6a2-c4d2bb7430f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\BT\Nodes">
+      <UniqueIdentifier>{803efa0d-f615-424e-b5b3-fe3867922b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BT\Nodes">
+      <UniqueIdentifier>{ffae4e63-f6d8-4e3d-ab5f-c49293875728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\objects\gameplay classes">
+      <UniqueIdentifier>{902edfdf-42f8-4da1-a3a4-16d80c2d8cc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\observer">
+      <UniqueIdentifier>{5bd5219d-6598-4129-8438-1bede2579845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\observer">
+      <UniqueIdentifier>{77929fc7-c505-48dd-8940-2155ebc0225d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects\gameplay classes">
+      <UniqueIdentifier>{d4be5f9e-00d9-4bbf-9f85-1bae27afe301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\BT\Nodes\Leafs">
+      <UniqueIdentifier>{410b60e5-de19-47df-ba4c-af7d2c8af97f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BT\Nodes\Leafs">
+      <UniqueIdentifier>{2b8e6d49-2153-4a69-ad77-d88d98068345}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyboard.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServiceLocator.hpp">
@@ -105,14 +123,56 @@
     <ClInclude Include="Utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AIObserver.hpp">
-      <Filter>Header Files\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="AISubject.hpp">
-      <Filter>Header Files\AI</Filter>
-    </ClInclude>
     <ClInclude Include="Pathfinder.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AIObserver.hpp">
+      <Filter>Header Files\AI\observer</Filter>
+    </ClInclude>
+    <ClInclude Include="AISubject.hpp">
+      <Filter>Header Files\AI\observer</Filter>
+    </ClInclude>
+    <ClInclude Include="AIEvent.hpp">
+      <Filter>Header Files\AI\observer</Filter>
+    </ClInclude>
+    <ClInclude Include="BCompositeNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BSelectorNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BSequenceNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BInverterNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BSucceederNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayClass.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatStats.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Axeman.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="BNodesInclude.hpp">
+      <Filter>Header Files\AI\BT</Filter>
+    </ClInclude>
+    <ClInclude Include="BMoveToNode.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,13 +182,7 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Settings.cpp">
@@ -161,11 +215,47 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AISubject.cpp">
-      <Filter>Source Files\AI</Filter>
-    </ClCompile>
     <ClCompile Include="Pathfinder.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AISubject.cpp">
+      <Filter>Source Files\AI\observer</Filter>
+    </ClCompile>
+    <ClCompile Include="BCompositeNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="BNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="BSelectorNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="BSequenceNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="BInverterNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="BSucceederNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameplayClass.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Axeman.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="BMoveToNode.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

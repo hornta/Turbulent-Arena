@@ -3,6 +3,7 @@
 /*The class who will listen to changes from subject will inherit from this class*/
 
 #pragma once
+#include "AIEvent.hpp"
 
 namespace bjoernligan
 {
@@ -12,7 +13,7 @@ namespace bjoernligan
 		{
 		public:
 			~AIObserver() {};
-			virtual void OnNotify(/*Add Parameters here*/) = 0;
+			virtual void OnNotify(const AIEvent &p_xEvent) = 0;
 		};
 	}
 }

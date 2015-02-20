@@ -4,6 +4,7 @@
 
 #pragma once
 #include <vector>
+#include "AIEvent.hpp"
 
 namespace bjoernligan
 {
@@ -20,7 +21,7 @@ namespace bjoernligan
 			void RemoveAIObserver(AIObserver* p_Observer);
 
 		protected:
-			void Notify(/*Add parameters here. remember to add them to observer also*/);
+			void Notify(const AIEvent &p_xEvent);
 
 		private:
 			std::vector<AIObserver*> m_AIObserverList;

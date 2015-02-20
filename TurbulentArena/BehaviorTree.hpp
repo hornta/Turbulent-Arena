@@ -14,11 +14,13 @@ namespace bjoernligan
 			BehaviorTree();
 			~BehaviorTree();
 
+			void Break();
 			void Process();
 			void SetRoot(BNode* p_xRoot);
 
 		private:
 			BNode* m_xRoot;
+			BNode* m_xCurrentRunning;
 		};
 	}
 }
