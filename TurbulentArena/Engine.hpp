@@ -8,10 +8,14 @@
 #include "Utility.hpp"
 #include <Box2D\box2d.h>
 
+class Box2DWorldDraw;
+
 namespace bjoernligan
 {
 	class Map;
 	class Pathfinder;
+	class ContactListener;
+
 	namespace system
 	{
 		class Engine
@@ -43,6 +47,8 @@ namespace bjoernligan
 
 			//Box2D
 			b2World* m_xB2World;			
+			ContactListener* m_xContactListener;
+			Box2DWorldDraw* mB2DebugDraw;
 		};
 	}
 }

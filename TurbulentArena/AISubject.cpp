@@ -29,11 +29,11 @@ namespace bjoernligan
 				}
 			}
 		}
-		void AISubject::Notify(const AIEvent &p_xEvent)
+		void AISubject::Notify(/*add parameters*/)
 		{
 			for (unsigned int i = 0; i < m_AIObserverList.size(); i++)
 			{
-				m_AIObserverList[i]->OnNotify(p_xEvent);
+				m_AIObserverList[i]->OnNotify();
 			}
 		}
 	}

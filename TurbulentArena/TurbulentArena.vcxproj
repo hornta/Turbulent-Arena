@@ -84,14 +84,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
     <ClInclude Include="AIObserver.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="Axeman.hpp" />
     <ClInclude Include="BMoveToNode.hpp" />
     <ClInclude Include="BNodesInclude.hpp" />
+    <ClInclude Include="Box2DWorldDraw.h" />
     <ClInclude Include="CombatStats.hpp" />
+    <ClInclude Include="ContactListener.hpp" />
     <ClInclude Include="GameplayClass.hpp" />
     <ClInclude Include="BCompositeNode.hpp" />
     <ClInclude Include="BehaviorTree.hpp" />
@@ -126,10 +127,12 @@
     <ClCompile Include="BInverterNode.cpp" />
     <ClCompile Include="BMoveToNode.cpp" />
     <ClCompile Include="BNode.cpp" />
+    <ClCompile Include="Box2DWorldDraw.cpp" />
     <ClCompile Include="BSelectorNode.cpp" />
     <ClCompile Include="BSequenceNode.cpp" />
     <ClCompile Include="BSucceederNode.cpp" />
     <ClCompile Include="CombatStats.cpp" />
+    <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameplayClass.cpp" />

@@ -19,7 +19,7 @@ namespace bjoernligan
 			void Decide();
 			//acting is performed by owner object
 
-			virtual void OnNotify(const AIEvent &p_xEvent);
+			virtual void OnNotify(/*add parameters*/);
 
 			void SetBehaviorTree(BehaviorTree* p_xBT);
 

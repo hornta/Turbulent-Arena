@@ -28,13 +28,9 @@ namespace bjoernligan
 			m_xBT->Process();
 		}
 
-		void Agent::OnNotify(const AIEvent &p_xEvent)
+		void Agent::OnNotify(/*add parameters*/)
 		{
-			if (p_xEvent.m_eType == AIEventType::MoveTarget)
-			{
-				//find path to move target
-				//unless already on path to THAT target
-			}
+
 		}
 
 		void Agent::SetBehaviorTree(BehaviorTree* p_xBT)
