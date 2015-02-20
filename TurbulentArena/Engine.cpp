@@ -9,9 +9,9 @@
 #include "Box2DWorldDraw.h"
 #include "Object.hpp"
 #include "Visibility.hpp"
+#include "ClanManager.hpp"
 #include "Clan.hpp"
 #include "Scout.hpp"
-#include <Windows.h>
 
 namespace bjoernligan
 {
@@ -42,7 +42,7 @@ namespace bjoernligan
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
-			m_xB2World = new b2World(b2Vec2(0.0f, 5.0f));
+			m_xB2World = new b2World(b2Vec2(0.0f, 0.0f));
 			m_map = new Map("../data/map.txt");
 
 			ServiceLocator<DrawManager>::SetService(m_xDrawManager.get());
@@ -75,17 +75,22 @@ namespace bjoernligan
 					if (tile != nullptr)
 					{
 						m_pathfinder->getGrid().setWalkableAt(x, y, tile->isWalkable());
+						if (!tile->isWalkable())
+						{
+
+						}
 					}
 				}
 			}
 
 			// VISIBILITY
 			m_visibility = new Visibility();
-
 			Map::Layer* layer = m_map->getLayer("objects");
 			if (layer != nullptr)
 			{
 				float tileSize = static_cast<float>(m_map->getTileSize());
+
+				// Looping all static objects in map
 				for (int x = 0; x < m_map->getWidth(); ++x)
 				{
 					for (int y = 0; y < m_map->getHeight(); ++y)
@@ -102,21 +107,14 @@ namespace bjoernligan
 					}
 				}
 			}
-
-			// todo: move to an object manager
+			
 			// CLANS
-			Clan* clan_mcHeist = new Clan(sf::Color::Blue);
-			Clan* clan_mcPlank = new Clan(sf::Color::Red);
+			m_clanManager = new ClanManager();
 
 			{
-				Class* scout = new Scout();
-				clan_mcHeist->addMember(scout);
+				Clan* clan = m_clanManager->createClan("MacDonald");
+				clan;
 			}
-
-			clan_mcHeist->addMember(new Scout);
-
-			m_clans.push_back(clan_mcHeist);
-			m_clans.push_back(clan_mcPlank);
 
 			return m_bRunning = true;
 		}

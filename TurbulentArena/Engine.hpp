@@ -16,7 +16,7 @@ namespace bjoernligan
 	class Pathfinder;
 	class ContactListener;
 	class Visibility;
-	class Clan;
+	class ClanManager;
 
 	namespace system
 	{
@@ -47,7 +47,7 @@ namespace bjoernligan
 			Map* m_map;
 			Pathfinder* m_pathfinder;
 			Visibility* m_visibility;
-			std::vector<Clan*> m_clans;
+			ClanManager* m_clanManager;
 
 			//Box2D
 			b2World* m_xB2World;			

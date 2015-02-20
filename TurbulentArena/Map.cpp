@@ -53,7 +53,7 @@ namespace bjoernligan
 	{
 		for (int i = 0; i < m_size.x * m_size.y; ++i)
 		{
-			if (m_tiles[i])
+			if (m_tiles[i] != nullptr)
 			{
 				delete m_tiles[i];
 				m_tiles[i] = nullptr;
