@@ -12,6 +12,7 @@
 #include "ClanManager.hpp"
 #include "Clan.hpp"
 #include "Scout.hpp"
+#include <Windows.h>
 
 namespace bjoernligan
 {
