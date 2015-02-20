@@ -91,6 +91,7 @@
     <ClInclude Include="BMoveToNode.hpp" />
     <ClInclude Include="BNodesInclude.hpp" />
     <ClInclude Include="Box2DWorldDraw.h" />
+    <ClInclude Include="ClanManager.hpp" />
     <ClInclude Include="CombatStats.hpp" />
     <ClInclude Include="ContactListener.hpp" />
     <ClInclude Include="GameplayClass.hpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="BSequenceNode.cpp" />
     <ClCompile Include="BSucceederNode.cpp" />
     <ClCompile Include="Clan.cpp" />
+    <ClCompile Include="ClanManager.cpp" />
     <ClCompile Include="CombatStats.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DrawManager.cpp" />

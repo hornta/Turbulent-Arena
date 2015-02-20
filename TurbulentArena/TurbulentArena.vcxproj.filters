@@ -183,6 +183,12 @@
     <ClInclude Include="Clan.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameplayClass.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawManager.cpp">
@@ -276,6 +282,9 @@
       <Filter>Source Files\objects\gameplay classes</Filter>
     </ClCompile>
     <ClCompile Include="Clan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

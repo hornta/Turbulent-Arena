@@ -2,22 +2,18 @@
 #include "Clan.hpp"
 #include "Class.hpp"
 
+#include "Scout.hpp"
+#include "Axeman.hpp"
+
 namespace bjoernligan
 {
-	Clan::Clan(const sf::Color& p_color)
-		: m_color(p_color)
+	Clan::Clan(const std::string& name)
+		: m_name(name)
 	{
 	}
-
 
 	Clan::~Clan()
 	{
-	}
-
-	void Clan::addMember(Class* p_member)
-	{
-		p_member->setClan(this);
-		m_members.push_back(p_member);
 	}
 
 	void Clan::draw(sf::RenderTarget& target, sf::RenderStates states) const
