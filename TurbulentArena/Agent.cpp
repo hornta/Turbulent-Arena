@@ -28,18 +28,24 @@ namespace bjoernligan
 			m_xBT->Process();
 		}
 
-		void Agent::OnNotify(const AIEvent &p_xEvent)
+		void Agent::OnNotify(/*add parameters*/)
 		{
-			if (p_xEvent.m_eType == AIEventType::MoveTarget)
-			{
-				//find path to move target
-				//unless already on path to THAT target
-			}
+
 		}
 
 		void Agent::SetBehaviorTree(BehaviorTree* p_xBT)
 		{
 			m_xBT = p_xBT;
+		}
+
+		void Agent::setSenseRadius(float p_senseRadius)
+		{
+			m_senseRadius = p_senseRadius;
+		}
+
+		void Agent::setSenseVisibleArea(Visibility::Light* p_senseVisibleArea)
+		{
+			m_senseVisibleArea = p_senseVisibleArea;
 		}
 	}
 }

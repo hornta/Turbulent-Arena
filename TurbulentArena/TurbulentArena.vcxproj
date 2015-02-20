@@ -92,8 +92,12 @@
     <ClInclude Include="Axeman.hpp" />
     <ClInclude Include="BMoveToNode.hpp" />
     <ClInclude Include="BNodesInclude.hpp" />
+    <ClInclude Include="Box2DWorldDraw.h" />
     <ClInclude Include="CombatStats.hpp" />
+    <ClInclude Include="ContactListener.hpp" />
     <ClInclude Include="GameplayClass.hpp" />
+    <ClInclude Include="Clan.hpp" />
+    <ClInclude Include="Class.hpp" />
     <ClInclude Include="BCompositeNode.hpp" />
     <ClInclude Include="BehaviorTree.hpp" />
     <ClInclude Include="BInverterNode.hpp" />
@@ -102,7 +106,6 @@
     <ClInclude Include="BSelectorNode.hpp" />
     <ClInclude Include="BSequenceNode.hpp" />
     <ClInclude Include="BSucceederNode.hpp" />
-    <ClInclude Include="MovingObject.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="DrawManager.hpp" />
     <ClInclude Include="Engine.hpp" />
@@ -110,6 +113,8 @@
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Pathfinder.hpp" />
+    <ClInclude Include="PhysicsBody.hpp" />
+    <ClInclude Include="Scout.hpp" />
     <ClInclude Include="ServiceLocator.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="sfml_include.hpp" />
@@ -119,6 +124,7 @@
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="Utility.hpp" />
     <ClInclude Include="Utils.hpp" />
+    <ClInclude Include="Visibility.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SteeringManager.cpp" />
@@ -128,23 +134,27 @@
     <ClCompile Include="BInverterNode.cpp" />
     <ClCompile Include="BMoveToNode.cpp" />
     <ClCompile Include="BNode.cpp" />
+    <ClCompile Include="Box2DWorldDraw.cpp" />
     <ClCompile Include="BSelectorNode.cpp" />
     <ClCompile Include="BSequenceNode.cpp" />
     <ClCompile Include="BSucceederNode.cpp" />
+    <ClCompile Include="Clan.cpp" />
     <ClCompile Include="CombatStats.cpp" />
+    <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="GameplayClass.cpp" />
+    <ClCompile Include="Class.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
+    <ClCompile Include="PhysicsBody.cpp" />
+    <ClCompile Include="Scout.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
-    <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -152,6 +162,7 @@
     </ClCompile>
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Visibility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,18 +9,12 @@ namespace bjoernligan
 	{
 		BNode::BNode()
 		{
-			m_xParent = nullptr;
 			m_xAgent = nullptr;
 		}
 
 		BNode::~BNode()
 		{
 
-		}
-
-		void BNode::SetParent(BNode* p_xParent)
-		{
-			m_xParent = p_xParent;
 		}
 
 		void BNode::AttachAgent(AIObserver* p_xAgent)

@@ -70,6 +70,12 @@
     <Filter Include="Source Files\AI\BT\Nodes\Leafs">
       <UniqueIdentifier>{2b8e6d49-2153-4a69-ad77-d88d98068345}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\physics">
+      <UniqueIdentifier>{a9389e49-f140-4f91-b38b-ffd9986c440d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physics">
+      <UniqueIdentifier>{5573b368-bb7b-4812-a686-83194491c935}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawManager.hpp">
@@ -105,9 +111,6 @@
     <ClInclude Include="Object.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
-    <ClInclude Include="MovingObject.hpp">
-      <Filter>Header Files\objects</Filter>
-    </ClInclude>
     <ClInclude Include="Agent.hpp">
       <Filter>Header Files\AI</Filter>
     </ClInclude>
@@ -130,9 +133,6 @@
       <Filter>Header Files\AI\observer</Filter>
     </ClInclude>
     <ClInclude Include="AISubject.hpp">
-      <Filter>Header Files\AI\observer</Filter>
-    </ClInclude>
-    <ClInclude Include="AIEvent.hpp">
       <Filter>Header Files\AI\observer</Filter>
     </ClInclude>
     <ClInclude Include="BCompositeNode.hpp">
@@ -159,9 +159,6 @@
     <ClInclude Include="Mouse.hpp">
       <Filter>Header Files\input</Filter>
     </ClInclude>
-    <ClInclude Include="GameplayClass.hpp">
-      <Filter>Header Files\objects\gameplay classes</Filter>
-    </ClInclude>
     <ClInclude Include="CombatStats.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -176,6 +173,29 @@
     </ClInclude>
     <ClInclude Include="SteeringManager.hpp">
       <Filter>Header Files\AI</Filter>
+    <ClInclude Include="ContactListener.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Visibility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scout.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Class.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Clan.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayClass.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Box2DWorldDraw.h">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBody.hpp">
+      <Filter>Header Files\physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +224,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Source Files\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="MovingObject.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="Agent.cpp">
@@ -251,9 +268,6 @@
     <ClCompile Include="CombatStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameplayClass.cpp">
-      <Filter>Source Files\objects\gameplay classes</Filter>
-    </ClCompile>
     <ClCompile Include="Axeman.cpp">
       <Filter>Source Files\objects\gameplay classes</Filter>
     </ClCompile>
@@ -262,6 +276,26 @@
     </ClCompile>
     <ClCompile Include="SteeringManager.cpp">
       <Filter>Source Files\AI</Filter>
+    <ClCompile Include="ContactListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Visibility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scout.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Class.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Clan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Box2DWorldDraw.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Source Files\physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

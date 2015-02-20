@@ -1,15 +1,15 @@
-//Axeman.hpp
+//Scout.hpp
 
 #pragma once
 #include "Class.hpp"
 
 namespace bjoernligan
 {
-	class Axeman : public Class
+	class Scout : public Class
 	{
 	public:
-		Axeman();
-		~Axeman();
+		Scout();
+		~Scout();
 
 		virtual void Initiate();
 		virtual void Update(const float &p_fDeltaTime);

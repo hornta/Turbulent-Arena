@@ -5,6 +5,13 @@
 #include "ServiceLocator.hpp"
 #include "Map.hpp"
 #include "Pathfinder.hpp"
+#include "ContactListener.hpp"
+#include "Box2DWorldDraw.h"
+#include "Object.hpp"
+#include "Visibility.hpp"
+#include "Clan.hpp"
+#include "Scout.hpp"
+#include <Windows.h>
 
 namespace bjoernligan
 {
@@ -20,6 +27,8 @@ namespace bjoernligan
 			m_xMouse = nullptr;
 			m_xUtility = nullptr;
 			m_xB2World = nullptr;
+			m_xContactListener = nullptr;
+			mB2DebugDraw = nullptr;
 		}
 
 		Engine::~Engine()
@@ -33,22 +42,31 @@ namespace bjoernligan
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
+			m_xB2World = new b2World(b2Vec2(0.0f, 5.0f));
+			m_map = new Map("../data/map.txt");
 
 			ServiceLocator<DrawManager>::SetService(m_xDrawManager.get());
 			ServiceLocator<SpriteManager>::SetService(m_xSpriteManager.get());
 			ServiceLocator<input::Keyboard>::SetService(m_xKeyboard.get());
 			ServiceLocator<input::Mouse>::SetService(m_xMouse.get());
 			ServiceLocator<Utility>::SetService(m_xUtility.get());
+			ServiceLocator<b2World>::SetService(m_xB2World);
+			ServiceLocator<Map>::SetService(m_map);
 
 			if (!m_xDrawManager->Initialize())
 				return false;
 
-			m_xB2World = new b2World(b2Vec2(0.0f, 0.0f));
-			
+			m_xContactListener = new ContactListener;
+			m_xB2World->SetContactListener(m_xContactListener);
+
+			mB2DebugDraw = new Box2DWorldDraw(m_xDrawManager->m_xWindow);
+			mB2DebugDraw->SetFlags(b2Draw::e_jointBit | b2Draw::e_shapeBit);
+			m_xB2World->SetDebugDraw(mB2DebugDraw);
+
 			m_map = new Map("../data/map.txt");
+
+			// PATHFINDER
 			m_pathfinder = new Pathfinder(m_map->getSize());
-			
-			// Set weight and walkable flag for pathfinder
 			for (int x = 0; x < m_map->getWidth(); ++x)
 			{
 				for (int y = 0; y < m_map->getHeight(); ++y)
@@ -61,33 +79,44 @@ namespace bjoernligan
 				}
 			}
 
-			// Example of finding a path with astar
-			for (int i = 0; i < 20; ++i)
+			// VISIBILITY
+			m_visibility = new Visibility();
+
+			Map::Layer* layer = m_map->getLayer("objects");
+			if (layer != nullptr)
 			{
-				Pathfinder::Path path;
-				m_pathfinder->setStart(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				m_pathfinder->setGoal(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				if (m_pathfinder->findPath(path) == PathfinderInfo::PATHRESULT_SUCCEEDED)
+				float tileSize = static_cast<float>(m_map->getTileSize());
+				for (int x = 0; x < m_map->getWidth(); ++x)
 				{
-					std::cout << "A*: Path found with length: " << path.length << " and it took " << path.time.asSeconds() << " seconds!" << std::endl;
+					for (int y = 0; y < m_map->getHeight(); ++y)
+					{
+						Map::Tile* tile = layer->getTile(x, y);
+						if (tile != nullptr)
+						{
+							sf::Vector2f tilePos = sf::Vector2f(tile->getPosition());
+							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize));
+							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize));
+							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize));
+							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize));
+						}
+					}
 				}
 			}
 
-			// JPS
-			for (int i = 0; i < 20; ++i)
-			{
-				Pathfinder::Path path;
-				Pathfinder::Options options;
-				options.algorithm = PathfinderInfo::ALGORITHM_JPS;
-				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
+			// todo: move to an object manager
+			// CLANS
+			Clan* clan_mcHeist = new Clan(sf::Color::Blue);
+			Clan* clan_mcPlank = new Clan(sf::Color::Red);
 
-				m_pathfinder->setStart(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				m_pathfinder->setGoal(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				if (m_pathfinder->findPath(path, options) == PathfinderInfo::PATHRESULT_SUCCEEDED)
-				{
-					std::cout << "JPS: Path found with length: " << path.length << " and it took " << path.time.asSeconds() << " seconds!" << std::endl;
-				}
+			{
+				Class* scout = new Scout();
+				clan_mcHeist->addMember(scout);
 			}
+
+			clan_mcHeist->addMember(new Scout);
+
+			m_clans.push_back(clan_mcHeist);
+			m_clans.push_back(clan_mcPlank);
 
 			return m_bRunning = true;
 		}
@@ -102,26 +131,96 @@ namespace bjoernligan
 
 			delete m_pathfinder;
 			m_pathfinder = nullptr;
+
+			delete m_xContactListener;
+			m_xContactListener = nullptr;
+
+			delete mB2DebugDraw;
+			mB2DebugDraw = nullptr;
+
+			delete m_visibility;
+			m_visibility = nullptr;
 		}
 
 		void Engine::RunLoop()
 		{
+			static Object* xObject = new Object;
+
+			{
+				PhysicsParams xParams;
+
+				xParams.m_xBodyDef.type = b2_dynamicBody;
+				xParams.m_xBodyDef.gravityScale = 1.0f;
+				xParams.m_xBodyDef.fixedRotation = false;
+				xParams.m_xBodyDef.bullet = false;
+
+				xParams.m_xFixtureDef.friction = 1.0f;
+				xParams.m_xFixtureDef.density = 1.0f;
+				xParams.m_xFixtureDef.restitution = 1.0f;
+				xParams.m_xFixtureDef.isSensor = false;
+
+				xParams.m_eShapeType = EB2ShapeType::Box;
+				xParams.m_xShapeSize.m_xBox.x = 64;
+				xParams.m_xShapeSize.m_xBox.y = 32;
+
+				PhysicsBody* xPhysBody = new PhysicsBody;
+				xPhysBody->CreateBody(xParams);
+
+				xObject->SetPhysicsBody(xPhysBody);
+				xObject->SetPos(sf::Vector2f(50.0f, 50.0f), true);
+			}
+
+			static Object* xObject2 = new Object;
+			{
+				PhysicsParams xParams;
+
+				xParams.m_xBodyDef.type = b2_staticBody;
+				xParams.m_xBodyDef.gravityScale = 1.0f;
+				xParams.m_xBodyDef.fixedRotation = false;
+				xParams.m_xBodyDef.bullet = false;
+
+				xParams.m_xFixtureDef.friction = 1.0f;
+				xParams.m_xFixtureDef.density = 1.0f;
+				xParams.m_xFixtureDef.restitution = 0.5f;
+				xParams.m_xFixtureDef.isSensor = false;
+
+				xParams.m_eShapeType = EB2ShapeType::Circle;
+				xParams.m_xShapeSize.m_fCircleRadius = 12.0f;
+
+				PhysicsBody* xPhysBody = new PhysicsBody;
+				xPhysBody->CreateBody(xParams);
+
+				xObject2->SetPhysicsBody(xPhysBody);
+				xObject2->SetPos(sf::Vector2f(49.0f, 400.0f), true);
+			}
+
 			while (m_bRunning && m_xDrawManager->m_xWindow->isOpen())
 			{
 				PollEvents();
+				UpdateDeltaTime();
 
 				if (m_xKeyboard->IsDown(sf::Keyboard::Escape))
 					m_bRunning = false;
 
 				//Updates
-				//insert stuff to update
+				m_xB2World->Step(m_fDeltaTime, 10, 10);
+				xObject->Update(m_fDeltaTime);
+				xObject2->Update(m_fDeltaTime);
+				m_visibility->update();
 
 				//Draw
 				m_xDrawManager->ClearScr();
 				//insert stuff to draw
 				m_xDrawManager->Draw(m_map);
+				m_xDrawManager->Draw(m_visibility);
+				m_xB2World->DrawDebugData();
 				m_xDrawManager->Display();
+
+				::Sleep(2);
 			}
+
+			delete xObject;
+			xObject = nullptr;
 		}
 
 		void Engine::UpdateDeltaTime()
