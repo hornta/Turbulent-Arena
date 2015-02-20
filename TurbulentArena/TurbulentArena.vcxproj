@@ -84,6 +84,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SteeringManager.hpp" />
     <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
     <ClInclude Include="AIObserver.hpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />
     <ClCompile Include="BCompositeNode.cpp" />

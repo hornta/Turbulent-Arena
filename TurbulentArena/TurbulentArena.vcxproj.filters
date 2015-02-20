@@ -174,6 +174,9 @@
     <ClInclude Include="BMoveToNode.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
+    <ClInclude Include="SteeringManager.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawManager.cpp">
@@ -256,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="BMoveToNode.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringManager.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

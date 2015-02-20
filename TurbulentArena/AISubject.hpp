@@ -1,6 +1,6 @@
 //AISubject.hpp
 
-/*The class who will notify changes will inherit from this class*/
+/*The object who will notify changes will inherit from this class*/
 
 #pragma once
 #include <vector>
