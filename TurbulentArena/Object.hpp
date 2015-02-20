@@ -31,11 +31,10 @@ namespace bjoernligan
 		/*Sets shape as circle*/
 		virtual void CreateB2Shape(const float &p_fRadius);
 
-	//protected:
+	protected:
 		void RemakeFixture();
 
 		sf::Vector2f m_xPos;
-		sf::Sprite m_sprite;
 
 		//Box2D
 		EB2ShapeType m_eB2ShapeType;

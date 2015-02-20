@@ -10,6 +10,9 @@
 #include "Object.hpp"
 #include <iomanip>
 #include <Windows.h>
+#include "Visibility.hpp"
+#include "Clan.hpp"
+#include "Scout.hpp"
 
 namespace bjoernligan
 {
@@ -61,9 +64,10 @@ namespace bjoernligan
 			mB2DebugDraw->SetFlags(b2Draw::e_jointBit | b2Draw::e_shapeBit);
 			m_xB2World->SetDebugDraw(mB2DebugDraw);
 
+			m_map = new Map("../data/map.txt");
+
+			// PATHFINDER
 			m_pathfinder = new Pathfinder(m_map->getSize());
-			
-			// Set weight and walkable flag for pathfinder
 			for (int x = 0; x < m_map->getWidth(); ++x)
 			{
 				for (int y = 0; y < m_map->getHeight(); ++y)
@@ -76,33 +80,44 @@ namespace bjoernligan
 				}
 			}
 
-			// Example of finding a path with astar
-			for (int i = 0; i < 20; ++i)
+			// VISIBILITY
+			m_visibility = new Visibility();
+
+			Map::Layer* layer = m_map->getLayer("objects");
+			if (layer != nullptr)
 			{
-				Pathfinder::Path path;
-				m_pathfinder->setStart(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				m_pathfinder->setGoal(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				if (m_pathfinder->findPath(path) == PathfinderInfo::PATHRESULT_SUCCEEDED)
+				float tileSize = static_cast<float>(m_map->getTileSize());
+				for (int x = 0; x < m_map->getWidth(); ++x)
 				{
-					std::cout << "A*: Path found with length: " << path.length << " and it took " << path.time.asSeconds() << " seconds!" << std::endl;
+					for (int y = 0; y < m_map->getHeight(); ++y)
+					{
+						Map::Tile* tile = layer->getTile(x, y);
+						if (tile != nullptr)
+						{
+							sf::Vector2f tilePos = sf::Vector2f(tile->getPosition());
+							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize));
+							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize));
+							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize));
+							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize));
+						}
+					}
 				}
 			}
+			
+			// todo: move to an object manager
+			// CLANS
+			Clan* clan_mcHeist = new Clan(sf::Color::Blue);
+			Clan* clan_mcPlank = new Clan(sf::Color::Red);
 
-			// JPS
-			for (int i = 0; i < 20; ++i)
 			{
-				Pathfinder::Path path;
-				Pathfinder::Options options;
-				options.algorithm = PathfinderInfo::ALGORITHM_JPS;
-				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
-
-				m_pathfinder->setStart(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				m_pathfinder->setGoal(random(0, m_map->getWidth() - 1), random(0, m_map->getHeight() - 1));
-				if (m_pathfinder->findPath(path, options) == PathfinderInfo::PATHRESULT_SUCCEEDED)
-				{
-					std::cout << "JPS: Path found with length: " << path.length << " and it took " << path.time.asSeconds() << " seconds!" << std::endl;
-				}
+				Class* scout = new Scout();
+				clan_mcHeist->addMember(scout);
 			}
+
+			clan_mcHeist->addMember(new Scout);
+
+			m_clans.push_back(clan_mcHeist);
+			m_clans.push_back(clan_mcPlank);
 
 			return m_bRunning = true;
 		}
@@ -123,6 +138,8 @@ namespace bjoernligan
 
 			delete mB2DebugDraw;
 			mB2DebugDraw = nullptr;
+			delete m_visibility;
+			m_visibility = nullptr;
 		}
 
 		void Engine::RunLoop()
@@ -150,11 +167,13 @@ namespace bjoernligan
 				xObject->Update(m_fDeltaTime);
 				xObject2->Update(m_fDeltaTime);
 				std::cout << std::fixed << std::setprecision(5) << m_fDeltaTime << std::endl;
+				m_visibility->update();
 
 				//Draw
 				m_xDrawManager->ClearScr();
 				//insert stuff to draw
 				m_xDrawManager->Draw(m_map);
+				m_xDrawManager->Draw(m_visibility);
 				m_xB2World->DrawDebugData();
 				m_xDrawManager->Display();
 

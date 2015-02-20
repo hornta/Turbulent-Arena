@@ -254,6 +254,18 @@ namespace bjoernligan
 		return getTopmostTile(position.x, position.y);
 	}
 
+	Map::Layer* Map::getLayer(const std::string& name)
+	{
+		for (int i = 0; i < m_numLayers; ++i)
+		{
+			if (m_layers[i]->m_name == name)
+			{
+				return m_layers[i];
+			}
+		}
+		return nullptr;
+	}
+
 	bool Map::beginsWith(const std::string& id, const std::vector<std::string>& parts)
 	{
 		if (parts.size() > 0 && parts[0] == id)

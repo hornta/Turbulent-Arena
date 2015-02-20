@@ -37,7 +37,7 @@ namespace bjoernligan
 
 		if (m_xB2dBody)
 		{
-			m_sprite.setRotation(xUtility->AngleRadToDeg(m_xB2dBody->GetAngle()));
+			//m_sprite.setRotation(xUtility->AngleRadToDeg(m_xB2dBody->GetAngle()));
 			SetPos(xUtility->ConvertVector_B2toSF(m_xB2dBody->GetPosition()), false);
 		}
 	}

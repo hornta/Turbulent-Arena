@@ -105,9 +105,6 @@
     <ClInclude Include="Object.hpp">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
-    <ClInclude Include="MovingObject.hpp">
-      <Filter>Header Files\objects</Filter>
-    </ClInclude>
     <ClInclude Include="Agent.hpp">
       <Filter>Header Files\AI</Filter>
     </ClInclude>
@@ -156,9 +153,6 @@
     <ClInclude Include="Mouse.hpp">
       <Filter>Header Files\input</Filter>
     </ClInclude>
-    <ClInclude Include="GameplayClass.hpp">
-      <Filter>Header Files\objects\gameplay classes</Filter>
-    </ClInclude>
     <ClInclude Include="CombatStats.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -176,6 +170,18 @@
     </ClInclude>
     <ClInclude Include="Box2DWorldDraw.h">
       <Filter>Header Files\externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Visibility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scout.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Class.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Clan.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +210,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Source Files\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="MovingObject.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="Agent.cpp">
@@ -251,9 +254,6 @@
     <ClCompile Include="CombatStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameplayClass.cpp">
-      <Filter>Source Files\objects\gameplay classes</Filter>
-    </ClCompile>
     <ClCompile Include="Axeman.cpp">
       <Filter>Source Files\objects\gameplay classes</Filter>
     </ClCompile>
@@ -264,6 +264,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Box2DWorldDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Visibility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scout.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Class.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Clan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
