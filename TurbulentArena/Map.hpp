@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdafx.h"
+#include "Physics.hpp"
 
 namespace bjoernligan
 {
@@ -30,11 +30,13 @@ namespace bjoernligan
 			sf::Vector2i getPosition() const;
 			bool isWalkable() const;
 			sf::Vertex* getVertices();
+			void setPhysicsBody(Physics::Body* body);
 
 		private:
 			sf::Vertex* m_vertices;
 			sf::Vector2i m_position;
 			TileDefinition* m_tileDefinition;
+			Physics::Body* m_body;
 		};
 
 		class Layer

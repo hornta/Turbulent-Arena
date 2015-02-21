@@ -7,6 +7,9 @@ namespace bjoernligan
 	{
 		std::random_device rd;
 		std::mt19937 engine(rd());
+		float Box2D_Unit = 32.f;
+		float toBox2D = 1.f / Box2D_Unit;
+		float toPixel = 1.f * Box2D_Unit;
 	}
 
 	int random(int min, int max)
@@ -59,6 +62,26 @@ namespace bjoernligan
 		if (string == "0" || string.empty() || string == "false")
 			return false;
 		return true;
+	}
+
+	float floatToB2D(float f)
+	{
+		return f * toBox2D;
+	}
+
+	float floatToPix(float f)
+	{
+		return f * toPixel;
+	}
+
+	b2Vec2 vectorToB2D(const sf::Vector2f& v)
+	{
+		return b2Vec2(v.x * toBox2D, v.y * toBox2D);
+	}
+
+	sf::Vector2f vectorToPix(const b2Vec2& v)
+	{
+		return sf::Vector2f(v.x * toPixel, v.y * toPixel);
 	}
 
 	Grid::Grid(int width, int height)

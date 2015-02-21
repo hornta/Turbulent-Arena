@@ -171,9 +171,6 @@
     <ClInclude Include="BMoveToNode.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
-    <ClInclude Include="ContactListener.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Visibility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -195,7 +192,10 @@
     <ClInclude Include="Box2DWorldDraw.h">
       <Filter>Header Files\physics</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsBody.hpp">
+    <ClInclude Include="Physics.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListener.hpp">
       <Filter>Header Files\physics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -275,9 +275,6 @@
     <ClCompile Include="BMoveToNode.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
-    <ClCompile Include="ContactListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Visibility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -296,7 +293,10 @@
     <ClCompile Include="Box2DWorldDraw.cpp">
       <Filter>Source Files\physics</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsBody.cpp">
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactListener.cpp">
       <Filter>Source Files\physics</Filter>
     </ClCompile>
   </ItemGroup>

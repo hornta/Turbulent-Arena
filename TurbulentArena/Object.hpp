@@ -3,7 +3,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include <Box2D\box2d.h>
-#include "PhysicsBody.hpp"
+#include "Physics.hpp"
 
 namespace bjoernligan
 {
@@ -25,12 +25,12 @@ namespace bjoernligan
 
 		virtual void Update(const float &p_fDeltaTime);
 		virtual void SetPos(const sf::Vector2f &p_xPos, const bool &p_bMoveBody);
-		void SetPhysicsBody(PhysicsBody* p_xPhysicsBody);
+		void SetPhysicsBody(Physics::Body* p_xPhysicsBody);
 
 	protected:
 		sf::Vector2f m_xPos;
 
 		//Box2D
-		PhysicsBody* m_xPhysicsBody;
+		Physics::Body* m_xPhysicsBody;
 	};
 }

@@ -36,6 +36,11 @@ namespace bjoernligan
 		return m_vertices;
 	}
 
+	void Map::Tile::setPhysicsBody(Physics::Body* body)
+	{
+		m_body = body;
+	}
+
 	/* LAYER */
 	Map::Layer::Layer(const sf::Vector2i& size, const std::string& name)
 		: m_name(name),

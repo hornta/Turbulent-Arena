@@ -38,6 +38,11 @@ namespace bjoernligan
 	float getDirectionFromPoints(float x0, float y0, float x1, float y1);
 	std::vector<std::string> explode(const std::string& string, const std::string& delimeter);
 	bool string_to_bool(const std::string& string);
+
+	float floatToB2D(float f);
+	float floatToPix(float f);
+	b2Vec2 vectorToB2D(const sf::Vector2f& v);
+	sf::Vector2f vectorToPix(const b2Vec2& v);
 	
 	template<typename T>
 	class BinaryHeap

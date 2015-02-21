@@ -112,7 +112,7 @@
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Pathfinder.hpp" />
-    <ClInclude Include="PhysicsBody.hpp" />
+    <ClInclude Include="Physics.hpp" />
     <ClInclude Include="Scout.hpp" />
     <ClInclude Include="ServiceLocator.hpp" />
     <ClInclude Include="Settings.hpp" />
@@ -148,7 +148,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
-    <ClCompile Include="PhysicsBody.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Scout.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SpriteManager.cpp" />

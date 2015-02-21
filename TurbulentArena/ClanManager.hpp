@@ -14,6 +14,6 @@ namespace bjoernligan
 		std::size_t getAmount() const;
 
 	private:
-		std::vector<Clan*> m_clans;
+		std::vector<std::unique_ptr<Clan>> m_clans;
 	};
 }
