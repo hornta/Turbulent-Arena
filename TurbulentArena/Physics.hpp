@@ -41,7 +41,7 @@ namespace bjoernligan
 			} m_xShapeSize;
 		};
 
-		Physics(float x, float y, sf::RenderWindow* window);
+		Physics(float gravity_x, float gravity_y, sf::RenderWindow* window);
 		Physics(const sf::Vector2f& gravity, sf::RenderWindow* window);
 		~Physics();
 

@@ -11,6 +11,7 @@
 #include "Clan.hpp"
 #include "Scout.hpp"
 #include "Physics.hpp"
+#include "Settings.hpp"
 #include <Windows.h>
 
 namespace bjoernligan
@@ -22,6 +23,7 @@ namespace bjoernligan
 		{
 			m_xDrawManager = nullptr;
 			m_xSpriteManager = nullptr;
+			m_xUIManager = nullptr;
 			m_xKeyboard = nullptr;
 			m_xMouse = nullptr;
 			m_xUtility = nullptr;
@@ -38,9 +40,11 @@ namespace bjoernligan
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
+			m_xUIManager = UIManager::Create();
 
 			ServiceLocator<DrawManager>::SetService(m_xDrawManager.get());
 			ServiceLocator<SpriteManager>::SetService(m_xSpriteManager.get());
+			ServiceLocator<UIManager>::SetService(m_xUIManager.get());
 			ServiceLocator<input::Keyboard>::SetService(m_xKeyboard.get());
 			ServiceLocator<input::Mouse>::SetService(m_xMouse.get());
 			ServiceLocator<Utility>::SetService(m_xUtility.get());
@@ -49,6 +53,14 @@ namespace bjoernligan
 
 			if (!m_xDrawManager->Initialize())
 				return false;
+
+			if (!m_xUIManager->Initialize(m_xDrawManager->m_xWindow))
+				return false;
+
+			float fSpacing = 80.0f;
+			m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*3.0f), 240.0f, 0.0f, 100.0f);
+			m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*2.0f), 240.0f, 0.0f, 100.0f);
+			m_xUIManager->AddSlider("Agressive", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*1.0f), 240.0f, 0.0f, 100.0f);
 
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/map.txt");
@@ -136,13 +148,14 @@ namespace bjoernligan
 				//Updates
 				m_physics->update(m_fDeltaTime);
 				m_visibility->update();
+				m_xUIManager->Update(m_fDeltaTime);
 
 				//Draw
 				m_xDrawManager->ClearScr();
-				//insert stuff to draw
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_visibility.get());
 				m_physics->getWorld()->DrawDebugData();
+				m_xUIManager->DrawElements();
 				m_xDrawManager->Display();
 
 				::Sleep(2);

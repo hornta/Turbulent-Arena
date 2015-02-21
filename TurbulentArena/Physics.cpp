@@ -22,8 +22,8 @@ namespace bjoernligan
 		setPosition(sf::Vector2f(x, y));
 	}
 
-	Physics::Physics(float x, float y, sf::RenderWindow* window)
-		: m_gravity(sf::Vector2f(x, y))
+	Physics::Physics(float gravity_x, float gravity_y, sf::RenderWindow* window)
+		: m_gravity(sf::Vector2f(gravity_x, gravity_y))
 	{
 		construct(window);
 	}

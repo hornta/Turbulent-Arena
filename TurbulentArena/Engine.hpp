@@ -3,6 +3,7 @@
 #pragma once
 #include "DrawManager.hpp"
 #include "SpriteManager.hpp"
+#include "UIManager.hpp"
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
 #include "Utility.hpp"
@@ -34,6 +35,7 @@ namespace bjoernligan
 			bool m_bRunning;
 			SpriteManager::Ptr m_xSpriteManager;
 			DrawManager::Ptr m_xDrawManager;
+			UIManager::Ptr m_xUIManager;
 			input::Keyboard::Ptr m_xKeyboard;
 			input::Mouse::Ptr m_xMouse;
 			Utility::Ptr m_xUtility;
