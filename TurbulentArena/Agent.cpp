@@ -17,7 +17,11 @@ namespace bjoernligan
 
 		Agent::~Agent()
 		{
-			delete m_Steering;
+			if (m_Steering != nullptr)
+			{
+				delete m_Steering;
+				m_Steering = nullptr;
+			}
 		}
 
 		void Agent::Sense()
@@ -54,21 +58,25 @@ namespace bjoernligan
 			m_Steering->Initialize();
 			m_Steering->SetCurrentBody(p_CurrentBody);
 		}
-		void Agent::Wander()
+		/*void Agent::Wander()
 		{
 			m_Steering->Wander();
-		}
+		}*/
 		void Agent::Seek(sf::Vector2f p_TargetPos)
 		{
 			m_Steering->Seek(p_TargetPos);
 		}
-		void Agent::Flee(b2Body* p_TargetBody)
+		void Agent::Flee(sf::Vector2f p_TargetPos)
 		{
-			m_Steering->Flee(p_TargetBody);
+			m_Steering->Flee(p_TargetPos);
 		}
-		void Agent::Follow(b2Body* p_TargetBody)
+		void Agent::Pursuit(b2Body* p_TargetBody)
 		{
-			m_Steering->Follow(p_TargetBody);
+			m_Steering->Pursuit(p_TargetBody);
+		}
+		void Agent::Evade(b2Body* p_TargetBody)
+		{
+			m_Steering->Evade(p_TargetBody);
 		}
 		void Agent::UpdateSteering()
 		{
