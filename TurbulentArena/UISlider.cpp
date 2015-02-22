@@ -45,7 +45,7 @@ namespace bjoernligan
 		
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
 		{
-			m_axSprites[0]->setScale(sf::Vector2f((((p_fWidth + Settings::m_xSliderSize.x * 2) / Settings::m_xSliderSize.x) * Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x, 1.0f));
+			m_axSprites[0]->setScale(sf::Vector2f((((p_fWidth + Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x) * Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x, 1.0f));
 		}
 	}
 
