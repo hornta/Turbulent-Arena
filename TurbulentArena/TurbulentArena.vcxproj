@@ -114,7 +114,7 @@
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Mouse.hpp" />
     <ClInclude Include="Pathfinder.hpp" />
-    <ClInclude Include="PhysicsBody.hpp" />
+    <ClInclude Include="Physics.hpp" />
     <ClInclude Include="Scout.hpp" />
     <ClInclude Include="ServiceLocator.hpp" />
     <ClInclude Include="Settings.hpp" />
@@ -123,6 +123,9 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.hpp" />
+    <ClInclude Include="UIBase.hpp" />
+    <ClInclude Include="UIManager.hpp" />
+    <ClInclude Include="UISlider.hpp" />
     <ClInclude Include="Utility.hpp" />
     <ClInclude Include="Utils.hpp" />
     <ClInclude Include="Visibility.hpp" />
@@ -151,7 +154,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
-    <ClCompile Include="PhysicsBody.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Scout.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
@@ -162,6 +165,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="UISlider.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Visibility.cpp" />

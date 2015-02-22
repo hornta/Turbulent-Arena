@@ -93,7 +93,7 @@ namespace bjoernligan
 			}
 			return p_Vector;
 		}
-		sf::Vector2f Truncate(sf::Vector2f p_TruncTarget, sf::Vector2f p_MaxValue)
+		sf::Vector2f SteeringManager::Truncate(sf::Vector2f p_TruncTarget, sf::Vector2f p_MaxValue)
 		{
 			if (p_TruncTarget.x > p_MaxValue.x)
 			{

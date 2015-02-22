@@ -3,20 +3,18 @@
 #pragma once
 #include "DrawManager.hpp"
 #include "SpriteManager.hpp"
+#include "UIManager.hpp"
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
 #include "Utility.hpp"
-#include <Box2D\box2d.h>
-
-class Box2DWorldDraw;
 
 namespace bjoernligan
 {
 	class Map;
 	class Pathfinder;
-	class ContactListener;
 	class Visibility;
 	class ClanManager;
+	class Physics;
 
 	namespace system
 	{
@@ -37,6 +35,7 @@ namespace bjoernligan
 			bool m_bRunning;
 			SpriteManager::Ptr m_xSpriteManager;
 			DrawManager::Ptr m_xDrawManager;
+			UIManager::Ptr m_xUIManager;
 			input::Keyboard::Ptr m_xKeyboard;
 			input::Mouse::Ptr m_xMouse;
 			Utility::Ptr m_xUtility;
@@ -44,15 +43,11 @@ namespace bjoernligan
 			sf::Clock m_xDeltaClock;
 			float m_fDeltaTime;
 
-			Map* m_map;
-			Pathfinder* m_pathfinder;
-			Visibility* m_visibility;
-			ClanManager* m_clanManager;
-
-			//Box2D
-			b2World* m_xB2World;			
-			ContactListener* m_xContactListener;
-			Box2DWorldDraw* mB2DebugDraw;
+			std::unique_ptr<Visibility> m_visibility;
+			std::unique_ptr<Pathfinder> m_pathFinder;
+			std::unique_ptr<Map> m_map;
+			std::unique_ptr<ClanManager> m_clanManager;
+			std::unique_ptr<Physics> m_physics;
 		};
 	}
 }

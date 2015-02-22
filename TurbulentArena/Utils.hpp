@@ -38,6 +38,11 @@ namespace bjoernligan
 	float getDirectionFromPoints(float x0, float y0, float x1, float y1);
 	std::vector<std::string> explode(const std::string& string, const std::string& delimeter);
 	bool string_to_bool(const std::string& string);
+
+	float floatToB2D(float f);
+	float floatToPix(float f);
+	b2Vec2 vectorToB2D(const sf::Vector2f& v);
+	sf::Vector2f vectorToPix(const b2Vec2& v);
 	
 	template<typename T>
 	class BinaryHeap
@@ -264,7 +269,7 @@ namespace bjoernligan
 		std::vector<Node*> getNeighbors(Node* n, bool diagonals = false) const;
 
 	protected:
-		Node** m_nodes;
+		std::vector<std::unique_ptr<Node>> m_nodes;
 		int m_width;
 		int m_height;
 	};
@@ -275,7 +280,8 @@ namespace bjoernligan
 
 		struct PathfinderNode : public Node
 		{
-			PathfinderNode();
+			PathfinderNode(int x, int y, bool walkables);
+
 			bool walkable;
 			bool visisted;
 			bool closed;

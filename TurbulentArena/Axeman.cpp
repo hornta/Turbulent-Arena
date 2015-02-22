@@ -28,10 +28,8 @@ namespace bjoernligan
 		ai::BSelectorNode* xSelector = new ai::BSelectorNode;
 		xSelector->AttachAgent(m_xAgent);
 
-		ai::BMoveToNode* xMoveTo = new ai::BMoveToNode;
-
-		xSelector->AddChild(xMoveTo);
-
+		ai::BMoveToNode* xMoveTo = xSelector->AddChild<ai::BMoveToNode>();
+		xMoveTo;
 		m_xAgent->SetBehaviorTree(xBT);
 	}
 

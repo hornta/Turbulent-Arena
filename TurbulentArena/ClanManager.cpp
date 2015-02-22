@@ -15,9 +15,8 @@ namespace bjoernligan
 
 	Clan* ClanManager::createClan(const std::string& name)
 	{
-		Clan* clan = new Clan(name);
-		m_clans.push_back(clan);
-		return clan;
+		m_clans.emplace_back(std::make_unique<Clan>(name));
+		return m_clans.back().get();
 	}
 	
 	std::size_t ClanManager::getAmount() const

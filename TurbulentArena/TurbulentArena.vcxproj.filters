@@ -76,21 +76,18 @@
     <Filter Include="Header Files\physics">
       <UniqueIdentifier>{5573b368-bb7b-4812-a686-83194491c935}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\gui">
+      <UniqueIdentifier>{43d618bc-7b64-46a6-ad4b-4ea9fea53118}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{78def6db-4260-49d4-8d61-b3cc8841fc6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DrawManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ServiceLocator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -198,24 +195,36 @@
     <ClInclude Include="Box2DWorldDraw.h">
       <Filter>Header Files\physics</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsBody.hpp">
+    <ClInclude Include="Physics.hpp">
       <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListener.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.hpp">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBase.hpp">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="UISlider.hpp">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawManager.hpp">
+      <Filter>Header Files\system</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteManager.hpp">
+      <Filter>Header Files\system</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.hpp">
+      <Filter>Header Files\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DrawManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -302,8 +311,29 @@
     <ClCompile Include="Box2DWorldDraw.cpp">
       <Filter>Source Files\physics</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsBody.cpp">
+    <ClCompile Include="Physics.cpp">
       <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactListener.cpp">
+      <Filter>Source Files\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawManager.cpp">
+      <Filter>Source Files\system</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Source Files\system</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files\system</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBase.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="UISlider.cpp">
+      <Filter>Source Files\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
