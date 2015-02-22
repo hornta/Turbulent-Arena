@@ -28,21 +28,21 @@ namespace bjoernligan
 
 				if (m_xBridges[i]->GetLabel() == "Social")
 				{
-					for (uint32_t k = 0; k < m_members.size(); ++k)
+					for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
 					{
 						//m_members[k]->SetSocial(fValue);
 					}
 				}
 				else if (m_xBridges[i]->GetLabel() == "Brave")
 				{
-					for (uint32_t k = 0; k < m_members.size(); ++k)
+					for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
 					{
 						//m_members[k]->SetBrave(fValue);
 					}
 				}
 				else if (m_xBridges[i]->GetLabel() == "Agression")
 				{
-					for (uint32_t k = 0; k < m_members.size(); ++k)
+					for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
 					{
 						//m_members[k]->SetAgression(fValue);
 					}
