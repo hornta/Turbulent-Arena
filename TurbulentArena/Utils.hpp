@@ -269,7 +269,7 @@ namespace bjoernligan
 		std::vector<Node*> getNeighbors(Node* n, bool diagonals = false) const;
 
 	protected:
-		Node** m_nodes;
+		std::vector<std::unique_ptr<Node>> m_nodes;
 		int m_width;
 		int m_height;
 	};
@@ -280,7 +280,8 @@ namespace bjoernligan
 
 		struct PathfinderNode : public Node
 		{
-			PathfinderNode();
+			PathfinderNode(int x, int y, bool walkables);
+
 			bool walkable;
 			bool visisted;
 			bool closed;

@@ -14,12 +14,6 @@ namespace bjoernligan
 			m_xWindow = nullptr;
 		}
 
-		DrawManager::~DrawManager()
-		{
-			delete m_xWindow;
-			m_xWindow = nullptr;
-		}
-
 		DrawManager::Ptr DrawManager::Create()
 		{
 			return Ptr(new DrawManager);
@@ -27,7 +21,7 @@ namespace bjoernligan
 
 		bool DrawManager::Initialize()
 		{
-			m_xWindow = new sf::RenderWindow(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena");
+			m_xWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena");
 			if (m_xWindow == nullptr)
 			{
 				return false;
@@ -60,6 +54,11 @@ namespace bjoernligan
 		sf::Font* DrawManager::GetFont()
 		{
 			return &m_xFont;
+		}
+
+		sf::RenderWindow* DrawManager::getWindow() const
+		{
+			return m_xWindow.get();
 		}
 	}
 }

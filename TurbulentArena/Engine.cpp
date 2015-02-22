@@ -54,7 +54,7 @@ namespace bjoernligan
 			if (!m_xDrawManager->Initialize())
 				return false;
 
-			if (!m_xUIManager->Initialize(m_xDrawManager->m_xWindow))
+			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
 
 			float fSpacing = 80.0f;
@@ -64,7 +64,7 @@ namespace bjoernligan
 
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/map.txt");
-			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->m_xWindow);
+			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
 
@@ -98,7 +98,7 @@ namespace bjoernligan
 			}
 
 			// VISIBILITY
-			Map::Layer* layer = m_map->getLayer("objects");
+			Map::TileLayer* layer = m_map->getTileLayer("objects");
 			if (layer != nullptr)
 			{
 				float tileSize = static_cast<float>(m_map->getTileSize());
@@ -120,12 +120,18 @@ namespace bjoernligan
 					}
 				}
 			}
+			m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
 			
 			// CLANS
 
 			{
 				Clan* clan = m_clanManager->createClan("MacDonald");
 				clan;
+				//// Find a spawn position
+				//m_map->getObjectLayer("spawns")->getActiveObject();
+				//ClanMemberDef clanMemberDef;
+				//clanMemberDef.startPos = m_map->getLayer("spawns")
+				//clan->createMember(Clan::SCOUT);
 			}
 
 			return m_bRunning = true;
@@ -137,7 +143,7 @@ namespace bjoernligan
 
 		void Engine::RunLoop()
 		{
-			while (m_bRunning && m_xDrawManager->m_xWindow->isOpen())
+			while (m_bRunning && m_xDrawManager->getWindow()->isOpen())
 			{
 				PollEvents();
 				UpdateDeltaTime();
@@ -176,14 +182,14 @@ namespace bjoernligan
 		void Engine::PollEvents()
 		{
 			sf::Event p_xEvent;
-			while (m_xDrawManager->m_xWindow->pollEvent(p_xEvent))
+			while (m_xDrawManager->getWindow()->pollEvent(p_xEvent))
 			{
 				if (p_xEvent.type == sf::Event::Closed)
-					m_xDrawManager->m_xWindow->close();
+					m_xDrawManager->getWindow()->close();
 
 				if (p_xEvent.type == sf::Event::MouseMoved)
 				{
-					m_xMouse->m_xPos = sf::Mouse::getPosition(*m_xDrawManager->m_xWindow);
+					m_xMouse->m_xPos = sf::Mouse::getPosition(*m_xDrawManager->getWindow());
 				}
 
 				//keyboard keys pressed or released

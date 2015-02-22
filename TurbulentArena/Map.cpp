@@ -3,7 +3,7 @@
 
 namespace bjoernligan
 {
-	/* TILE DEFINITION*/
+	// TILE DEFINITION
 	Map::TileDefinition::TileDefinition(char ID, bool walkable, float u, float v, bool null)
 		: m_ID(ID),
 		m_walkable(walkable),
@@ -13,7 +13,16 @@ namespace bjoernligan
 
 	}
 
-	/* TILE */
+	// OBJECT DEFINITION 
+	Map::ObjectDefinition::ObjectDefinition(char ID, bool active, bool null)
+		: m_ID(ID),
+		m_null(null),
+		m_active(active)
+	{
+
+	}
+
+	// TILE
 	Map::Tile::Tile(const sf::Vector2i& position, Map::TileDefinition* tileDefinition)
 		: m_position(position),
 		m_tileDefinition(tileDefinition)
@@ -41,46 +50,63 @@ namespace bjoernligan
 		m_body = body;
 	}
 
-	/* LAYER */
-	Map::Layer::Layer(const sf::Vector2i& size, const std::string& name)
+	// OBJECT
+	Map::Object::Object(const sf::Vector2i& position, ObjectDefinition* objectDefinition)
+		: m_position(position),
+		m_objectDefinition(objectDefinition)
+	{
+		
+	}
+
+	sf::Vector2i Map::Object::getPosition() const
+	{
+		return m_position;
+	}
+
+	void Map::Object::setActive(bool value)
+	{
+		m_active = value;
+	}
+
+	bool Map::Object::isActive() const
+	{
+		return m_active;
+	}
+
+	// LAYER
+	Map::TileLayer::TileLayer(const sf::Vector2i& size, const std::string& name)
 		: m_name(name),
 		m_size(size)
 	{
-		m_tiles = new Tile*[m_size.x * m_size.y];
-		for (int i = 0; i < m_size.x * m_size.y; ++i)
-			m_tiles[i] = nullptr;
-
 		m_vertices.setPrimitiveType(sf::Quads);
 		m_vertices.resize(m_size.x * m_size.y * 4);
 	}
 
-	Map::Layer::~Layer()
-	{
-		for (int i = 0; i < m_size.x * m_size.y; ++i)
-		{
-			if (m_tiles[i] != nullptr)
-			{
-				delete m_tiles[i];
-				m_tiles[i] = nullptr;
-			}
-		}
-
-		if (m_tiles)
-		{
-			delete[] m_tiles;
-			m_tiles = nullptr;
-		}
-	}
-
-	Map::Tile* Map::Layer::getTile(int x, int y)
+	Map::Tile* Map::TileLayer::getTile(int x, int y)
 	{
 		int index = x + y * m_size.x;
-		return m_tiles[index];
+		return m_tiles[index].get();
 	}
 
-	Map::Tile* Map::Layer::getTile(const sf::Vector2i& position)
+	Map::Tile* Map::TileLayer::getTile(const sf::Vector2i& position)
 	{
 		return getTile(position.x, position.y);
+	}
+
+	// OBJECT LAYER
+	Map::ObjectLayer::ObjectLayer(const std::string& name)
+		: m_name(name)
+	{
+	}
+
+	Map::Object* Map::ObjectLayer::getActiveObject()
+	{
+		for (std::size_t i = 0; i < m_objects.size(); ++i)
+		{
+			if (m_objects[i]->isActive())
+				return m_objects[i].get();
+		}
+		return nullptr;
 	}
 
 	/* MAP */
@@ -90,27 +116,6 @@ namespace bjoernligan
 		{
 
 		}
-	}
-
-	Map::~Map()
-	{
-		for (int i = 0; i < m_numTileDefinitions; ++i)
-		{
-			delete m_tileDefinitions[i];
-			m_tileDefinitions[i] = nullptr;
-		}
-
-		delete[] m_tileDefinitions;
-		m_tileDefinitions = nullptr;
-
-		for (int i = 0; i < m_numLayers; ++i)
-		{
-			delete m_layers[i];
-			m_layers[i] = nullptr;
-		}
-
-		delete[] m_layers;
-		m_layers = nullptr;
 	}
 
 	bool Map::parseMap(const std::string& file)
@@ -125,7 +130,8 @@ namespace bjoernligan
 		std::string line;
 		std::vector<std::string> parts;
 		int currentRow = 0;
-		Layer* currentLayer = nullptr;
+		TileLayer* currentTileLayer = nullptr;
+		ObjectLayer* currentObjectLayer = nullptr;
 
 		while (std::getline(ifs, line))
 		{
@@ -147,41 +153,50 @@ namespace bjoernligan
 			{
 				m_tileSize = (int)std::stof(parts[1]);
 			}
-			else if (beginsWith("ntd", parts))
+			else if (beginsWith("tl", parts))
 			{
-				m_tileDefinitions = new TileDefinition*[std::stoi(parts[1])];
-			}
-			else if (beginsWith("nl", parts))
-			{
-				m_layers = new Layer*[std::stoi(parts[1])];
-			}
-			else if (beginsWith("l", parts))
-			{
-				m_layers[m_numLayers++] = new Layer(m_size, parts[1]);
+				m_tileLayers.emplace_back(std::make_unique<TileLayer>(m_size, parts[1]));
 				currentRow = 0;
-				currentLayer = m_layers[m_numLayers - 1];
+				currentTileLayer = m_tileLayers.back().get();
+			}
+			else if (beginsWith("ol", parts))
+			{
+				m_objectLayers.emplace_back(std::make_unique<ObjectLayer>(parts[1]));
+				currentRow = 0;
+				currentObjectLayer = m_objectLayers.back().get();
 			}
 			else if (beginsWith("td", parts))
 			{
 				if (parts.size() == 2)
-					m_tileDefinitions[m_numTileDefinitions++] = new TileDefinition(static_cast<char>((parts[1][0])), false, 0.f, 0.f, true);
+					m_tileDefinitions.emplace_back(std::make_unique<TileDefinition>(static_cast<char>(parts[1][0]), false, 0.f, 0.f, true));
 				else
-					m_tileDefinitions[m_numTileDefinitions++] = new TileDefinition(static_cast<char>((parts[1][0])), string_to_bool(parts[2]), std::stof(parts[3]), std::stof(parts[4]), false);
+					m_tileDefinitions.emplace_back(std::make_unique<TileDefinition>(static_cast<char>(parts[1][0]), string_to_bool(parts[2]), std::stof(parts[3]), std::stof(parts[4]), false));
+			}
+			else if (beginsWith("od", parts))
+			{
+				if (parts.size() == 2)
+					m_objectDefinitions.emplace_back(std::make_unique<ObjectDefinition>(static_cast<char>(parts[1][0]), false, true));
+				else
+					m_objectDefinitions.emplace_back(std::make_unique<ObjectDefinition>(static_cast<char>(parts[1][0]), string_to_bool(parts[2]), false));
 			}
 			else if (beginsWith("d", parts))
 			{
-				for (uint32_t i = 0; i < parts[1].length() - 1; ++i)
+				for (uint32_t i = 0; i < parts[1].length(); ++i)
 				{
 					char ID = static_cast<char>(parts[1][i]);
+
 					TileDefinition* td = getTileDefinition(ID);
 					if (td == nullptr || td->m_null)
 					{
+						currentTileLayer->m_tiles.push_back(nullptr);
 						continue;
 					}
 
 					int index = i + currentRow * m_size.x;
-					Tile* tile = new Tile(sf::Vector2i(i, currentRow), td);
-					tile->m_vertices = &currentLayer->m_vertices[index * 4];
+					currentTileLayer->m_tiles.emplace_back(std::make_unique<Tile>(sf::Vector2i(i, currentRow), td));
+					Tile* tile = currentTileLayer->m_tiles.back().get();
+
+					tile->m_vertices = &currentTileLayer->m_vertices[index * 4];
 
 					tile->m_vertices[0].position = sf::Vector2f((float)i * m_tileSize, (float)currentRow * m_tileSize);
 					tile->m_vertices[1].position = sf::Vector2f((float)(i + 1) * m_tileSize, (float)currentRow * m_tileSize);
@@ -192,8 +207,23 @@ namespace bjoernligan
 					tile->m_vertices[1].texCoords = sf::Vector2f(td->m_uv.x + m_tileSize, td->m_uv.y);
 					tile->m_vertices[2].texCoords = sf::Vector2f(td->m_uv.x + m_tileSize, td->m_uv.y + m_tileSize);
 					tile->m_vertices[3].texCoords = sf::Vector2f(td->m_uv.x, td->m_uv.y + m_tileSize);
+				}
+				++currentRow;
+			}
+			else if (beginsWith("o", parts))
+			{
+				for (uint32_t i = 0; i < parts[1].length(); ++i)
+				{
+					char ID = static_cast<char>(parts[1][i]);
+					ObjectDefinition* od = getObjectDefinition(ID);
+					if (od == nullptr || od->m_null)
+					{
+						continue;
+					}
 
-					currentLayer->m_tiles[index] = tile;
+					currentObjectLayer->m_objects.emplace_back(std::make_unique<Object>(sf::Vector2i(i, currentRow), od));
+					Object* object = currentObjectLayer->m_objects.back().get();
+					object->setActive(od->m_active);
 				}
 				++currentRow;
 			}
@@ -204,20 +234,30 @@ namespace bjoernligan
 
 	Map::TileDefinition* Map::getTileDefinition(char ID) const
 	{
-		for (int i = 0; i < m_numTileDefinitions; ++i)
+		for (std::size_t i = 0; i < m_tileDefinitions.size(); ++i)
 		{
 			if (m_tileDefinitions[i]->m_ID == ID)
-				return m_tileDefinitions[i];
+				return m_tileDefinitions[i].get();
+		}
+		return nullptr;
+	}
+
+	Map::ObjectDefinition* Map::getObjectDefinition(char ID) const
+	{
+		for (std::size_t i = 0; i < m_objectDefinitions.size(); ++i)
+		{
+			if (m_objectDefinitions[i]->m_ID == ID)
+				return m_objectDefinitions[i].get();
 		}
 		return nullptr;
 	}
 
 	void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		for (int i = 0; i < m_numLayers; ++i)
+		for (std::size_t i = 0; i < m_tileLayers.size(); ++i)
 		{
 			states.texture = &m_texture;
-			target.draw(m_layers[i]->m_vertices, states);
+			target.draw(m_tileLayers[i]->m_vertices, states);
 		}
 	}
 
@@ -244,9 +284,10 @@ namespace bjoernligan
 	Map::Tile* Map::getTopmostTile(int x, int y) const
 	{
 		Tile* tmp = nullptr;
-		for (std::size_t i = m_numLayers - 1; i > 0; --i)
+		for (std::size_t i = m_tileLayers.size() - 1; i >= 0; --i)
 		{
-			if ((tmp = m_layers[i]->getTile(x, y)) != nullptr)
+			tmp = m_tileLayers[i]->getTile(x, y);
+			if (tmp != nullptr)
 			{
 				return tmp;
 			}
@@ -259,13 +300,25 @@ namespace bjoernligan
 		return getTopmostTile(position.x, position.y);
 	}
 
-	Map::Layer* Map::getLayer(const std::string& name)
+	Map::TileLayer* Map::getTileLayer(const std::string& name)
 	{
-		for (int i = 0; i < m_numLayers; ++i)
+		for (std::size_t i = 0; i < m_tileLayers.size(); ++i)
 		{
-			if (m_layers[i]->m_name == name)
+			if (m_tileLayers[i]->m_name == name)
 			{
-				return m_layers[i];
+				return m_tileLayers[i].get();
+			}
+		}
+		return nullptr;
+	}
+
+	Map::ObjectLayer* Map::getObjectLayer(const std::string& name)
+	{
+		for (std::size_t i = 0; i < m_objectLayers.size(); ++i)
+		{
+			if (m_tileLayers[i]->m_name == name)
+			{
+				return m_objectLayers[i].get();
 			}
 		}
 		return nullptr;

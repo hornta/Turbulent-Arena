@@ -15,12 +15,19 @@ namespace bjoernligan
 			virtual ~BCompositeNode();
 
 			virtual EBNodeStatus Process() = 0;
-			void AddChild(BNode* p_xNode);
 
-			virtual void CleanUp();
+			template <typename T>
+			T* AddChild();
 
 		protected:
-			std::vector<BNode*> m_axChildren;
+			std::vector<std::unique_ptr<BNode>> m_axChildren;
 		};
+
+		template <typename T>
+		T* BCompositeNode::AddChild()
+		{
+			m_axChildren.emplace_back(std::make_unique<T>());
+			return static_cast<T*>(m_axChildren.back().get());
+		}
 	}
 }

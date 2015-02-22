@@ -16,8 +16,6 @@ namespace bjoernligan
 
 	Object::~Object()
 	{
-		delete m_xPhysicsBody;
-		m_xPhysicsBody = nullptr;
 	}
 
 	void Object::Update(const float &p_fDeltaTime)
