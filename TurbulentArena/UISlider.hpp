@@ -3,6 +3,7 @@
 #pragma once
 #include "UIBase.hpp"
 #include <string>
+#include "SliderBridge.hpp"
 
 namespace bjoernligan
 {
@@ -37,12 +38,15 @@ namespace bjoernligan
 		bool NewValue();
 		float GetValue(const bool &p_bResetBool = true);
 
+		SliderBridge* GetBridge();
+
 	private:
 		float UISlider::GetAllowedX(float p_fX);
 
 		sf::Text m_xLabelText;
 		std::string m_sLabel;
 		input::Mouse* m_xMouse;
+		SliderBridge::Ptr m_xBridge;
 
 		bool m_bNewValue;
 		float m_fWidth, m_fCurrent, m_fMin, m_fMax;

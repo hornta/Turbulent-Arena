@@ -23,4 +23,12 @@ namespace bjoernligan
 	{
 		return m_clans.size();
 	}
+
+	void ClanManager::Update(const float &p_fDeltaTime)
+	{
+		for (uint32_t i = 0; i < m_clans.size(); ++i)
+		{
+			m_clans[i]->Update(p_fDeltaTime);
+		}
+	}
 }
