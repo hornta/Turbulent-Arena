@@ -173,6 +173,7 @@
     </ClInclude>
     <ClInclude Include="SteeringManager.hpp">
       <Filter>Header Files\AI</Filter>
+	  </ClInclude>
     <ClInclude Include="ContactListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -279,6 +280,7 @@
     </ClCompile>
     <ClCompile Include="SteeringManager.cpp">
       <Filter>Source Files\AI</Filter>
+	  </ClCompile>
     <ClCompile Include="ContactListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
