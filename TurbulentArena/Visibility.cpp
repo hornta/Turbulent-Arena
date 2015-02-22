@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Visibility.hpp"
 
-bool sortEndPoints(bjoernligan::Visibility::EndPoint* a, bjoernligan::Visibility::EndPoint* b)
+bool sortEndPoints(const std::unique_ptr<bjoernligan::Visibility::EndPoint>& a, const std::unique_ptr<bjoernligan::Visibility::EndPoint>& b)
 {
 	if (a->getAngle() > b->getAngle())
 		return false;
@@ -188,21 +188,6 @@ namespace bjoernligan
 		m_vertices.setPrimitiveType(sf::PrimitiveType::TrianglesFan);
 	}
 
-	Visibility::Light::~Light()
-	{
-		for (std::size_t i = 0; i < m_segments.size(); ++i)
-		{
-			delete m_segments[i]->getEndPointA();
-			m_segments[i]->setEndPointA(nullptr);
-			delete m_segments[i]->getEndPointB();
-			m_segments[i]->setEndPointB(nullptr);
-			delete m_segments[i];
-			m_segments[i] = nullptr;
-		}
-		m_segments.clear();
-		m_endPoints.clear();
-	}
-
 	void Visibility::Light::setTexture(sf::Texture* texture)
 	{
 		m_texture = texture;
@@ -221,7 +206,7 @@ namespace bjoernligan
 
 		for (std::size_t i = 0; i < m_segments.size(); ++i)
 		{
-			Segment* segment = m_segments[i];
+			Segment* segment = m_segments[i].get();
 			sf::Vector2f p0 = segment->getEndPointA()->getPosition();
 			sf::Vector2f p1 = segment->getEndPointB()->getPosition();
 
@@ -258,9 +243,13 @@ namespace bjoernligan
 
 	void Visibility::Light::addSegment(const PrepareSegment& segment)
 	{
-		Segment* s = new Segment();
-		EndPoint* ep1 = new EndPoint();
-		EndPoint* ep2 = new EndPoint();
+		m_segments.emplace_back(std::make_unique<Segment>());
+		Segment* s = m_segments.back().get();
+
+		m_endPoints.emplace_back(std::make_unique<EndPoint>());
+		EndPoint* ep1 = m_endPoints.back().get();
+		m_endPoints.emplace_back(std::make_unique<EndPoint>());
+		EndPoint* ep2 = m_endPoints.back().get();
 
 		ep1->setBegin(false);
 		ep1->setPosition(segment.getA());
@@ -273,13 +262,9 @@ namespace bjoernligan
 		s->setEndPointA(ep1);
 		s->setEndPointB(ep2);
 		s->setD(0.f);
-
-		m_segments.push_back(s);
-		m_endPoints.push_back(ep1);
-		m_endPoints.push_back(ep2);
 	}
 
-	std::vector<Visibility::EndPoint*>& Visibility::Light::getEndPoints()
+	std::vector<std::unique_ptr<Visibility::EndPoint>>& Visibility::Light::getEndPoints()
 	{
 		return m_endPoints;
 	}
@@ -317,21 +302,11 @@ namespace bjoernligan
 	{
 	}
 
-	Visibility::~Visibility()
-	{
-		for (std::size_t i = 0; i < m_lights.size(); ++i)
-		{
-			delete m_lights[i];
-			m_lights[i] = nullptr;
-		}
-		m_lights.clear();
-	}
-
 	void Visibility::update()
 	{
 		for (std::size_t i = 0; i < m_lights.size(); ++i)
 		{
-			Light* light = m_lights[i];
+			Light* light = m_lights[i].get();
 
 			light->updateSegments();
 			light->sortEndPoints();
@@ -339,10 +314,12 @@ namespace bjoernligan
 			std::vector<Segment*> open;
 			float startingAngle = 0.f;
 
-			for (unsigned int i = 0; i < 2; ++i)
+			for (unsigned int k = 0; k < 2; ++k)
 			{
-				for (EndPoint* p : light->getEndPoints())
+				std::vector<std::unique_ptr<EndPoint>>& endPoints = light->getEndPoints();
+				for (std::size_t m = 0; m < endPoints.size(); ++m)
 				{
+					EndPoint* p = endPoints[m].get();
 					Segment* current_old = open.empty() ? nullptr : open.front();
 
 					if (p->getBegin())
@@ -370,7 +347,7 @@ namespace bjoernligan
 					Segment* current_new = open.empty() ? nullptr : open.front();
 					if (current_old != current_new)
 					{
-						if (i == 1)
+						if (k == 1)
 						{
 							light->addTriangle(startingAngle, p->getAngle(), current_old);
 						}
@@ -391,7 +368,8 @@ namespace bjoernligan
 
 	Visibility::Light* Visibility::create(const sf::Vector2f& position, const sf::Color& color)
 	{
-		Light* light = new Light(color);
+		m_lights.emplace_back(std::make_unique<Light>(color));
+		Light* light = m_lights.back().get();
 		light->setPosition(position);
 
 		for (std::size_t i = 0; i < m_segments.size(); ++i)
@@ -407,7 +385,6 @@ namespace bjoernligan
 		light->addSegment(PrepareSegment(sf::Vector2f(halfSize, halfSize), sf::Vector2f(0.f, halfSize)));
 		light->addSegment(PrepareSegment(sf::Vector2f(0.f, halfSize), sf::Vector2f(0.f, 0.f)));
 
-		m_lights.push_back(light);
 		return light;
 	}
 

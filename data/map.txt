@@ -4,19 +4,23 @@ h 20
 ts 32
 t ../data/tileset.png
 
-# Number of tile definition and layers
-ntd 5
-nl 2
-
 # Tile definitions
 td .
-td I 1 0 0 0
-td O 0 32 0
+td I 1 0 0 1
+td O 0 32 0 
 td # 0 64 0
 td H 0 96 0
+td A 1 128 0
+
+# Object definitions
+od .
+od 1 1
+od 2 1
+od 3 1
+od 4 1
 
 # Layers
-l ground
+tl ground
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
@@ -30,7 +34,7 @@ d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIOOOOOOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
@@ -38,7 +42,7 @@ d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 d IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
-l objects
+tl objects
 d ########################################
 d #......................................#
 d #......................................#
@@ -59,3 +63,25 @@ d #......................................#
 d #......................................#
 d #......................................#
 d ########################################
+
+ol spawns
+o ........................................
+o ........................................
+o ..1111..................................
+o ..1111..................................
+o ..1111..................................
+o ..1111..................................
+o ........................................
+o ........................................
+o ........................................
+o ........................................
+o ........................................
+o ........................................
+o ........................................
+o ........................................
+o ........................................
+o ..................................2222..
+o ..................................2222..
+o ..................................2222..
+o ..................................2222..
+o ........................................

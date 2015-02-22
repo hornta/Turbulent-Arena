@@ -88,25 +88,15 @@ namespace bjoernligan
 		: m_width(width),
 		m_height(height)
 	{
-		m_nodes = nullptr;
 	}
 
 	Grid::~Grid()
 	{
-		for (int i = 0; i < m_width * m_height; ++i)
-		{
-			delete m_nodes[i];
-			m_nodes[i] = nullptr;
-		}
-
-		delete[] m_nodes;
-		m_nodes = nullptr;
 	}
-
 
 	Grid::Node* Grid::getNodeAt(int x, int y) const
 	{
-		return m_nodes[x + y * m_width];
+		return m_nodes[x + y * m_width].get();
 	}
 
 	bool Grid::isInside(int x, int y) const
@@ -123,31 +113,31 @@ namespace bjoernligan
 
 		// up
 		if (isInside(x, y - 1))
-			neighbors.push_back(m_nodes[x + (y - 1) * m_width]);
+			neighbors.push_back(m_nodes[x + (y - 1) * m_width].get());
 		// down
 		if (isInside(x, y + 1))
-			neighbors.push_back(m_nodes[x + (y + 1) * m_width]);
+			neighbors.push_back(m_nodes[x + (y + 1) * m_width].get());
 		// left
 		if (isInside(x - 1, y))
-			neighbors.push_back(m_nodes[(x - 1) + y * m_width]);
+			neighbors.push_back(m_nodes[(x - 1) + y * m_width].get());
 		// down
 		if (isInside(x + 1, y))
-			neighbors.push_back(m_nodes[(x + 1) + y * m_width]);
+			neighbors.push_back(m_nodes[(x + 1) + y * m_width].get());
 
 		if (diagonals)
 		{
 			// up left
 			if (isInside(x - 1, y - 1))
-				neighbors.push_back(m_nodes[(x - 1) + (y - 1) * m_width]);
+				neighbors.push_back(m_nodes[(x - 1) + (y - 1) * m_width].get());
 			// up right
 			if (isInside(x + 1, y - 1))
-				neighbors.push_back(m_nodes[(x + 1) + (y - 1) * m_width]);
+				neighbors.push_back(m_nodes[(x + 1) + (y - 1) * m_width].get());
 			// down left
 			if (isInside(x - 1, y + 1))
-				neighbors.push_back(m_nodes[(x - 1) + (y + 1) * m_width]);
+				neighbors.push_back(m_nodes[(x - 1) + (y + 1) * m_width].get());
 			// down right
 			if (isInside(x + 1, y + 1))
-				neighbors.push_back(m_nodes[(x + 1) + (y + 1) * m_width]);
+				neighbors.push_back(m_nodes[(x + 1) + (y + 1) * m_width].get());
 		}
 
 		return neighbors;
@@ -171,35 +161,30 @@ namespace bjoernligan
 	PathfinderGrid::PathfinderGrid(int width, int height)
 		: Grid(width, height)
 	{
-		m_nodes = new Node*[m_width * m_height];
 		for (int x = 0; x < m_width; ++x)
 		{
 			for (int y = 0; y < m_height; ++y)
 			{
-				PathfinderNode* n = new PathfinderNode();
-				n->x = x;
-				n->y = y;
-				n->walkable = true;
-				m_nodes[x + y * m_width] = n;
+				m_nodes.emplace_back(std::make_unique<PathfinderNode>(x, y, true));
 			}
 		}
 	}
 
 	bool PathfinderGrid::isWalkableAt(int x, int y) const
 	{
-		return isInside(x, y) && static_cast<PathfinderNode*>(m_nodes[x + y * m_width])->walkable;
+		return isInside(x, y) && static_cast<PathfinderNode*>(m_nodes[x + y * m_width].get())->walkable;
 	}
 
 	void PathfinderGrid::setWalkableAt(int x, int y, bool walkable)
 	{
-		static_cast<PathfinderNode*>(m_nodes[x + y * m_width])->walkable = walkable;
+		static_cast<PathfinderNode*>(m_nodes[x + y * m_width].get())->walkable = walkable;
 	}
 
 	void PathfinderGrid::resetNodes()
 	{
 		for (int i = 0; i < m_width * m_height; ++i)
 		{
-			PathfinderNode* n = static_cast<PathfinderNode*>(m_nodes[i]);
+			PathfinderNode* n = static_cast<PathfinderNode*>(m_nodes[i].get());
 			n->closed = false;
 			n->parent = nullptr;
 			n->visisted = nullptr;
@@ -229,25 +214,25 @@ namespace bjoernligan
 		// ↑
 		if (isWalkableAt(x, y - 1))
 		{
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[x + (y - 1) * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[x + (y - 1) * m_width].get()));
 			s0 = true;
 		}
 		// →
 		if (isWalkableAt(x + 1, y))
 		{
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x + 1) + y * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x + 1) + y * m_width].get()));
 			s1 = true;
 		}
 		// ↓
 		if (isWalkableAt(x, y + 1))
 		{
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[x + (y + 1) * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[x + (y + 1) * m_width].get()));
 			s2 = true;
 		}
 		// ←
 		if (isWalkableAt(x - 1, y))
 		{
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x - 1) + y * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x - 1) + y * m_width].get()));
 			s3 = true;
 		}
 
@@ -282,16 +267,16 @@ namespace bjoernligan
 
 		// ↖
 		if (d0 && isWalkableAt(x - 1, y - 1))
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x - 1) + (y - 1) * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x - 1) + (y - 1) * m_width].get()));
 		// ↗
 		if (d1 && isWalkableAt(x + 1, y - 1))
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x + 1) + (y - 1) * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x + 1) + (y - 1) * m_width].get()));
 		// ↘
 		if (d2 && isWalkableAt(x + 1, y + 1))
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x + 1) + (y + 1) * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x + 1) + (y + 1) * m_width].get()));
 		// ↙
 		if (d3 && isWalkableAt(x - 1, y + 1))
-			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x - 1) + (y + 1) * m_width]));
+			neighbors.push_back(static_cast<PathfinderNode*>(m_nodes[(x - 1) + (y + 1) * m_width].get()));
 
 		return neighbors;
 	}
@@ -306,8 +291,9 @@ namespace bjoernligan
 		return f > other.f;
 	}
 
-	PathfinderGrid::PathfinderNode::PathfinderNode()
-		: walkable(false),
+	PathfinderGrid::PathfinderNode::PathfinderNode(int x, int y, bool walkable)
+		: walkable(walkable),
+		Node(x, y),
 		visisted(false),
 		closed(false),
 		weight(1),

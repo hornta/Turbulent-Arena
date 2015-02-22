@@ -2,9 +2,6 @@
 
 #pragma once
 
-#include <memory>
-#include "SFML\Graphics.hpp"
-
 class InputManager;
 
 namespace bjoernligan
@@ -22,8 +19,6 @@ namespace bjoernligan
 			typedef std::unique_ptr<DrawManager> Ptr;
 			static Ptr Create();
 
-			~DrawManager();
-
 			bool Initialize();
 
 			void ClearScr();
@@ -31,10 +26,10 @@ namespace bjoernligan
 			void Display();
 
 			sf::Font* GetFont();
-
-			sf::RenderWindow* m_xWindow;
+			sf::RenderWindow* getWindow() const;
 
 		private:
+			std::unique_ptr<sf::RenderWindow> m_xWindow;
 			sf::Font m_xFont;
 		};
 	}

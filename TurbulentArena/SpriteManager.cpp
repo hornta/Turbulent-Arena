@@ -14,39 +14,9 @@ namespace bjoernligan
 
 		}
 
-		SpriteManager::~SpriteManager()
-		{
-			CleanUpSprites();
-			{
-				auto it = m_axTextures.begin();
-				while (it != m_axTextures.end())
-				{
-					delete it->second;
-					it->second = nullptr;
-					it++;
-				}
-				m_axTextures.clear();
-			}
-		}
-
 		SpriteManager::Ptr SpriteManager::Create()
 		{
 			return Ptr(new SpriteManager);
-		}
-
-		void SpriteManager::CleanUpSprites()
-		{
-			if (!m_axSprites.empty())
-			{
-				auto it = m_axSprites.begin();
-				while (it != m_axSprites.end())
-				{
-					delete it->second;
-					it->second = nullptr;
-					it++;
-				}
-				m_axSprites.clear();
-			}
 		}
 
 		sf::Sprite* SpriteManager::LoadSprite(const std::string &p_sFilename, const std::string &p_sSpritename,
@@ -54,9 +24,9 @@ namespace bjoernligan
 			float p_fXScale, float p_fYScale)
 		{
 			if (m_axSprites.find(p_sSpritename) != m_axSprites.end())
-				return m_axSprites.find(p_sSpritename)->second;
+				return m_axSprites.find(p_sSpritename)->second.get();
 
-			m_axSprites.insert(std::pair<std::string, sf::Sprite*>(p_sSpritename, new sf::Sprite));
+			m_axSprites.insert(std::pair<std::string, std::unique_ptr<sf::Sprite>>(p_sSpritename, std::make_unique<sf::Sprite>()));
 			auto xIt = m_axSprites.find(p_sSpritename);
 			sf::Texture* xTexture = LoadTexture(p_sFilename);
 			if (xTexture)
@@ -66,7 +36,7 @@ namespace bjoernligan
 				(*xIt).second->setTextureRect(sf::IntRect(p_iPosX, p_iPosY, p_iWidth, p_iHeight));
 
 			(*xIt).second->setScale(p_fXScale, p_fYScale);
-			return (*xIt).second;
+			return (*xIt).second.get();
 		}
 
 		sf::Texture* SpriteManager::LoadTexture(const std::string &p_sFilename)
@@ -76,17 +46,15 @@ namespace bjoernligan
 			auto it = m_axTextures.find(sFilePath);
 			if (it == m_axTextures.end())
 			{
-				m_axTextures.insert(std::pair<const std::string, sf::Texture*>(sFilePath, new sf::Texture));
+				m_axTextures.insert(std::pair<const std::string, std::unique_ptr<sf::Texture>>(sFilePath, std::make_unique<sf::Texture>()));
 				it = m_axTextures.find(sFilePath);
 				if (!it->second->loadFromFile(sFilePath))
 				{
-					delete it->second;
-					it->second = nullptr;
 					m_axTextures.erase(it);
 					return nullptr;
 				}
 			}
-			return it->second;
+			return it->second.get();
 		}
 
 		void SpriteManager::RemoveSprite(const std::string &p_sSpritename)
@@ -97,11 +65,7 @@ namespace bjoernligan
 				return;
 			}
 			else
-			{
-				delete it->second;
-				it->second = nullptr;
 				m_axSprites.erase(it);
-			}
 		}
 
 		sf::Sprite* SpriteManager::GetSprite(const std::string &p_sSpritename)
@@ -110,7 +74,7 @@ namespace bjoernligan
 			if (it == m_axSprites.end())
 				return nullptr;
 			else
-				return it->second;
+				return it->second.get();
 		}
 
 		sf::Texture* SpriteManager::GetTexture(const std::string &p_sFilename)
@@ -120,7 +84,7 @@ namespace bjoernligan
 			if (it == m_axTextures.end())
 				return nullptr;
 			else
-				return it->second;
+				return it->second.get();
 		}
 	}
 }
