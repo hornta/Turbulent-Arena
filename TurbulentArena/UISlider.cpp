@@ -65,19 +65,19 @@ namespace bjoernligan
 		}
 		if (m_eStatus == EStatus::Pressed)
 		{
-			m_axSprites[3]->setPosition(sf::Vector2f(GetAllowedX((float)m_xMouse->m_xPos.x), m_xPos.y));
-			m_fCurrent = (m_axSprites[3]->getPosition().x - m_xPos.x) / m_fWidth;
-
-			std::stringstream xStream;
-			xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue(false);
-			m_xLabelText.setString(xStream.str());
-
 			if (!m_xMouse->IsDown(sf::Mouse::Button::Left))
 			{
 				m_eStatus = EStatus::Idle;
 				m_bNewValue = true;
 				return;
 			}
+
+			m_axSprites[3]->setPosition(sf::Vector2f(GetAllowedX((float)m_xMouse->m_xPos.x), m_xPos.y));
+			m_fCurrent = (m_axSprites[3]->getPosition().x - m_xPos.x) / m_fWidth;
+
+			std::stringstream xStream;
+			xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue(false);
+			m_xLabelText.setString(xStream.str());
 		}
 	}
 

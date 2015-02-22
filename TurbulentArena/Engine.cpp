@@ -158,6 +158,9 @@ namespace bjoernligan
 				m_xUIManager->DrawElements();
 				m_xDrawManager->Display();
 
+				m_xMouse->PostUpdate();
+				m_xKeyboard->PostUpdate();
+
 				::Sleep(2);
 			}
 		}
