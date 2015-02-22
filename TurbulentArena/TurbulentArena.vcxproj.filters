@@ -219,6 +219,9 @@
     <ClInclude Include="Engine.hpp">
       <Filter>Header Files\system</Filter>
     </ClInclude>
+    <ClInclude Include="SliderBridge.hpp">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -333,6 +336,9 @@
       <Filter>Source Files\gui</Filter>
     </ClCompile>
     <ClCompile Include="UISlider.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="SliderBridge.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
   </ItemGroup>

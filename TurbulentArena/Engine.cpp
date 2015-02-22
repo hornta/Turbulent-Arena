@@ -12,6 +12,7 @@
 #include "Scout.hpp"
 #include "Physics.hpp"
 #include "Settings.hpp"
+#include "UISlider.hpp"
 #include <Windows.h>
 
 namespace bjoernligan
@@ -56,11 +57,6 @@ namespace bjoernligan
 
 			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
-
-			float fSpacing = 80.0f;
-			m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*3.0f), 240.0f, 0.0f, 100.0f);
-			m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*2.0f), 240.0f, 0.0f, 100.0f);
-			m_xUIManager->AddSlider("Agressive", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*1.0f), 240.0f, 0.0f, 100.0f);
 
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/map.txt");
@@ -132,6 +128,22 @@ namespace bjoernligan
 				//ClanMemberDef clanMemberDef;
 				//clanMemberDef.startPos = m_map->getLayer("spawns")
 				//clan->createMember(Clan::SCOUT);
+
+
+				//Creation of sliders:
+				float fSliderSpacing = 80.0f;
+
+				UISlider* xSlider = m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*3.0f), 240.0f, 0.0f, 100.0f);
+				SliderBridge* xBridge = xSlider->GetBridge();
+				clan->AddSliderBridge(xBridge);
+
+				xSlider = m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*2.0f), 240.0f, 0.0f, 100.0f);
+				xBridge = xSlider->GetBridge();
+				clan->AddSliderBridge(xBridge);
+
+				xSlider = m_xUIManager->AddSlider("Agression", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*1.0f), 240.0f, 0.0f, 100.0f);
+				xBridge = xSlider->GetBridge();
+				clan->AddSliderBridge(xBridge);
 			}
 
 			return m_bRunning = true;
@@ -155,6 +167,7 @@ namespace bjoernligan
 				m_physics->update(m_fDeltaTime);
 				m_visibility->update();
 				m_xUIManager->Update(m_fDeltaTime);
+				m_clanManager->Update(m_fDeltaTime);
 
 				//Draw
 				m_xDrawManager->ClearScr();

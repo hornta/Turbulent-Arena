@@ -21,6 +21,8 @@ namespace bjoernligan
 
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 
+		m_xBridge = nullptr;
+
 		m_fWidth = m_fCurrent = m_fMin = m_fMax = 0.0f;
 		m_bNewValue = false;
 	}
@@ -42,7 +44,8 @@ namespace bjoernligan
 		m_fWidth = p_fWidth;
 		m_fMin = p_fMin;
 		m_fMax = p_fMax;
-		
+		m_xBridge = SliderBridge::Create(p_sLabel);
+
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
 		{
 			m_axSprites[0]->setScale(sf::Vector2f((((p_fWidth + Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x) * Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x, 1.0f));
@@ -69,6 +72,7 @@ namespace bjoernligan
 			{
 				m_eStatus = EStatus::Idle;
 				m_bNewValue = true;
+				m_xBridge->SetNewValue(GetValue(false));
 				return;
 			}
 
@@ -116,6 +120,14 @@ namespace bjoernligan
 			m_bNewValue = false;
 
 		return m_fMin + (m_fMax - m_fMin) * m_fCurrent;
+	}
+
+	SliderBridge* UISlider::GetBridge()
+	{
+		if (!m_xBridge)
+			return nullptr;
+
+		return m_xBridge.get();
 	}
 
 	float UISlider::GetAllowedX(float p_fX)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SliderBridge.hpp"
+
 namespace bjoernligan
 {
 	class Class;
@@ -29,13 +31,17 @@ namespace bjoernligan
 
 		void createMember();
 
+		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Color getColor() const;
+
+		void AddSliderBridge(SliderBridge* p_xBridge);
 
 	private:
 		sf::Color m_color;
 		std::string m_name;
 		
 		std::vector<Class*> m_members;
+		std::vector<SliderBridge*> m_xBridges;
 	};
 }

@@ -13,6 +13,8 @@ namespace bjoernligan
 		Clan* createClan(const std::string& name);
 		std::size_t getAmount() const;
 
+		void Update(const float &p_fDeltaTime);
+
 	private:
 		std::vector<std::unique_ptr<Clan>> m_clans;
 	};
