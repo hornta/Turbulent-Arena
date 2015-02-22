@@ -3,262 +3,273 @@
 
 namespace bjoernligan
 {
-	// TILE DEFINITION
-	Map::TileDefinition::TileDefinition(char ID, bool walkable, float u, float v, bool null)
-		: m_ID(ID),
-		m_walkable(walkable),
-		m_uv(u, v),
-		m_null(null)
+	std::string Map::Properties::getProperty(const std::string& key)
 	{
-
+		assert(m_propertySet.find(key) != m_propertySet.end());
+		return m_propertySet[key];
 	}
 
-	// OBJECT DEFINITION 
-	Map::ObjectDefinition::ObjectDefinition(char ID, bool active, bool null)
-		: m_ID(ID),
-		m_null(null),
-		m_active(active)
+	bool Map::Properties::hasProperty(const std::string& key)
 	{
-
+		auto it = m_propertySet.find(key);
+		if (it != m_propertySet.end())
+			return true;
+		return false;
 	}
 
-	// TILE
-	Map::Tile::Tile(const sf::Vector2i& position, Map::TileDefinition* tileDefinition)
-		: m_position(position),
-		m_tileDefinition(tileDefinition)
+	void Map::Properties::parseProperties(tinyxml2::XMLElement* propertiesNode)
 	{
-
-	}
-
-	sf::Vector2i Map::Tile::getPosition() const
-	{
-		return m_position;
-	}
-
-	bool Map::Tile::isWalkable() const
-	{
-		return m_tileDefinition->m_walkable;
-	}
-
-	sf::Vertex* Map::Tile::getVertices()
-	{
-		return m_vertices;
-	}
-
-	void Map::Tile::setPhysicsBody(Physics::Body* body)
-	{
-		m_body = body;
-	}
-
-	// OBJECT
-	Map::Object::Object(const sf::Vector2i& position, ObjectDefinition* objectDefinition)
-		: m_position(position),
-		m_objectDefinition(objectDefinition)
-	{
-		
-	}
-
-	sf::Vector2i Map::Object::getPosition() const
-	{
-		return m_position;
-	}
-
-	void Map::Object::setActive(bool value)
-	{
-		m_active = value;
-	}
-
-	bool Map::Object::isActive() const
-	{
-		return m_active;
-	}
-
-	// LAYER
-	Map::TileLayer::TileLayer(const sf::Vector2i& size, const std::string& name)
-		: m_name(name),
-		m_size(size)
-	{
-		m_vertices.setPrimitiveType(sf::Quads);
-		m_vertices.resize(m_size.x * m_size.y * 4);
+		if (propertiesNode != nullptr)
+		{
+			tinyxml2::XMLElement* p = propertiesNode->FirstChildElement("property");
+			while (p != nullptr)
+			{
+				m_propertySet.insert(std::make_pair(p->Attribute("name"), p->Attribute("value")));
+				p = p->NextSiblingElement("property");
+			}
+		}
 	}
 
 	Map::Tile* Map::TileLayer::getTile(int x, int y)
 	{
-		int index = x + y * m_size.x;
-		return m_tiles[index].get();
-	}
-
-	Map::Tile* Map::TileLayer::getTile(const sf::Vector2i& position)
-	{
-		return getTile(position.x, position.y);
-	}
-
-	// OBJECT LAYER
-	Map::ObjectLayer::ObjectLayer(const std::string& name)
-		: m_name(name)
-	{
-	}
-
-	Map::Object* Map::ObjectLayer::getActiveObject()
-	{
-		for (std::size_t i = 0; i < m_objects.size(); ++i)
+		Tile* tile = nullptr;
+		for (auto it = m_layerSets.begin(); it != m_layerSets.end(); ++it)
 		{
-			if (m_objects[i]->isActive())
-				return m_objects[i].get();
+			tile = it->second->m_tiles[x + y * m_size.x].get();
+			if (tile != nullptr)
+			{
+				return tile;
+			}
 		}
+
 		return nullptr;
 	}
 
-	/* MAP */
-	Map::Map(const std::string& file)
+	Map::Object::~Object()
 	{
-		if (parseMap(file))
-		{
 
-		}
 	}
 
-	bool Map::parseMap(const std::string& file)
+	std::vector<Map::Object*> Map::ObjectGroup::getObjects() const
 	{
-		std::ifstream ifs(file);
-		if (!ifs.is_open())
+		std::vector<Map::Object*> objects;
+		for (std::size_t i = 0; i < m_objects.size(); ++i)
 		{
-			std::cout << "Failed to parse map: Could not open file '" << file << "'" << std::endl;
+			objects.push_back(m_objects[i].get());
+		}
+		return objects;
+	}
+
+	Map::Map(const std::string& path)
+	{
+		m_path = path;
+	}
+	
+	bool Map::load(const std::string& file)
+	{
+		tinyxml2::XMLDocument document;
+		tinyxml2::XMLError fileLoaded = document.LoadFile(std::string(m_path + file).c_str());
+
+		if (fileLoaded != tinyxml2::XML_SUCCESS)
+		{
+			std::cout << "Failed to load map: Could not open file '" << file << "'" << std::endl;
 			return false;
 		}
 
-		std::string line;
-		std::vector<std::string> parts;
-		int currentRow = 0;
-		TileLayer* currentTileLayer = nullptr;
-		ObjectLayer* currentObjectLayer = nullptr;
+		tinyxml2::XMLElement* mapNode = document.FirstChildElement("map");
 
-		while (std::getline(ifs, line))
+		m_size.x = std::stoi(mapNode->Attribute("width"));
+		m_size.y = std::stoi(mapNode->Attribute("height"));
+		m_tileSize.x = std::stof(mapNode->Attribute("tilewidth"));
+		m_tileSize.y = std::stof(mapNode->Attribute("tileheight"));
+
+		// PARSE TILESETS
+		tinyxml2::XMLElement* tilesetNode = mapNode->FirstChildElement("tileset");
+		m_tileInfo.emplace_back(std::make_unique<TileInfo>());
+
+		sf::Vector2f tileSize;
+		while (tilesetNode != nullptr)
 		{
-			parts = explode(line, " ");
+			tileSize.x = tilesetNode->FloatAttribute("tilewidth");
+			tileSize.y = tilesetNode->FloatAttribute("tileheight");
 
-			if (beginsWith("w", parts))
+			tinyxml2::XMLElement* imageNode = tilesetNode->FirstChildElement("image");
+			m_tilesets.emplace_back(std::make_unique<Tileset>());
+			Tileset* tileset = m_tilesets.back().get();
+
+			tileset->m_texture.loadFromFile(m_path + imageNode->Attribute("source"));
+
+			int columns = static_cast<int>(static_cast<float>(tileset->m_texture.getSize().x) / tileSize.x);
+			int rows = static_cast<int>(static_cast<float>(tileset->m_texture.getSize().y) / tileSize.y);
+
+			for (int y = 0; y < rows; ++y)
 			{
-				m_size.x = std::stoi(parts[1]);
-			}
-			else if (beginsWith("h", parts))
-			{
-				m_size.y = std::stoi(parts[1]);
-			}
-			else if (beginsWith("t", parts))
-			{
-				m_texture.loadFromFile(parts[1]);
-			}
-			else if (beginsWith("ts", parts))
-			{
-				m_tileSize = (int)std::stof(parts[1]);
-			}
-			else if (beginsWith("tl", parts))
-			{
-				m_tileLayers.emplace_back(std::make_unique<TileLayer>(m_size, parts[1]));
-				currentRow = 0;
-				currentTileLayer = m_tileLayers.back().get();
-			}
-			else if (beginsWith("ol", parts))
-			{
-				m_objectLayers.emplace_back(std::make_unique<ObjectLayer>(parts[1]));
-				currentRow = 0;
-				currentObjectLayer = m_objectLayers.back().get();
-			}
-			else if (beginsWith("td", parts))
-			{
-				if (parts.size() == 2)
-					m_tileDefinitions.emplace_back(std::make_unique<TileDefinition>(static_cast<char>(parts[1][0]), false, 0.f, 0.f, true));
-				else
-					m_tileDefinitions.emplace_back(std::make_unique<TileDefinition>(static_cast<char>(parts[1][0]), string_to_bool(parts[2]), std::stof(parts[3]), std::stof(parts[4]), false));
-			}
-			else if (beginsWith("od", parts))
-			{
-				if (parts.size() == 2)
-					m_objectDefinitions.emplace_back(std::make_unique<ObjectDefinition>(static_cast<char>(parts[1][0]), false, true));
-				else
-					m_objectDefinitions.emplace_back(std::make_unique<ObjectDefinition>(static_cast<char>(parts[1][0]), string_to_bool(parts[2]), false));
-			}
-			else if (beginsWith("d", parts))
-			{
-				for (uint32_t i = 0; i < parts[1].length(); ++i)
+				for (int x = 0; x < columns; ++x)
 				{
-					char ID = static_cast<char>(parts[1][i]);
+					m_tileInfo.emplace_back(std::make_unique<TileInfo>());
+					TileInfo* tileInfo = m_tileInfo.back().get();
 
-					TileDefinition* td = getTileDefinition(ID);
-					if (td == nullptr || td->m_null)
+					tileInfo->m_tileset = tileset;
+					tileInfo->m_textureCoordinates[0].x = x * tileSize.x;
+					tileInfo->m_textureCoordinates[0].y = y * tileSize.y;
+					tileInfo->m_textureCoordinates[1].x = (x + 1) * tileSize.x;
+					tileInfo->m_textureCoordinates[1].y = y * tileSize.y;
+					tileInfo->m_textureCoordinates[2].x = (x + 1) * tileSize.x;
+					tileInfo->m_textureCoordinates[2].y = (y + 1) * tileSize.y;
+					tileInfo->m_textureCoordinates[3].x = x * tileSize.x;
+					tileInfo->m_textureCoordinates[3].y = (y + 1) * tileSize.y;
+				}
+			}
+
+			tilesetNode = tilesetNode->NextSiblingElement("tileset");
+		}
+
+		// LAYERS
+		tinyxml2::XMLElement* currentNode = mapNode->FirstChildElement();
+		while (currentNode != nullptr)
+		{
+			std::string elementName = currentNode->Name();
+
+			if (elementName == "layer")
+			{
+				m_tileLayers.emplace_back(std::make_unique<TileLayer>());
+				TileLayer* tileLayer = m_tileLayers.back().get();
+
+				for (std::size_t i = 0; i < m_tilesets.size(); ++i)
+				{
+					tileLayer->m_layerSets.insert(std::make_pair(m_tilesets[i].get(), std::make_unique<LayerSet>()));
+					LayerSet* layerSet = tileLayer->m_layerSets[m_tilesets[i].get()].get();
+					layerSet->m_vertices.resize(m_size.x * m_size.y * 4);
+					layerSet->m_vertices.setPrimitiveType(sf::Quads);
+				}
+
+				tileLayer->m_name = currentNode->Attribute("name");
+				tileLayer->m_size.x = currentNode->IntAttribute("width");
+				tileLayer->m_size.y = currentNode->IntAttribute("height");
+
+				tinyxml2::XMLElement* dataNode = currentNode->FirstChildElement("data");
+				tinyxml2::XMLElement* tileNode = dataNode->FirstChildElement("tile");
+
+				int x = 0;
+				int y = 0;
+				int gid = 0;
+				while (tileNode != nullptr)
+				{
+					gid = tileNode->IntAttribute("gid");
+
+					auto layerSetIt = tileLayer->m_layerSets.begin();
+					while (layerSetIt != tileLayer->m_layerSets.end())
 					{
-						currentTileLayer->m_tiles.push_back(nullptr);
-						continue;
+						if (gid != 0)
+						{
+							Tileset* id = m_tileInfo[gid]->m_tileset;
+							LayerSet* layerSet = tileLayer->m_layerSets.find(id)->second.get();
+							layerSet->m_tiles.emplace_back(std::make_unique<Tile>());
+							Tile* tile = layerSet->m_tiles.back().get();
+
+							tile->m_vertices = &layerSet->m_vertices[(x + y * m_size.x) * 4];
+							tile->m_vertices[0].texCoords = m_tileInfo[gid]->m_textureCoordinates[0] + sf::Vector2f(0.5f, 0.5f);
+							tile->m_vertices[1].texCoords = m_tileInfo[gid]->m_textureCoordinates[1] + sf::Vector2f(-0.5f, 0.5f);
+							tile->m_vertices[2].texCoords = m_tileInfo[gid]->m_textureCoordinates[2] + sf::Vector2f(-0.5f, -0.5f);
+							tile->m_vertices[3].texCoords = m_tileInfo[gid]->m_textureCoordinates[3] + sf::Vector2f(0.5f, -0.5f);
+
+							tile->m_vertices[0].position = sf::Vector2f(x * m_tileSize.x, y * m_tileSize.y);
+							tile->m_vertices[1].position = sf::Vector2f((x + 1) * m_tileSize.x, y * m_tileSize.y);
+							tile->m_vertices[2].position = sf::Vector2f((x + 1) * m_tileSize.x, (y + 1) * m_tileSize.y);
+							tile->m_vertices[3].position = sf::Vector2f(x * m_tileSize.x, (y + 1) * m_tileSize.y);
+
+							auto layerSetIt2 = tileLayer->m_layerSets.begin();
+							while (layerSetIt2 != tileLayer->m_layerSets.end())
+							{
+								if (layerSetIt2 != layerSetIt)
+								{
+									layerSetIt2->second->m_tiles.emplace_back();
+								}
+								++layerSetIt2;
+							}
+						}
+						else
+						{
+							layerSetIt->second->m_tiles.emplace_back();
+						}
+						
+						++layerSetIt;
 					}
 
-					int index = i + currentRow * m_size.x;
-					currentTileLayer->m_tiles.emplace_back(std::make_unique<Tile>(sf::Vector2i(i, currentRow), td));
-					Tile* tile = currentTileLayer->m_tiles.back().get();
-
-					tile->m_vertices = &currentTileLayer->m_vertices[index * 4];
-
-					tile->m_vertices[0].position = sf::Vector2f((float)i * m_tileSize, (float)currentRow * m_tileSize);
-					tile->m_vertices[1].position = sf::Vector2f((float)(i + 1) * m_tileSize, (float)currentRow * m_tileSize);
-					tile->m_vertices[2].position = sf::Vector2f((float)(i + 1) * m_tileSize, (float)(currentRow + 1) * m_tileSize);
-					tile->m_vertices[3].position = sf::Vector2f((float)i * m_tileSize, (float)(currentRow + 1) * m_tileSize);
-
-					tile->m_vertices[0].texCoords = sf::Vector2f(td->m_uv.x, td->m_uv.y);
-					tile->m_vertices[1].texCoords = sf::Vector2f(td->m_uv.x + m_tileSize, td->m_uv.y);
-					tile->m_vertices[2].texCoords = sf::Vector2f(td->m_uv.x + m_tileSize, td->m_uv.y + m_tileSize);
-					tile->m_vertices[3].texCoords = sf::Vector2f(td->m_uv.x, td->m_uv.y + m_tileSize);
-				}
-				++currentRow;
-			}
-			else if (beginsWith("o", parts))
-			{
-				for (uint32_t i = 0; i < parts[1].length(); ++i)
-				{
-					char ID = static_cast<char>(parts[1][i]);
-					ObjectDefinition* od = getObjectDefinition(ID);
-					if (od == nullptr || od->m_null)
+					tileNode = tileNode->NextSiblingElement("tile");
+					++x;
+					if (x == m_size.x)
 					{
-						continue;
+						x = 0;
+						++y;
+					}
+				}
+			}
+			else if (elementName == "objectgroup")
+			{
+				m_objectGroups.emplace_back(std::make_unique<ObjectGroup>());
+				ObjectGroup* objectGroup = m_objectGroups.back().get();
+				objectGroup->m_name = currentNode->Attribute("name");
+
+				tinyxml2::XMLElement* objectNode = currentNode->FirstChildElement("object");
+				while (objectNode != nullptr)
+				{
+					int ID = objectNode->IntAttribute("id");
+					sf::Vector2f position(objectNode->FloatAttribute("x"), objectNode->FloatAttribute("y"));
+
+					tinyxml2::XMLElement* shapeNode = objectNode->FirstChildElement();
+					std::string shapeName = shapeNode->Name();
+					if (shapeName == "polyline" || shapeName == "polygon")
+					{
+						objectGroup->m_objects.emplace_back(std::make_unique<Polygon>());
+						Polygon* polygon = static_cast<Polygon*>(objectGroup->m_objects.back().get());
+						polygon->m_ID = ID;
+						polygon->m_position = position;
+						std::vector<std::string> stringPoints = explode(shapeNode->Attribute("points"), " ");
+						for (std::size_t i = 0; i < stringPoints.size(); ++i)
+						{
+							std::vector<std::string> stringPointsParts = explode(stringPoints[i], ",");
+							polygon->m_points.push_back(sf::Vector2f(position.x + std::stof(stringPointsParts[0]), position.y + std::stof(stringPointsParts[1])));
+						}
+					}
+					else
+					{
+						objectGroup->m_objects.emplace_back(std::make_unique<Object>());
+						Object* object = objectGroup->m_objects.back().get();
+						object->m_ID = ID;
+						object->m_position = position;
 					}
 
-					currentObjectLayer->m_objects.emplace_back(std::make_unique<Object>(sf::Vector2i(i, currentRow), od));
-					Object* object = currentObjectLayer->m_objects.back().get();
-					object->setActive(od->m_active);
+					Object* object = objectGroup->m_objects.back().get();
+					object->parseProperties(objectNode->FirstChildElement("properties"));
+
+					objectNode = objectNode->NextSiblingElement("object");
 				}
-				++currentRow;
 			}
+			currentNode = currentNode->NextSiblingElement();
 		}
 
 		return true;
 	}
 
-	Map::TileDefinition* Map::getTileDefinition(char ID) const
-	{
-		for (std::size_t i = 0; i < m_tileDefinitions.size(); ++i)
-		{
-			if (m_tileDefinitions[i]->m_ID == ID)
-				return m_tileDefinitions[i].get();
-		}
-		return nullptr;
-	}
-
-	Map::ObjectDefinition* Map::getObjectDefinition(char ID) const
-	{
-		for (std::size_t i = 0; i < m_objectDefinitions.size(); ++i)
-		{
-			if (m_objectDefinitions[i]->m_ID == ID)
-				return m_objectDefinitions[i].get();
-		}
-		return nullptr;
-	}
-
-	void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	Map::TileLayer* Map::getLayer(const std::string& name) const
 	{
 		for (std::size_t i = 0; i < m_tileLayers.size(); ++i)
 		{
-			states.texture = &m_texture;
-			target.draw(m_tileLayers[i]->m_vertices, states);
+			if (m_tileLayers[i]->m_name == name)
+				return m_tileLayers[i].get();
 		}
+		return nullptr;
+	}
+
+	Map::ObjectGroup* Map::getObjectGroup(const std::string& name) const
+	{
+		for (std::size_t i = 0; i < m_objectGroups.size(); ++i)
+		{
+			if (m_objectGroups[i]->m_name == name)
+				return m_objectGroups[i].get();
+		}
+		return nullptr;
 	}
 
 	sf::Vector2i Map::getSize() const
@@ -276,58 +287,21 @@ namespace bjoernligan
 		return m_size.y;
 	}
 
-	int Map::getTileSize() const
+	sf::Vector2f Map::getTileSize() const
 	{
 		return m_tileSize;
 	}
 
-	Map::Tile* Map::getTopmostTile(int x, int y) const
-	{
-		Tile* tmp = nullptr;
-		for (std::size_t i = m_tileLayers.size() - 1; i >= 0; --i)
-		{
-			tmp = m_tileLayers[i]->getTile(x, y);
-			if (tmp != nullptr)
-			{
-				return tmp;
-			}
-		}
-		return tmp;
-	}
-
-	Map::Tile* Map::getTopmostTile(const sf::Vector2i& position) const
-	{
-		return getTopmostTile(position.x, position.y);
-	}
-
-	Map::TileLayer* Map::getTileLayer(const std::string& name)
+	void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (std::size_t i = 0; i < m_tileLayers.size(); ++i)
 		{
-			if (m_tileLayers[i]->m_name == name)
+			TileLayer* tileLayer = m_tileLayers[i].get();
+			for (auto& ls : tileLayer->m_layerSets)
 			{
-				return m_tileLayers[i].get();
+				states.texture = &ls.first->m_texture;
+				target.draw(ls.second.get()->m_vertices, states);
 			}
 		}
-		return nullptr;
-	}
-
-	Map::ObjectLayer* Map::getObjectLayer(const std::string& name)
-	{
-		for (std::size_t i = 0; i < m_objectLayers.size(); ++i)
-		{
-			if (m_tileLayers[i]->m_name == name)
-			{
-				return m_objectLayers[i].get();
-			}
-		}
-		return nullptr;
-	}
-
-	bool Map::beginsWith(const std::string& id, const std::vector<std::string>& parts)
-	{
-		if (parts.size() > 0 && parts[0] == id)
-			return true;
-		return false;
 	}
 }

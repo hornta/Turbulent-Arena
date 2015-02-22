@@ -33,10 +33,10 @@ namespace bjoernligan
 			union
 			{
 				float m_fCircleRadius;
-				struct Vec2i
+				struct Vec2f
 				{
-					int32_t x;
-					int32_t y;
+					float x;
+					float y;
 				} m_xBox;
 			} m_xShapeSize;
 		};
@@ -46,6 +46,8 @@ namespace bjoernligan
 		~Physics();
 
 		void update(float deltatime);
+		void draw();
+		void setDebug(bool value);
 
 		b2World* getWorld() const;
 		Body* createBody(const Params& params);
@@ -54,6 +56,7 @@ namespace bjoernligan
 		void construct(sf::RenderWindow* window);
 
 	private:
+		bool m_drawDebug = false;
 		std::unique_ptr<b2World> m_b2World;
 		std::unique_ptr<ContactListener> m_xContactListener;
 		std::unique_ptr<Box2DWorldDraw> m_debugDraw;

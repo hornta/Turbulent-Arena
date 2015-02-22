@@ -7,11 +7,14 @@
 #include "Pathfinder.hpp"
 #include "Object.hpp"
 #include "Visibility.hpp"
+#include "Physics.hpp"
+#include "Settings.hpp"
+
 #include "ClanManager.hpp"
 #include "Clan.hpp"
 #include "Scout.hpp"
-#include "Physics.hpp"
-#include "Settings.hpp"
+#include "Axeman.hpp"
+
 #include <Windows.h>
 
 namespace bjoernligan
@@ -63,7 +66,8 @@ namespace bjoernligan
 			m_xUIManager->AddSlider("Agressive", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSpacing*1.0f), 240.0f, 0.0f, 100.0f);
 
 			m_clanManager = std::make_unique<ClanManager>();
-			m_map = std::make_unique<Map>("../data/map.txt");
+			m_map = std::make_unique<Map>("../data/");
+			m_map->load("map.tmx");
 			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
@@ -73,66 +77,69 @@ namespace bjoernligan
 			{
 				for (int y = 0; y < m_map->getHeight(); ++y)
 				{
-					Map::Tile* tile = m_map->getTopmostTile(x, y);
+					Map::Tile* tile = m_map->getLayer("objects")->getTile(x, y);
 					if (tile != nullptr)
 					{
-						m_pathFinder->getGrid().setWalkableAt(x, y, tile->isWalkable());
-						if (!tile->isWalkable())
+						m_pathFinder->getGrid().setWalkableAt(x, y, tile->hasProperty("walkable"));
+						if (!tile->hasProperty("walkable"))
 						{
-							float tileSize = static_cast<float>(m_map->getTileSize());
+							sf::Vector2f tileSize = m_map->getTileSize();
 							Physics::Params xParams;
 							xParams.m_xFixtureDef.friction = 0.2f;
 							xParams.m_xFixtureDef.density = 1.0f;
 							xParams.m_xFixtureDef.restitution = 1.0f;
 
 							xParams.m_eShapeType = Physics::Box;
-							xParams.m_xShapeSize.m_xBox.x = static_cast<int32>(tileSize);
-							xParams.m_xShapeSize.m_xBox.y = static_cast<int32>(tileSize);
+							xParams.m_xShapeSize.m_xBox.x = tileSize.x;
+							xParams.m_xShapeSize.m_xBox.y = tileSize.y;
 
 							Physics::Body* body = m_physics->createBody(xParams);
-							body->setPosition(static_cast<float>(x)* tileSize + tileSize * 0.5f, static_cast<float>(y)* tileSize + tileSize * 0.5f);
-							tile->setPhysicsBody(body);
+							body->setPosition(x * tileSize.x + tileSize.x * 0.5f, y * tileSize.y + tileSize.y * 0.5f);
 						}
 					}
 				}
 			}
 
 			// VISIBILITY
-			Map::TileLayer* layer = m_map->getTileLayer("objects");
-			if (layer != nullptr)
+			std::vector<Map::Object*> objects = m_map->getObjectGroup("light_segments")->getObjects();
+			for (std::size_t i = 0; i < objects.size(); ++i)
 			{
-				float tileSize = static_cast<float>(m_map->getTileSize());
-
-				// Looping all static objects in map
-				for (int x = 0; x < m_map->getWidth(); ++x)
+				std::vector<sf::Vector2f> points = objects[i]->m_points;
+				for (std::size_t k = 0; k < points.size(); ++k)
 				{
-					for (int y = 0; y < m_map->getHeight(); ++y)
+					if (k != points.size() - 1)
 					{
-						Map::Tile* tile = layer->getTile(x, y);
-						if (tile != nullptr)
-						{
-							sf::Vector2f tilePos = sf::Vector2f(tile->getPosition());
-							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize));
-							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize));
-							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize));
-							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize));
-						}
+						sf::Vector2f p0(points[k]);
+						sf::Vector2f p1(points[k + 1]);
+						m_visibility->addSegment(p0, p1);
 					}
 				}
 			}
 			m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
 			
 			// CLANS
-
+			std::vector<Map::Object*> spawns = m_map->getObjectGroup("spawns")->getObjects();
+			for (std::size_t i = 0; i < spawns.size(); ++i)
 			{
-				Clan* clan = m_clanManager->createClan("MacDonald");
-				clan;
-				//// Find a spawn position
-				//m_map->getObjectLayer("spawns")->getActiveObject();
-				//ClanMemberDef clanMemberDef;
-				//clanMemberDef.startPos = m_map->getLayer("spawns")
-				//clan->createMember(Clan::SCOUT);
+				Map::Object* object = spawns[i];
+				if (object->hasProperty("team"))
+				{
+					int teamNumber = std::stoi(object->getProperty("team"));
+					teamNumber;
+				}
 			}
+
+			Clan* clan = m_clanManager->createClan("MacDonald");
+			clan->createMember<Scout>();
+			clan->createMember<Scout>();
+			clan->createMember<Axeman>();
+			clan->createMember<Axeman>();
+			clan->createMember<Axeman>();
+
+			//// Find a spawn position
+			//ClanMemberDef clanMemberDef;
+			//clanMemberDef.startPos = m_map->getLayer("spawns")
+			//clan->createMember(Clan::SCOUT);
 
 			return m_bRunning = true;
 		}
@@ -160,7 +167,7 @@ namespace bjoernligan
 				m_xDrawManager->ClearScr();
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_visibility.get());
-				m_physics->getWorld()->DrawDebugData();
+				m_physics->draw();
 				m_xUIManager->DrawElements();
 				m_xDrawManager->Display();
 

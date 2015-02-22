@@ -13,9 +13,12 @@
 #include <iostream>
 #include <random>
 #include <memory>
+#include <array>
+#include <cassert>
 
 // Additional headers
 
 #include "sfml_include.hpp"
 #include "box2d_include.hpp"
+#include "tinyxml2.h"
 #include "Utils.hpp"

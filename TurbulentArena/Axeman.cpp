@@ -13,16 +13,10 @@ namespace bjoernligan
 
 	}
 
-	Axeman::~Axeman()
+	void Axeman::initiate()
 	{
+		m_xCombatStats.Initiate(3, 4);
 
-	}
-
-	void Axeman::Initiate()
-	{
-		m_xCombatStats.Initiate(1, 5);
-		
-		//create behaviortree
 		ai::BehaviorTree* xBT = new ai::BehaviorTree;
 
 		ai::BSelectorNode* xSelector = new ai::BSelectorNode;
@@ -33,8 +27,8 @@ namespace bjoernligan
 		m_xAgent->SetBehaviorTree(xBT);
 	}
 
-	void Axeman::Update(const float &p_fDeltaTime)
+	void Axeman::update(float deltatime)
 	{
-		p_fDeltaTime;
+		deltatime;
 	}
 }

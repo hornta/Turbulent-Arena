@@ -7,119 +7,98 @@ namespace bjoernligan
 	class Map : public sf::Drawable
 	{
 	public:
-		class TileDefinition
+		struct Tileset
 		{
-			friend class Map;
-			friend class Tile;
-		public:
-			TileDefinition(char ID, bool walkable, float u, float v, bool null);
-
-		private:
-			char m_ID;
-			bool m_walkable;
-			bool m_null;
-			sf::Vector2f m_uv;
+			sf::Texture m_texture;
 		};
 
-		class ObjectDefinition
+		class Properties
 		{
 			friend class Map;
-			friend class Object;
-
 		public:
-			ObjectDefinition(char ID, bool active, bool null);
+			std::string getProperty(const std::string& key);
+			bool hasProperty(const std::string& key);
 
-		private:
-			char m_ID;
-			bool m_null;
-			bool m_active;
+		protected:
+			std::map<std::string, std::string> m_propertySet;
+			void parseProperties(tinyxml2::XMLElement* propertiesNode);
 		};
 
-		class Tile
+		struct TileInfo
+		{
+			std::array<sf::Vector2f, 4> m_textureCoordinates;
+			Tileset* m_tileset;
+			Properties m_properties;
+		};
+
+		class Tile : public Properties
 		{
 			friend class Map;
 		public:
-			Tile(const sf::Vector2i& position, TileDefinition* tileDefinition);
-
-			sf::Vector2i getPosition() const;
-			bool isWalkable() const;
-			sf::Vertex* getVertices();
-			void setPhysicsBody(Physics::Body* body);
 
 		private:
+			TileInfo* m_tileInfo;
 			sf::Vertex* m_vertices;
-			sf::Vector2i m_position;
-			TileDefinition* m_tileDefinition;
-			Physics::Body* m_body;
 		};
 
-		class Object
+		struct LayerSet
 		{
-			friend class Map;
-		public:
-			Object(const sf::Vector2i& position, ObjectDefinition* objectDefinition);
-
-			sf::Vector2i getPosition() const;
-			void setActive(bool value);
-			bool isActive() const;
-		private:
-			bool m_active;
-			sf::Vector2i m_position;
-			ObjectDefinition* m_objectDefinition;
+			sf::VertexArray m_vertices;
+			std::vector<std::unique_ptr<Tile>> m_tiles;
 		};
 
-		class TileLayer
+		struct TileLayer
 		{
-			friend class Map;
-		public:
-			TileLayer(const sf::Vector2i& size, const std::string& name);
+			std::string m_name;
+			sf::Vector2i m_size;
+			std::map<Tileset*, std::unique_ptr<LayerSet>> m_layerSets;
 
 			Tile* getTile(int x, int y);
-			Tile* getTile(const sf::Vector2i& position);
-		private:
-			std::string m_name;
-			std::vector<std::unique_ptr<Tile>> m_tiles;
-			sf::Vector2i m_size;
-			sf::VertexArray m_vertices;
 		};
 
-		class ObjectLayer
+		struct Object : public Properties
+		{
+			virtual ~Object();
+			int m_ID;
+			sf::Vector2f m_position;
+			std::vector<sf::Vector2f> m_points;
+		};
+
+		struct Polygon : public Object
+		{
+		};
+
+		class ObjectGroup
 		{
 			friend class Map;
 		public:
-			ObjectLayer(const std::string& name);
-
-			Object* getActiveObject();
+			std::vector<Object*> getObjects() const;
 		private:
-			std::string m_name;
 			std::vector<std::unique_ptr<Object>> m_objects;
+			std::string m_name;
 		};
 
-		Map(const std::string& file);
+		Map(const std::string& path);
+		bool load(const std::string& file);
 
-		bool parseMap(const std::string& file);
-		TileDefinition* getTileDefinition(char ID) const;
-		ObjectDefinition* getObjectDefinition(char ID) const;
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		TileLayer* getLayer(const std::string& name) const;
+		ObjectGroup* getObjectGroup(const std::string& name) const;
+			
 		sf::Vector2i getSize() const;
 		int getWidth() const;
 		int getHeight() const;
-		int getTileSize() const;
-		Tile* getTopmostTile(int x, int y) const;
-		Tile* getTopmostTile(const sf::Vector2i& position) const;
-		TileLayer* getTileLayer(const std::string& name);
-		ObjectLayer* getObjectLayer(const std::string& name);
+		sf::Vector2f getTileSize() const;
 
 	private:
-		bool beginsWith(const std::string& id, const std::vector<std::string>& parts);
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	protected:
 		sf::Vector2i m_size;
-		int m_tileSize;
+		sf::Vector2f m_tileSize;
+		std::string m_path;
+
 		std::vector<std::unique_ptr<TileLayer>> m_tileLayers;
-		std::vector<std::unique_ptr<ObjectLayer>> m_objectLayers;
-		std::vector<std::unique_ptr<TileDefinition>> m_tileDefinitions;
-		std::vector<std::unique_ptr<ObjectDefinition>> m_objectDefinitions;
-		sf::Texture m_texture;
+		std::vector<std::unique_ptr<ObjectGroup>> m_objectGroups;
+		std::vector<std::unique_ptr<TileInfo>> m_tileInfo;
+		std::vector<std::unique_ptr<Tileset>> m_tilesets;
 	};
 }

@@ -2,32 +2,15 @@
 
 namespace bjoernligan
 {
-	class Class;
+	class ClanMember;
 	class Clan : public sf::Drawable
 	{
 	public:
-		enum ClassType
-		{
-			AXEMAN,
-			BOWMAN,
-			GATHERER,
-			SCOUT
-		};
-
-		struct ClanDef
-		{
-			std::string name;
-			sf::Color color;
-			int amountScouts;
-			int amountAxemen;
-			int amountBowmen;
-			int amountGatherers;
-		};
-
 		Clan(const std::string& name);
 		~Clan();
 
-		void createMember();
+		template <typename T>
+		ClanMember* createMember();
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Color getColor() const;
@@ -36,6 +19,13 @@ namespace bjoernligan
 		sf::Color m_color;
 		std::string m_name;
 		
-		std::vector<Class*> m_members;
+		std::vector<std::unique_ptr<ClanMember>> m_clanMembers;
 	};
+
+	template <typename T>
+	ClanMember* Clan::createMember()
+	{
+		m_clanMembers.emplace_back(std::make_unique<T>());
+		return m_clanMembers.back().get();
+	}
 }

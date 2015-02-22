@@ -44,6 +44,19 @@ namespace bjoernligan
 		m_b2World->Step(deltatime, 10, 10);
 	}
 
+	void Physics::draw()
+	{
+		if (m_drawDebug)
+		{
+			m_b2World->DrawDebugData();
+		}
+	}
+
+	void Physics::setDebug(bool value)
+	{
+		m_drawDebug = value;
+	}
+
 	b2World* Physics::getWorld() const
 	{
 		return m_b2World.get();

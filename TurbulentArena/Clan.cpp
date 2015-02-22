@@ -18,9 +18,9 @@ namespace bjoernligan
 
 	void Clan::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		for (std::size_t i = 0; i < m_members.size(); ++i)
+		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
 		{
-			target.draw(*m_members[i], states);
+			target.draw(*m_clanMembers[i], states);
 		}
 	}
 
