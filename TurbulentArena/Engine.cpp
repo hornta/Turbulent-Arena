@@ -59,6 +59,8 @@ namespace bjoernligan
 
 			if (!m_xDrawManager->Initialize())
 				return false;
+			m_xDrawManager->getWindow()->create(sf::VideoMode(1920, 1080), "", sf::Style::None);
+			m_view = m_xDrawManager->getWindow()->getView();
 
 			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
@@ -69,7 +71,7 @@ namespace bjoernligan
 			m_map = std::make_unique<Map>("../data/");
 			m_map->load("map.tmx");
 			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
-			m_physics->setDebug(true);
+			m_physics->setDebug(false);
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
 
@@ -293,8 +295,13 @@ namespace bjoernligan
 				m_xUIManager->Update(m_fDeltaTime);
 				m_clanManager->Update(m_fDeltaTime);
 
+				updateCamera();
+				// Keep mouse inside window
+				
+
 				//Draw
 				m_xDrawManager->ClearScr();
+				m_xDrawManager->getWindow()->setView(m_view);
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_visibility.get());
 				m_xDrawManager->Draw(m_clanManager.get());
@@ -342,6 +349,50 @@ namespace bjoernligan
 				if (p_xEvent.type == sf::Event::MouseButtonReleased)
 					m_xMouse->SetCurrent(p_xEvent.mouseButton.button, false);
 			}
+		}
+
+		void Engine::updateCamera()
+		{
+			if (m_xMouse->IsDown(sf::Mouse::Right))
+			{
+				if (m_xMouse->IsDownOnce(sf::Mouse::Right))
+				{
+					m_lastRightClick = sf::Vector2f(sf::Mouse::getPosition(*m_xDrawManager->getWindow()));
+				}
+
+				sf::Vector2f currentPos = sf::Vector2f(sf::Mouse::getPosition(*m_xDrawManager->getWindow()));
+
+				sf::Vector2f direction = currentPos - m_lastRightClick;
+				Vector2f vec(direction);
+				vec.limit(300.f);
+				direction.x = vec.x;
+				direction.y = vec.y;
+				m_view.move(direction * 5.f * m_fDeltaTime);
+			}
+
+			sf::Vector2f pos = m_view.getCenter();
+			sf::Vector2f size = m_view.getSize();
+			sf::Vector2f halfSize = size * 0.5f;
+			sf::Vector2f newPos = pos;
+			if ((pos.x - halfSize.x) < 0.f)
+			{
+				newPos.x = 0.f + halfSize.x;
+			}
+			else if (pos.x + halfSize.x > m_map->getWidth() * m_map->getTileSize().x)
+			{
+				newPos.x = m_map->getWidth() * m_map->getTileSize().x - halfSize.x;
+			}
+
+			if (pos.y - halfSize.y < 0.f)
+			{
+				newPos.y = 0.f + halfSize.y;
+			}
+			else if (pos.y + halfSize.y > m_map->getHeight() * m_map->getTileSize().y)
+			{
+				newPos.y = m_map->getHeight() * m_map->getTileSize().y - halfSize.y;
+			}
+
+			m_view.setCenter(newPos);
 		}
 	}
 }

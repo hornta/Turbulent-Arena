@@ -31,6 +31,7 @@ namespace bjoernligan
 		private:
 			void UpdateDeltaTime();
 			void PollEvents();
+			void updateCamera();
 
 			bool m_bRunning;
 			SpriteManager::Ptr m_xSpriteManager;
@@ -40,6 +41,8 @@ namespace bjoernligan
 			input::Mouse::Ptr m_xMouse;
 			Utility::Ptr m_xUtility;
 
+			sf::View m_view;
+			sf::Vector2f m_lastRightClick;
 			sf::Clock m_xDeltaClock;
 			float m_fDeltaTime;
 
