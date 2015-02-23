@@ -31,6 +31,7 @@ namespace bjoernligan
 		private:
 			void UpdateDeltaTime();
 			void PollEvents();
+			void SetDebugMode(const bool &p_bValue);
 
 			bool m_bRunning;
 			SpriteManager::Ptr m_xSpriteManager;

@@ -3,29 +3,35 @@
 
 namespace bjoernligan
 {
-	namespace
+	float Box2D_Unit = 32.f;
+	float toBox2D = 1.f / Box2D_Unit;
+	float toPixel = 1.f * Box2D_Unit;
+
+	namespace random
 	{
 		std::random_device rd;
 		std::mt19937 engine(rd());
-		float Box2D_Unit = 32.f;
-		float toBox2D = 1.f / Box2D_Unit;
-		float toPixel = 1.f * Box2D_Unit;
-	}
 
-	int random(int min, int max)
-	{
-		assert(min <= max);
-		std::uniform_int_distribution<int> dist(min, max);
-		return dist(engine);
-	}
+		std::mt19937 getEngine()
+		{
+			return engine;
+		}
 
-	float random(float min, float max)
-	{
-		assert(min <= max);
-		std::uniform_real_distribution<float> dist(min, max);
-		return dist(engine);
-	}
+		int random(int min, int max)
+		{
+			assert(min <= max);
+			std::uniform_int_distribution<int> dist(min, max);
+			return dist(engine);
+		}
 
+		float random(float min, float max)
+		{
+			assert(min <= max);
+			std::uniform_real_distribution<float> dist(min, max);
+			return dist(engine);
+		}
+	}
+	
 	float distanceBetweenPoints(float x0, float y0, float x1, float y1)
 	{
 		return sqrtf((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));

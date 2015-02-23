@@ -84,6 +84,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SteeringManager.hpp" />
+    <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
     <ClInclude Include="AIObserver.hpp" />
     <ClInclude Include="Agent.hpp" />
@@ -92,11 +94,10 @@
     <ClInclude Include="BNodesInclude.hpp" />
     <ClInclude Include="Box2DWorldDraw.h" />
     <ClInclude Include="ClanManager.hpp" />
+    <ClInclude Include="ClanMember.hpp" />
     <ClInclude Include="CombatStats.hpp" />
     <ClInclude Include="ContactListener.hpp" />
-    <ClInclude Include="GameplayClass.hpp" />
     <ClInclude Include="Clan.hpp" />
-    <ClInclude Include="Class.hpp" />
     <ClInclude Include="BCompositeNode.hpp" />
     <ClInclude Include="BehaviorTree.hpp" />
     <ClInclude Include="BInverterNode.hpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.hpp" />
+    <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="UIBase.hpp" />
     <ClInclude Include="UIButton.hpp" />
     <ClInclude Include="UIManager.hpp" />
@@ -131,6 +133,7 @@
     <ClInclude Include="Visibility.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />
     <ClCompile Include="BCompositeNode.cpp" />
@@ -143,11 +146,11 @@
     <ClCompile Include="BSucceederNode.cpp" />
     <ClCompile Include="Clan.cpp" />
     <ClCompile Include="ClanManager.cpp" />
+    <ClCompile Include="ClanMember.cpp" />
     <ClCompile Include="CombatStats.cpp" />
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Class.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -164,6 +167,10 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIButton.cpp" />

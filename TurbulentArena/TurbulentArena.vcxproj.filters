@@ -168,19 +168,19 @@
     <ClInclude Include="BMoveToNode.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
+    <ClInclude Include="SteeringManager.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactListener.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Visibility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scout.hpp">
       <Filter>Header Files\objects\gameplay classes</Filter>
     </ClInclude>
-    <ClInclude Include="Class.hpp">
-      <Filter>Header Files\objects\gameplay classes</Filter>
-    </ClInclude>
     <ClInclude Include="Clan.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameplayClass.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClanManager.hpp">
@@ -213,11 +213,20 @@
     <ClInclude Include="Engine.hpp">
       <Filter>Header Files\system</Filter>
     </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanMember.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SliderBridge.hpp">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
     <ClInclude Include="UIButton.hpp">
       <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="AIEvent.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,13 +296,16 @@
     <ClCompile Include="BMoveToNode.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
+    <ClCompile Include="SteeringManager.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Visibility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scout.cpp">
-      <Filter>Source Files\objects\gameplay classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Class.cpp">
       <Filter>Source Files\objects\gameplay classes</Filter>
     </ClCompile>
     <ClCompile Include="Clan.cpp">
@@ -328,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="UISlider.cpp">
       <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanMember.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SliderBridge.cpp">
       <Filter>Source Files\gui</Filter>

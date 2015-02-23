@@ -7,19 +7,19 @@
 #include "Pathfinder.hpp"
 #include "Object.hpp"
 #include "Visibility.hpp"
+#include "Physics.hpp"
+#include "Settings.hpp"
+
 #include "ClanManager.hpp"
 #include "Clan.hpp"
 #include "Scout.hpp"
+#include "Axeman.hpp"
+
 #include "Physics.hpp"
 #include "Settings.hpp"
 #include "UISlider.hpp"
 #include "UIButton.hpp"
 #include <Windows.h>
-
-void Test(const bool &p_bHej)
-{
-	std::cout << "hej: " << p_bHej << std::endl;
-}
 
 namespace bjoernligan
 {
@@ -65,15 +65,15 @@ namespace bjoernligan
 				return false;
 
 			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
-			xButton->Initialize("Click me", sf::IntRect(96, 96, 128, 32), Test);
-			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
-			xButton->Initialize("Yolo!", sf::IntRect(96, 96 + 64, 128, 32), Test);
-			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
-			xButton->Initialize("Do not press this button", sf::IntRect(96, 96 + 64 * 2, 256, 32), Test);
+			xButton->Initialize("Debug", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 128, 32), std::bind(&bjoernligan::system::Engine::SetDebugMode, this, std::placeholders::_1));
+
+			m_xSpriteManager->setTexturePath("../data/sprites/");
 
 			m_clanManager = std::make_unique<ClanManager>();
-			m_map = std::make_unique<Map>("../data/map.txt");
+			m_map = std::make_unique<Map>("../data/");
+			m_map->load("map.tmx");
 			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
+			m_physics->setDebug(true);
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
 
@@ -82,81 +82,197 @@ namespace bjoernligan
 			{
 				for (int y = 0; y < m_map->getHeight(); ++y)
 				{
-					Map::Tile* tile = m_map->getTopmostTile(x, y);
+					Map::Tile* tile = m_map->getLayer("objects")->getTile(x, y);
 					if (tile != nullptr)
 					{
-						m_pathFinder->getGrid().setWalkableAt(x, y, tile->isWalkable());
-						if (!tile->isWalkable())
+						m_pathFinder->getGrid().setWalkableAt(x, y, tile->hasProperty("walkable"));
+						if (!tile->hasProperty("walkable"))
 						{
-							float tileSize = static_cast<float>(m_map->getTileSize());
+							sf::Vector2f tileSize = m_map->getTileSize();
 							Physics::Params xParams;
 							xParams.m_xFixtureDef.friction = 0.2f;
 							xParams.m_xFixtureDef.density = 1.0f;
 							xParams.m_xFixtureDef.restitution = 1.0f;
 
 							xParams.m_eShapeType = Physics::Box;
-							xParams.m_xShapeSize.m_xBox.x = static_cast<int32>(tileSize);
-							xParams.m_xShapeSize.m_xBox.y = static_cast<int32>(tileSize);
+							xParams.m_xShapeSize.m_xBox.x = tileSize.x;
+							xParams.m_xShapeSize.m_xBox.y = tileSize.y;
 
 							Physics::Body* body = m_physics->createBody(xParams);
-							body->setPosition(static_cast<float>(x)* tileSize + tileSize * 0.5f, static_cast<float>(y)* tileSize + tileSize * 0.5f);
-							tile->setPhysicsBody(body);
+							body->setPosition(x * tileSize.x + tileSize.x * 0.5f, y * tileSize.y + tileSize.y * 0.5f);
 						}
 					}
 				}
 			}
 
 			// VISIBILITY
-			Map::TileLayer* layer = m_map->getTileLayer("objects");
-			if (layer != nullptr)
+			std::vector<Map::Object*> objects = m_map->getObjectGroup("light_segments")->getObjects();
+			for (std::size_t i = 0; i < objects.size(); ++i)
 			{
-				float tileSize = static_cast<float>(m_map->getTileSize());
-
-				// Looping all static objects in map
-				for (int x = 0; x < m_map->getWidth(); ++x)
+				std::vector<sf::Vector2f> points = objects[i]->m_points;
+				for (std::size_t k = 0; k < points.size(); ++k)
 				{
-					for (int y = 0; y < m_map->getHeight(); ++y)
+					if (k != points.size() - 1)
 					{
-						Map::Tile* tile = layer->getTile(x, y);
-						if (tile != nullptr)
-						{
-							sf::Vector2f tilePos = sf::Vector2f(tile->getPosition());
-							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize));
-							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, tilePos.y * tileSize), sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize));
-							m_visibility->addSegment(sf::Vector2f((tilePos.x + 1.f) * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize));
-							m_visibility->addSegment(sf::Vector2f(tilePos.x * tileSize, (tilePos.y + 1.f) * tileSize), sf::Vector2f(tilePos.x * tileSize, tilePos.y * tileSize));
-						}
+						sf::Vector2f p0(points[k]);
+						sf::Vector2f p1(points[k + 1]);
+						m_visibility->addSegment(p0, p1);
 					}
 				}
 			}
 			//m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
 			
 			// CLANS
+			std::vector<Map::Object*> spawns = m_map->getObjectGroup("spawns")->getObjects();
+			std::map<int, std::vector<sf::Vector2f>> team_spawns;
+			for (std::size_t i = 0; i < spawns.size(); ++i)
+			{
+				Map::Object* object = spawns[i];
+				if (object->hasProperty("team"))
+				{
+					team_spawns[std::stoi(object->getProperty("team"))].push_back(object->m_position);
+				}
+			}
+
+			// Randomize spawn vector
+			auto teamSpawnsIt = team_spawns.begin();
+			while (teamSpawnsIt != team_spawns.end())
+			{
+				std::shuffle(teamSpawnsIt->second.begin(), teamSpawnsIt->second.end(), random::getEngine());
+				++teamSpawnsIt;
+			}
+
+			////Creation of sliders:
+			//float fSliderSpacing = 80.0f;
+
+			//UISlider* xSlider = m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*3.0f), 240.0f, 0.0f, 100.0f);
+			//SliderBridge* xBridge = xSlider->GetBridge();
+			//clan->AddSliderBridge(xBridge);
+
+			//xSlider = m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*2.0f), 240.0f, 0.0f, 100.0f);
+			//xBridge = xSlider->GetBridge();
+			//clan->AddSliderBridge(xBridge);
+
+			//xSlider = m_xUIManager->AddSlider("Agression", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*1.0f), 240.0f, 0.0f, 100.0f);
+			//xBridge = xSlider->GetBridge();
+			//clan->AddSliderBridge(xBridge);
+
+			Physics::Params clanMemberBodyDef;
+			clanMemberBodyDef.m_eShapeType = Physics::Circle;
+			clanMemberBodyDef.m_xFixtureDef.friction = 0.2f;
+			clanMemberBodyDef.m_xFixtureDef.density = 1.0f;
+			clanMemberBodyDef.m_xFixtureDef.restitution = 1.0f;
+			clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 16.f;
+			clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
+			
+			Clan* clan = m_clanManager->createClan("MacDonald");
 
 			{
-				Clan* clan = m_clanManager->createClan("MacDonald");
-				clan;
-				//// Find a spawn position
-				//m_map->getObjectLayer("spawns")->getActiveObject();
-				//ClanMemberDef clanMemberDef;
-				//clanMemberDef.startPos = m_map->getLayer("spawns")
-				//clan->createMember(Clan::SCOUT);
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
 
-
-				//Creation of sliders:
-				float fSliderSpacing = 80.0f;
-
-				UISlider* xSlider = m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*3.0f), 240.0f, 0.0f, 100.0f);
-				SliderBridge* xBridge = xSlider->GetBridge();
-				clan->AddSliderBridge(xBridge);
-
-				xSlider = m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*2.0f), 240.0f, 0.0f, 100.0f);
-				xBridge = xSlider->GetBridge();
-				clan->AddSliderBridge(xBridge);
-
-				xSlider = m_xUIManager->AddSlider("Agression", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*1.0f), 240.0f, 0.0f, 100.0f);
-				xBridge = xSlider->GetBridge();
-				clan->AddSliderBridge(xBridge);
+			std::vector<Clan*> clans = m_clanManager->getClans();
+			std::vector<ClanMember*> members;
+			for (std::size_t i = 0; i < clans.size(); ++i)
+			{
+				members = clans[i]->getMembers();
+				for (std::size_t k = 0; k < members.size(); ++k)
+				{
+					members[k]->getBody()->setPosition(team_spawns[i][k]);
+				}
 			}
 
 			return m_bRunning = true;
@@ -186,7 +302,8 @@ namespace bjoernligan
 				m_xDrawManager->ClearScr();
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_visibility.get());
-				m_physics->getWorld()->DrawDebugData();
+				m_xDrawManager->Draw(m_clanManager.get());
+				m_physics->draw();
 				m_xUIManager->DrawElements();
 				m_xDrawManager->Display();
 
@@ -230,6 +347,11 @@ namespace bjoernligan
 				if (p_xEvent.type == sf::Event::MouseButtonReleased)
 					m_xMouse->SetCurrent(p_xEvent.mouseButton.button, false);
 			}
+		}
+
+		void Engine::SetDebugMode(const bool &p_bValue)
+		{
+			m_physics->setDebug(p_bValue);
 		}
 	}
 }

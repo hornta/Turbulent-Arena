@@ -377,14 +377,6 @@ namespace bjoernligan
 			light->addSegment(m_segments[i]);
 		}
 
-		float halfSize = 20000.f;
-
-		// Add map borders
-		light->addSegment(PrepareSegment(sf::Vector2f(0.f, 0.f), sf::Vector2f(halfSize, 0.f)));
-		light->addSegment(PrepareSegment(sf::Vector2f(halfSize, 0.f), sf::Vector2f(halfSize, halfSize)));
-		light->addSegment(PrepareSegment(sf::Vector2f(halfSize, halfSize), sf::Vector2f(0.f, halfSize)));
-		light->addSegment(PrepareSegment(sf::Vector2f(0.f, halfSize), sf::Vector2f(0.f, 0.f)));
-
 		return light;
 	}
 

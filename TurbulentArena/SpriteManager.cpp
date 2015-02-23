@@ -19,6 +19,11 @@ namespace bjoernligan
 			return Ptr(new SpriteManager);
 		}
 
+		void SpriteManager::setTexturePath(const std::string& path)
+		{
+			m_texturePath = path;
+		}
+
 		sf::Sprite* SpriteManager::LoadSprite(const std::string &p_sFilename, const std::string &p_sSpritename,
 			int p_iPosX, int p_iPosY, int p_iWidth, int p_iHeight,
 			float p_fXScale, float p_fYScale)
@@ -28,33 +33,15 @@ namespace bjoernligan
 
 			m_axSprites.insert(std::pair<std::string, std::unique_ptr<sf::Sprite>>(p_sSpritename, std::make_unique<sf::Sprite>()));
 			auto xIt = m_axSprites.find(p_sSpritename);
-			sf::Texture* xTexture = LoadTexture(p_sFilename);
+			sf::Texture* xTexture = GetTexture(p_sFilename);
 			if (xTexture)
-				(*xIt).second->setTexture(*LoadTexture(p_sFilename));
+				(*xIt).second->setTexture(*GetTexture(p_sFilename));
 
 			if (p_iWidth > 0 && p_iHeight > 0)
 				(*xIt).second->setTextureRect(sf::IntRect(p_iPosX, p_iPosY, p_iWidth, p_iHeight));
 
 			(*xIt).second->setScale(p_fXScale, p_fYScale);
 			return (*xIt).second.get();
-		}
-
-		sf::Texture* SpriteManager::LoadTexture(const std::string &p_sFilename)
-		{
-			std::string sFilePath = Settings::m_sSpritePath + p_sFilename;
-
-			auto it = m_axTextures.find(sFilePath);
-			if (it == m_axTextures.end())
-			{
-				m_axTextures.insert(std::pair<const std::string, std::unique_ptr<sf::Texture>>(sFilePath, std::make_unique<sf::Texture>()));
-				it = m_axTextures.find(sFilePath);
-				if (!it->second->loadFromFile(sFilePath))
-				{
-					m_axTextures.erase(it);
-					return nullptr;
-				}
-			}
-			return it->second.get();
 		}
 
 		void SpriteManager::RemoveSprite(const std::string &p_sSpritename)
@@ -79,12 +66,22 @@ namespace bjoernligan
 
 		sf::Texture* SpriteManager::GetTexture(const std::string &p_sFilename)
 		{
-			std::string sFullFileName = Settings::m_sSpritePath + p_sFilename;
-			auto it = m_axTextures.find(sFullFileName);
+			auto it = m_axTextures.find(p_sFilename);
 			if (it == m_axTextures.end())
-				return nullptr;
+			{
+				std::string texturePath = m_texturePath + p_sFilename;
+				m_axTextures.insert(std::make_pair(p_sFilename, std::make_unique<sf::Texture>()));
+				if (!m_axTextures[p_sFilename]->loadFromFile(texturePath))
+				{
+					return nullptr;
+				}
+				else
+					return m_axTextures[p_sFilename].get();
+			}
 			else
+			{
 				return it->second.get();
+			}
 		}
 	}
 }

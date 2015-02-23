@@ -37,7 +37,7 @@ namespace bjoernligan
 		void Initialize(
 			const std::string &p_sName,
 			const sf::IntRect &p_xSize,
-			const std::function<void(bool)> &p_xFunction,
+			std::function<void(bool)> p_xFunction,
 			const sf::Color &p_xIdleColor = m_xDefaultIdleColor,
 			const sf::Color &p_xHoverColor = m_xDefaultHoverColor,
 			const sf::Color &p_xPressedColor = m_xDefaultPressedColor);

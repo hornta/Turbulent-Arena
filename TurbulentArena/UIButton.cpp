@@ -38,7 +38,7 @@ namespace bjoernligan
 	void UIButton::Initialize(
 		const std::string &p_sName,
 		const sf::IntRect &p_xSize,
-		const std::function<void(bool)> &p_xFunction,
+		std::function<void(bool)> p_xFunction,
 		const sf::Color &p_xIdleColor,
 		const sf::Color &p_xHoverColor,
 		const sf::Color &p_xPressedColor)

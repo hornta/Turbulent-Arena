@@ -13,16 +13,10 @@ namespace bjoernligan
 
 	}
 
-	Scout::~Scout()
-	{
-
-	}
-
-	void Scout::Initiate()
+	void Scout::initiate()
 	{
 		m_xCombatStats.Initiate(1, 5);
 
-		//create behaviortree
 		ai::BehaviorTree* xBT = new ai::BehaviorTree;
 
 		ai::BSelectorNode* xSelector = new ai::BSelectorNode;
@@ -33,8 +27,9 @@ namespace bjoernligan
 		m_xAgent->SetBehaviorTree(xBT);
 	}
 
-	void Scout::Update(const float &p_fDeltaTime)
+	void Scout::update(float deltatime)
 	{
-		p_fDeltaTime;
+		ClanMember::update(deltatime);
+		deltatime;
 	}
 }

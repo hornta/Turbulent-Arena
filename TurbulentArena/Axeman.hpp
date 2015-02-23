@@ -1,17 +1,14 @@
-//Axeman.hpp
-
 #pragma once
-#include "Class.hpp"
+#include "ClanMember.hpp"
 
 namespace bjoernligan
 {
-	class Axeman : public Class
+	class Axeman : public ClanMember
 	{
 	public:
 		Axeman();
-		~Axeman();
 
-		virtual void Initiate();
-		virtual void Update(const float &p_fDeltaTime);
+		void initiate();
+		void update(float deltatime);
 	};
 }

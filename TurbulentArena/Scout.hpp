@@ -1,17 +1,14 @@
-//Scout.hpp
-
 #pragma once
-#include "Class.hpp"
+#include "ClanMember.hpp"
 
 namespace bjoernligan
 {
-	class Scout : public Class
+	class Scout : public ClanMember
 	{
 	public:
 		Scout();
-		~Scout();
 
-		virtual void Initiate();
-		virtual void Update(const float &p_fDeltaTime);
+		void initiate();
+		void update(float deltatime);
 	};
 }
