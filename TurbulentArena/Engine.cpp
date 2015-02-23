@@ -13,7 +13,13 @@
 #include "Physics.hpp"
 #include "Settings.hpp"
 #include "UISlider.hpp"
+#include "UIButton.hpp"
 #include <Windows.h>
+
+void Test(const bool &p_bHej)
+{
+	std::cout << "hej: " << p_bHej << std::endl;
+}
 
 namespace bjoernligan
 {
@@ -57,6 +63,13 @@ namespace bjoernligan
 
 			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
+
+			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
+			xButton->Initialize("Click me", sf::IntRect(96, 96, 128, 32), Test);
+			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
+			xButton->Initialize("Yolo!", sf::IntRect(96, 96 + 64, 128, 32), Test);
+			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
+			xButton->Initialize("Do not press this button", sf::IntRect(96, 96 + 64 * 2, 256, 32), Test);
 
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/map.txt");
@@ -116,7 +129,7 @@ namespace bjoernligan
 					}
 				}
 			}
-			m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
+			//m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
 			
 			// CLANS
 

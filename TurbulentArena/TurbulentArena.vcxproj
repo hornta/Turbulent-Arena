@@ -123,6 +123,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="UIBase.hpp" />
+    <ClInclude Include="UIButton.hpp" />
     <ClInclude Include="UIManager.hpp" />
     <ClInclude Include="UISlider.hpp" />
     <ClInclude Include="Utility.hpp" />
@@ -165,6 +166,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UISlider.cpp" />
     <ClCompile Include="Utility.cpp" />

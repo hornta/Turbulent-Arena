@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 #include "BMoveToNode.hpp"
+#include "Agent.hpp"
 
 namespace bjoernligan
 {
@@ -17,15 +18,12 @@ namespace bjoernligan
 
 		}
 
-		void BMoveToNode::SetTo(const sf::Vector2i &p_xTo)
-		{
-			m_xTo = p_xTo;
-		}
-
 		EBNodeStatus BMoveToNode::Process()
 		{
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
+
+			//m_xAgent->MoveToTarget();
 
 			//get move target from agent
 			//m_xTo = m_xAgent->GetMoveTarget()

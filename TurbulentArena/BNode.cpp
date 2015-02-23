@@ -17,7 +17,7 @@ namespace bjoernligan
 
 		}
 
-		void BNode::AttachAgent(AIObserver* p_xAgent)
+		void BNode::AttachAgent(Agent* p_xAgent)
 		{
 			m_xAgent = p_xAgent;
 		}

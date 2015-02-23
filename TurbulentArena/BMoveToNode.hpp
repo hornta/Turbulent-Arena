@@ -14,12 +14,7 @@ namespace bjoernligan
 			BMoveToNode();
 			~BMoveToNode();
 
-			void SetTo(const sf::Vector2i &p_xTo);
-
 			EBNodeStatus Process();
-
-		private:
-			sf::Vector2i m_xTo;
 		};
 	}
 }

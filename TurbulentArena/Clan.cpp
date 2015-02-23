@@ -25,6 +25,7 @@ namespace bjoernligan
 			if (m_xBridges[i]->HasNewValue())
 			{
 				float fValue = m_xBridges[i]->GetNewValue();
+				fValue; //<-- temp for compile
 
 				if (m_xBridges[i]->GetLabel() == "Social")
 				{
@@ -47,9 +48,6 @@ namespace bjoernligan
 						//m_members[k]->SetAgression(fValue);
 					}
 				}
-
-				//temp for compile:
-				fValue;
 			}
 		}
 	}

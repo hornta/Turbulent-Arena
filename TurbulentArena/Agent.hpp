@@ -25,10 +25,20 @@ namespace bjoernligan
 			void SetBehaviorTree(BehaviorTree* p_xBT);
 			void setSenseRadius(float p_senseRadius);
 			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
+
+			//tomas BT-methods (bad solution)
+			bool EnemyClose();
+			void ChooseEnemyTarget();
+			void MoveToTargetPos();
+
+
 		protected:
 			BehaviorTree* m_xBT;
 			float m_senseRadius;
 			Visibility::Light* m_senseVisibleArea;
+
+			//tomas BT-variables (bad solution)
+
 		};
 	}
 }
