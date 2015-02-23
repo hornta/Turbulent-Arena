@@ -84,6 +84,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DebugWindow.hpp" />
     <ClInclude Include="SteeringManager.hpp" />
     <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Visibility.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />
