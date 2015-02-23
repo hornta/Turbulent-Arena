@@ -37,11 +37,20 @@ namespace bjoernligan
 			void Evade(b2Body* p_TargetBody);
 			void UpdateSteering();
 
+			//tomas BT-methods (bad solution)
+			bool EnemyClose();
+			void ChooseEnemyTarget();
+			void MoveToTargetPos();
+
 		protected:
 			BehaviorTree* m_xBT;
 			float m_senseRadius;
 			Visibility::Light* m_senseVisibleArea;
+
 			SteeringManager* m_Steering;
+
+			//tomas BT-variables (bad solution)
+
 		};
 	}
 }

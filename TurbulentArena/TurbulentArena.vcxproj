@@ -125,6 +125,7 @@
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="UIBase.hpp" />
+    <ClInclude Include="UIButton.hpp" />
     <ClInclude Include="UIManager.hpp" />
     <ClInclude Include="UISlider.hpp" />
     <ClInclude Include="Utility.hpp" />
@@ -172,6 +173,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UISlider.cpp" />
     <ClCompile Include="Utility.cpp" />

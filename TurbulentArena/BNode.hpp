@@ -6,7 +6,7 @@ namespace bjoernligan
 {
 	namespace ai
 	{
-		class AIObserver;
+		class Agent;
 
 		enum EBNodeStatus
 		{
@@ -24,12 +24,12 @@ namespace bjoernligan
 
 			virtual EBNodeStatus Process() = 0;
 
-			void AttachAgent(AIObserver* p_xAgent);
+			void AttachAgent(Agent* p_xAgent);
 
 			virtual void CleanUp();
 
 		protected:
-			AIObserver* m_xAgent;
+			Agent* m_xAgent;
 		};
 	}
 }

@@ -24,6 +24,7 @@ namespace bjoernligan
 			if (m_xBridges[i]->HasNewValue())
 			{
 				float fValue = m_xBridges[i]->GetNewValue();
+				fValue; //<-- temp for compile
 
 				if (m_xBridges[i]->GetLabel() == "Social")
 				{
@@ -46,9 +47,6 @@ namespace bjoernligan
 						//m_members[k]->SetAgression(fValue);
 					}
 				}
-
-				//temp for compile:
-				fValue;
 			}
 		}
 
@@ -84,5 +82,34 @@ namespace bjoernligan
 	void Clan::AddSliderBridge(SliderBridge* p_xBridge)
 	{
 		m_xBridges.push_back(p_xBridge);
+	}
+
+	void Clan::SetSocial(const float &p_fNewValue)
+	{
+		p_fNewValue; // <-- for compile
+
+		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		{
+			//m_members[k]->SetSocial(p_fNewValue);
+		}
+	}
+
+	void Clan::SetBrave(const float &p_fNewValue)
+	{
+		p_fNewValue; // <-- for compile
+
+		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		{
+			//m_members[k]->SetSocial(p_fNewValue);
+		}
+	}
+	void Clan::SetAgression(const float &p_fNewValue)
+	{
+		p_fNewValue; // <-- for compile
+
+		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		{
+			//m_members[k]->SetSocial(p_fNewValue);
+		}
 	}
 }

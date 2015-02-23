@@ -21,6 +21,10 @@ namespace bjoernligan
 
 		void AddSliderBridge(SliderBridge* p_xBridge);
 
+		void SetSocial(const float &p_fNewValue);
+		void SetBrave(const float &p_fNewValue);
+		void SetAgression(const float &p_fNewValue);
+
 	private:
 		sf::Color m_color;
 		std::string m_name;

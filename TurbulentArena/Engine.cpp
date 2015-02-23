@@ -18,7 +18,10 @@
 #include "Physics.hpp"
 #include "Settings.hpp"
 #include "UISlider.hpp"
+#include "UIButton.hpp"
 #include <Windows.h>
+
+#include <iomanip>
 
 namespace bjoernligan
 {
@@ -26,6 +29,7 @@ namespace bjoernligan
 	{
 		Engine::Engine()
 			: m_physics(nullptr)
+			, m_fScrollSpeed(5.0f)
 		{
 			m_xDrawManager = nullptr;
 			m_xSpriteManager = nullptr;
@@ -64,6 +68,9 @@ namespace bjoernligan
 
 			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
+
+			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
+			xButton->Initialize("Debug", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 128, 32), std::bind(&bjoernligan::system::Engine::SetDebugMode, this, std::placeholders::_1));
 
 			m_xSpriteManager->setTexturePath("../data/sprites/");
 
@@ -118,6 +125,7 @@ namespace bjoernligan
 					}
 				}
 			}
+			//m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
 			
 			// CLANS
 			std::vector<Map::Object*> spawns = m_map->getObjectGroup("spawns")->getObjects();
@@ -272,6 +280,8 @@ namespace bjoernligan
 				}
 			}
 
+			m_xUIManager->AddSlider("Scrollspeed", std::bind(&bjoernligan::system::Engine::SetScrollSpeed, this, std::placeholders::_1), 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 240.0f, 3.0f, 15.0f);
+
 			return m_bRunning = true;
 		}
 
@@ -393,6 +403,17 @@ namespace bjoernligan
 			}
 
 			m_view.setCenter(newPos);
+		}
+		
+		void Engine::SetDebugMode(const bool &p_bValue)
+		{
+			m_physics->setDebug(p_bValue);
+		}
+
+		void Engine::SetScrollSpeed(const float &p_fNewSpeed)
+		{
+			m_fScrollSpeed = p_fNewSpeed;
+			std::cout << std::fixed << std::setprecision(2) << "new value: " << p_fNewSpeed << std::endl;
 		}
 	}
 }

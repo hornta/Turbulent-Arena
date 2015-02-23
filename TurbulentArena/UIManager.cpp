@@ -60,7 +60,7 @@ namespace bjoernligan
 		}
 	}
 
-	UISlider* UIManager::AddSlider(const std::string &p_sLabel, const float &p_fDepth, const sf::Vector2f &p_xPos, const float &p_fWidth, const float &p_fMin, const float &p_fMax)
+	UISlider* UIManager::AddSlider(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fDepth, const sf::Vector2f &p_xPos, const float &p_fWidth, const float &p_fMin, const float &p_fMax)
 	{
 		UISlider* xSlider = static_cast<UISlider*>(AddElement<UISlider>(p_fDepth));
 		
@@ -82,7 +82,7 @@ namespace bjoernligan
 		xStream << "slider_" << p_sLabel << "_button_" << m_iElementCount;
 		xSlider->AddSprite(xSpriteManager->LoadSprite("slider/slider.png", xStream.str(), 0, 0, Settings::m_xSliderSize.x, Settings::m_xSliderSize.y));
 
-		xSlider->Initialize(p_sLabel, p_fWidth, p_fMin, p_fMax);
+		xSlider->Initialize(p_sLabel, p_xFunction, p_fWidth, p_fMin, p_fMax);
 		xSlider->SetPos(p_xPos);
 
 		return xSlider;
