@@ -97,9 +97,7 @@
     <ClInclude Include="ClanMember.hpp" />
     <ClInclude Include="CombatStats.hpp" />
     <ClInclude Include="ContactListener.hpp" />
-    <ClInclude Include="GameplayClass.hpp" />
     <ClInclude Include="Clan.hpp" />
-    <ClInclude Include="Class.hpp" />
     <ClInclude Include="BCompositeNode.hpp" />
     <ClInclude Include="BehaviorTree.hpp" />
     <ClInclude Include="BInverterNode.hpp" />
@@ -152,7 +150,6 @@
     <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Class.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Clan.hpp"
-#include "Class.hpp"
 
 #include "Scout.hpp"
 #include "Axeman.hpp"
@@ -52,6 +51,11 @@ namespace bjoernligan
 				fValue;
 			}
 		}
+
+		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
+		{
+			m_clanMembers[i]->update(p_fDeltaTime);
+		}
 	}
 
 	void Clan::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -65,6 +69,16 @@ namespace bjoernligan
 	sf::Color Clan::getColor() const
 	{
 		return m_color;
+	}
+
+	std::vector<ClanMember*> Clan::getMembers() const
+	{
+		std::vector<ClanMember*> members;
+		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
+		{
+			members.push_back(m_clanMembers[i].get());
+		}
+		return members;
 	}
 
 	void Clan::AddSliderBridge(SliderBridge* p_xBridge)

@@ -15,17 +15,16 @@ namespace bjoernligan
 		friend class Clan;
 	public:
 		ClanMember();
-		virtual ~ClanMember();
 
 		virtual void initiate() = 0;
-		virtual void update(float deltatime) = 0;
+		virtual void update(float deltatime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-		sf::Sprite& getSprite();
+		sf::Sprite* getSprite();
 
 	protected:
 		ai::Agent* m_xAgent;
 		CombatStats m_xCombatStats;
 		Clan* m_clan;
-		sf::Sprite m_sprite;
+		std::unique_ptr<sf::Sprite> m_sprite;
 	};
 }

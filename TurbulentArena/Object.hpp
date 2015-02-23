@@ -1,8 +1,6 @@
 //Object.hpp
 
 #pragma once
-#include <SFML\Graphics.hpp>
-#include <Box2D\box2d.h>
 #include "Physics.hpp"
 
 namespace bjoernligan
@@ -23,10 +21,9 @@ namespace bjoernligan
 		Object();
 		virtual ~Object();
 
-		virtual void Update(const float &p_fDeltaTime);
-		virtual void SetPos(const sf::Vector2f &p_xPos, const bool &p_bMoveBody);
-		void SetPhysicsBody(Physics::Body* p_xPhysicsBody);
-
+		virtual void update(float deltatime);
+		void setBody(Physics::Body* body);
+		Physics::Body* getBody() const;
 	protected:
 		sf::Vector2f m_xPos;
 

@@ -17,6 +17,7 @@ namespace bjoernligan
 		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Color getColor() const;
+		std::vector<ClanMember*> getMembers() const;
 
 		void AddSliderBridge(SliderBridge* p_xBridge);
 

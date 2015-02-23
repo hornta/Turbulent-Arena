@@ -63,10 +63,13 @@ namespace bjoernligan
 			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
 
+			m_xSpriteManager->setTexturePath("../data/sprites/");
+
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/");
 			m_map->load("map.tmx");
 			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
+			m_physics->setDebug(true);
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
 
@@ -113,54 +116,159 @@ namespace bjoernligan
 					}
 				}
 			}
-			m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
 			
 			// CLANS
 			std::vector<Map::Object*> spawns = m_map->getObjectGroup("spawns")->getObjects();
+			std::map<int, std::vector<sf::Vector2f>> team_spawns;
 			for (std::size_t i = 0; i < spawns.size(); ++i)
 			{
 				Map::Object* object = spawns[i];
 				if (object->hasProperty("team"))
 				{
-					int teamNumber = std::stoi(object->getProperty("team"));
-					teamNumber;
+					team_spawns[std::stoi(object->getProperty("team"))].push_back(object->m_position);
 				}
-				Clan* clan = m_clanManager->createClan("MacDonald");
-				clan;
-				//// Find a spawn position
-				//m_map->getObjectLayer("spawns")->getActiveObject();
-				//ClanMemberDef clanMemberDef;
-				//clanMemberDef.startPos = m_map->getLayer("spawns")
-				//clan->createMember(Clan::SCOUT);
-
-
-				//Creation of sliders:
-				float fSliderSpacing = 80.0f;
-
-				UISlider* xSlider = m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*3.0f), 240.0f, 0.0f, 100.0f);
-				SliderBridge* xBridge = xSlider->GetBridge();
-				clan->AddSliderBridge(xBridge);
-
-				xSlider = m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*2.0f), 240.0f, 0.0f, 100.0f);
-				xBridge = xSlider->GetBridge();
-				clan->AddSliderBridge(xBridge);
-
-				xSlider = m_xUIManager->AddSlider("Agression", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*1.0f), 240.0f, 0.0f, 100.0f);
-				xBridge = xSlider->GetBridge();
-				clan->AddSliderBridge(xBridge);
 			}
 
-			Clan* clan = m_clanManager->createClan("MacDonald");
-			clan->createMember<Scout>();
-			clan->createMember<Scout>();
-			clan->createMember<Axeman>();
-			clan->createMember<Axeman>();
-			clan->createMember<Axeman>();
+			// Randomize spawn vector
+			auto teamSpawnsIt = team_spawns.begin();
+			while (teamSpawnsIt != team_spawns.end())
+			{
+				std::shuffle(teamSpawnsIt->second.begin(), teamSpawnsIt->second.end(), random::getEngine());
+				++teamSpawnsIt;
+			}
 
-			//// Find a spawn position
-			//ClanMemberDef clanMemberDef;
-			//clanMemberDef.startPos = m_map->getLayer("spawns")
-			//clan->createMember(Clan::SCOUT);
+			////Creation of sliders:
+			//float fSliderSpacing = 80.0f;
+
+			//UISlider* xSlider = m_xUIManager->AddSlider("Social", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*3.0f), 240.0f, 0.0f, 100.0f);
+			//SliderBridge* xBridge = xSlider->GetBridge();
+			//clan->AddSliderBridge(xBridge);
+
+			//xSlider = m_xUIManager->AddSlider("Brave", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*2.0f), 240.0f, 0.0f, 100.0f);
+			//xBridge = xSlider->GetBridge();
+			//clan->AddSliderBridge(xBridge);
+
+			//xSlider = m_xUIManager->AddSlider("Agression", 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - fSliderSpacing*1.0f), 240.0f, 0.0f, 100.0f);
+			//xBridge = xSlider->GetBridge();
+			//clan->AddSliderBridge(xBridge);
+
+			Physics::Params clanMemberBodyDef;
+			clanMemberBodyDef.m_eShapeType = Physics::Circle;
+			clanMemberBodyDef.m_xFixtureDef.friction = 0.2f;
+			clanMemberBodyDef.m_xFixtureDef.density = 1.0f;
+			clanMemberBodyDef.m_xFixtureDef.restitution = 1.0f;
+			clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 16.f;
+			clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
+			
+			Clan* clan = m_clanManager->createClan("MacDonald");
+
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+			{
+				ClanMember* member = clan->createMember<Scout>();
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+				member->setBody(m_physics->createBody(clanMemberBodyDef));
+			}
+
+			std::vector<Clan*> clans = m_clanManager->getClans();
+			std::vector<ClanMember*> members;
+			for (std::size_t i = 0; i < clans.size(); ++i)
+			{
+				members = clans[i]->getMembers();
+				for (std::size_t k = 0; k < members.size(); ++k)
+				{
+					members[k]->getBody()->setPosition(team_spawns[i][k]);
+				}
+			}
 
 			return m_bRunning = true;
 		}
@@ -189,6 +297,7 @@ namespace bjoernligan
 				m_xDrawManager->ClearScr();
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_visibility.get());
+				m_xDrawManager->Draw(m_clanManager.get());
 				m_physics->draw();
 				m_xUIManager->DrawElements();
 				m_xDrawManager->Display();

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Clan.hpp"
-
 namespace bjoernligan
 {
-	class ClanManager
+	class Clan;
+	class ClanManager : public sf::Drawable
 	{
 	public:
 		ClanManager();
@@ -14,7 +13,8 @@ namespace bjoernligan
 		std::size_t getAmount() const;
 
 		void Update(const float &p_fDeltaTime);
-
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		std::vector<Clan*> getClans() const;
 	private:
 		std::vector<std::unique_ptr<Clan>> m_clans;
 	};

@@ -12,7 +12,6 @@ namespace bjoernligan
 	{
 	}
 
-
 	Clan* ClanManager::createClan(const std::string& name)
 	{
 		m_clans.emplace_back(std::make_unique<Clan>(name));
@@ -26,9 +25,27 @@ namespace bjoernligan
 
 	void ClanManager::Update(const float &p_fDeltaTime)
 	{
-		for (uint32_t i = 0; i < m_clans.size(); ++i)
+		for (std::size_t i = 0; i < m_clans.size(); ++i)
 		{
 			m_clans[i]->Update(p_fDeltaTime);
 		}
+	}
+
+	void ClanManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		for (std::size_t i = 0; i < m_clans.size(); ++i)
+		{
+			target.draw(*m_clans[i].get(), states);
+		}
+	}
+
+	std::vector<Clan*> ClanManager::getClans() const
+	{
+		std::vector<Clan*> clans;
+		for (std::size_t i = 0; i < m_clans.size(); ++i)
+		{
+			clans.push_back(m_clans[i].get());
+		}
+		return clans;
 	}
 }

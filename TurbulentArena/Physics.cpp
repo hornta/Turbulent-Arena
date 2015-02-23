@@ -94,7 +94,7 @@ namespace bjoernligan
 
 	void Physics::construct(sf::RenderWindow* window)
 	{
-		m_b2World = std::make_unique<b2World>(vectorToB2D(m_gravity));
+		m_b2World = std::make_unique<b2World>(b2Vec2(m_gravity.x, m_gravity.y));
 		m_debugDraw = std::make_unique<Box2DWorldDraw>(window);
 		m_xContactListener = std::make_unique<ContactListener>();
 		m_debugDraw->SetFlags(b2Draw::e_jointBit | b2Draw::e_shapeBit);

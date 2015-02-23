@@ -29,6 +29,7 @@ namespace bjoernligan
 
 	void Scout::update(float deltatime)
 	{
+		ClanMember::update(deltatime);
 		deltatime;
 	}
 }

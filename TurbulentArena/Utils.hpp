@@ -7,8 +7,12 @@
 
 namespace bjoernligan
 {
-	int random(int min, int max);
-	float random(float min, float max);
+	namespace random
+	{
+		std::mt19937 getEngine();
+		int random(int min, int max);
+		float random(float min, float max);
+	}
 
 	template <typename T>
 	T max(const T& a, const T& b)
