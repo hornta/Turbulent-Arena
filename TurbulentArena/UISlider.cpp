@@ -37,10 +37,11 @@ namespace bjoernligan
 
 	}
 
-	void UISlider::Initialize(const std::string &p_sLabel, const float &p_fWidth, const float &p_fMin, const float &p_fMax)
+	void UISlider::Initialize(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fWidth, const float &p_fMin, const float &p_fMax)
 	{
 		m_sLabel = p_sLabel;
 		m_xLabelText.setString(p_sLabel);
+		m_xFunction = p_xFunction;
 		m_fWidth = p_fWidth;
 		m_fMin = p_fMin;
 		m_fMax = p_fMax;
@@ -72,6 +73,7 @@ namespace bjoernligan
 			{
 				m_eStatus = EStatus::Idle;
 				m_bNewValue = true;
+				m_xFunction(GetValue(false));
 				m_xBridge->SetNewValue(GetValue(false));
 				return;
 			}

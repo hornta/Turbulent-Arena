@@ -21,12 +21,15 @@
 #include "UIButton.hpp"
 #include <Windows.h>
 
+#include <iomanip>
+
 namespace bjoernligan
 {
 	namespace system
 	{
 		Engine::Engine()
 			: m_physics(nullptr)
+			, m_fScrollSpeed(5.0f)
 		{
 			m_xDrawManager = nullptr;
 			m_xSpriteManager = nullptr;
@@ -275,6 +278,8 @@ namespace bjoernligan
 				}
 			}
 
+			m_xUIManager->AddSlider("Scrollspeed", std::bind(&bjoernligan::system::Engine::SetScrollSpeed, this, std::placeholders::_1), 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 240.0f, 3.0f, 15.0f);
+
 			return m_bRunning = true;
 		}
 
@@ -352,6 +357,12 @@ namespace bjoernligan
 		void Engine::SetDebugMode(const bool &p_bValue)
 		{
 			m_physics->setDebug(p_bValue);
+		}
+
+		void Engine::SetScrollSpeed(const float &p_fNewSpeed)
+		{
+			m_fScrollSpeed = p_fNewSpeed;
+			std::cout << std::fixed << std::setprecision(2) << "new value: " << p_fNewSpeed << std::endl;
 		}
 	}
 }

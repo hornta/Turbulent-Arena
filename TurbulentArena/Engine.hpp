@@ -32,8 +32,10 @@ namespace bjoernligan
 			void UpdateDeltaTime();
 			void PollEvents();
 			void SetDebugMode(const bool &p_bValue);
+			void SetScrollSpeed(const float &p_fNewSpeed);
 
 			bool m_bRunning;
+			float m_fScrollSpeed;
 			SpriteManager::Ptr m_xSpriteManager;
 			DrawManager::Ptr m_xDrawManager;
 			UIManager::Ptr m_xUIManager;

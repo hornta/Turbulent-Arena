@@ -2,8 +2,8 @@
 
 #pragma once
 #include "UIBase.hpp"
-#include <string>
 #include "SliderBridge.hpp"
+#include <functional>
 
 namespace bjoernligan
 {
@@ -30,7 +30,7 @@ namespace bjoernligan
 
 		~UISlider();
 		
-		void Initialize(const std::string &p_sLabel, const float &p_fWidth, const float &p_fMin, const float &p_fMax);
+		void Initialize(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fWidth, const float &p_fMin, const float &p_fMax);
 		void Update(const float &p_fDeltaTime);
 		void Draw();
 		void SetPos(const sf::Vector2f &p_xPos);
@@ -47,6 +47,7 @@ namespace bjoernligan
 		std::string m_sLabel;
 		input::Mouse* m_xMouse;
 		SliderBridge::Ptr m_xBridge;
+		std::function<void(float)> m_xFunction;
 
 		bool m_bNewValue;
 		float m_fWidth, m_fCurrent, m_fMin, m_fMax;
