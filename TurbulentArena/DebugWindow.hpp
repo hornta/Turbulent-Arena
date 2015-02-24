@@ -5,7 +5,7 @@
 
 namespace bjoernligan
 {
-	class DebugWindow : sf::Drawable
+	class DebugWindow : public sf::Drawable
 	{
 	private:
 		DebugWindow(const bool &p_bActive);

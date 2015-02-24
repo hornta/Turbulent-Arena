@@ -66,4 +66,14 @@ namespace bjoernligan
 
 		return xSlider;
 	}
+
+	void UIManager::setView(const sf::View& view)
+	{
+		m_view = view;
+	}
+
+	sf::View UIManager::getView() const
+	{
+		return m_view;
+	}
 }

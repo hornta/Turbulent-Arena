@@ -47,6 +47,8 @@ namespace bjoernligan
 
 		UISlider* AddSlider(const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth);
 
+		void setView(const sf::View& view);
+		sf::View getView() const;
 	private:
 		sf::View m_view;
 		std::vector<UIBase::Ptr> m_axElements;

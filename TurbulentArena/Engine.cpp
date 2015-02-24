@@ -67,8 +67,9 @@ namespace bjoernligan
 			m_xDebugWindow = DebugWindow::Create(false);
 			m_xDebugWindow->SetPos(16.0f, 16.0f);
 
-			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
+			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena", sf::Style::None);
 			m_view = m_xDrawManager->getWindow()->getView();
+			m_xUIManager->setView(m_view);
 
 			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
 			xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32), std::bind(&bjoernligan::system::Engine::SetDebugMode, this, std::placeholders::_1));
@@ -81,7 +82,7 @@ namespace bjoernligan
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/");
 			m_map->load("map.tmx");
-			m_physics = std::make_unique<Physics>(9.8f, 1.f, m_xDrawManager->getWindow());
+			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
 			m_physics->setDebug(false);
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
@@ -329,8 +330,9 @@ namespace bjoernligan
 				m_xDrawManager->Draw(m_visibility.get());
 				m_xDrawManager->Draw(m_clanManager.get());
 				m_physics->draw();
+				m_xDrawManager->getWindow()->setView(m_xUIManager->getView());
 				m_xDrawManager->Draw(m_xUIManager.get());
-				m_xDebugWindow->draw(*m_xDrawManager->getWindow(), sf::RenderStates::Default);
+				m_xDrawManager->Draw(m_xDebugWindow.get());
 				m_xDrawManager->Display();
 
 				m_xMouse->PostUpdate();
@@ -426,7 +428,7 @@ namespace bjoernligan
 		void Engine::SetScrollSpeed(const float &p_fNewSpeed)
 		{
 			m_fScrollSpeed = p_fNewSpeed;
-			std::cout << std::fixed << std::setprecision(2) << "new value: " << p_fNewSpeed << std::endl;
+			//std::cout << std::fixed << std::setprecision(2) << "new value: " << p_fNewSpeed << std::endl;
 		}
 	}
 }
