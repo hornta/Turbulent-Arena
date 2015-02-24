@@ -64,11 +64,20 @@ namespace bjoernligan
 			if (!m_xDrawManager->Initialize())
 				return false;
 
+			m_xDebugWindow = DebugWindow::Create(false);
+			m_xDebugWindow->SetPos(16.0f, 16.0f);
+
+			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
+			m_view = m_xDrawManager->getWindow()->getView();
+
 			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
 				return false;
 
 			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
-			xButton->Initialize("Debug", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 128, 32), std::bind(&bjoernligan::system::Engine::SetDebugMode, this, std::placeholders::_1));
+			xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32), std::bind(&bjoernligan::system::Engine::SetDebugMode, this, std::placeholders::_1));
+
+			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
+			xButton->Initialize("Debug: Window", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32), std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow.get(), std::placeholders::_1));
 
 			m_xSpriteManager->setTexturePath("../data/sprites/");
 
@@ -76,7 +85,7 @@ namespace bjoernligan
 			m_map = std::make_unique<Map>("../data/");
 			m_map->load("map.tmx");
 			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
-			m_physics->setDebug(true);
+			m_physics->setDebug(false);
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
 
@@ -278,7 +287,16 @@ namespace bjoernligan
 				}
 			}
 
-			m_xUIManager->AddSlider("Scrollspeed", std::bind(&bjoernligan::system::Engine::SetScrollSpeed, this, std::placeholders::_1), 1.0f, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 240.0f, 3.0f, 15.0f);
+			UISlider::SliderDef xDef;
+			xDef.m_sLabel = "Scrollspeed";
+			xDef.m_xFunction = std::bind(&bjoernligan::system::Engine::SetScrollSpeed, this, std::placeholders::_1);
+			xDef.m_fWidth = 240.0f;
+			xDef.m_fMin = 1.0f;
+			xDef.m_fMax = 20.0f;
+			xDef.m_fCurrent = 5.0f;
+			xDef.m_bContinous = true;
+
+			m_xUIManager->AddSlider(xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
 
 			return m_bRunning = true;
 		}
@@ -302,26 +320,30 @@ namespace bjoernligan
 				m_visibility->update();
 				m_xUIManager->Update(m_fDeltaTime);
 				m_clanManager->Update(m_fDeltaTime);
+				m_xDebugWindow->Update(m_fDeltaTimeRaw);
+
+				updateCamera();
+				// Keep mouse inside window
 
 				//Draw
 				m_xDrawManager->ClearScr();
+				m_xDrawManager->getWindow()->setView(m_view);
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_visibility.get());
 				m_xDrawManager->Draw(m_clanManager.get());
 				m_physics->draw();
 				m_xUIManager->DrawElements();
+				m_xDebugWindow->draw(*m_xDrawManager->getWindow(), sf::RenderStates::Default);
 				m_xDrawManager->Display();
 
 				m_xMouse->PostUpdate();
 				m_xKeyboard->PostUpdate();
-
-				::Sleep(2);
 			}
 		}
 
 		void Engine::UpdateDeltaTime()
 		{
-			m_fDeltaTime = m_xDeltaClock.getElapsedTime().asSeconds();
+			m_fDeltaTimeRaw = m_fDeltaTime = m_xDeltaClock.getElapsedTime().asSeconds();
 			if (m_fDeltaTime > 0.02f)
 				m_fDeltaTime = 0.02f;
 			m_xDeltaClock.restart();
@@ -354,9 +376,54 @@ namespace bjoernligan
 			}
 		}
 
+		void Engine::updateCamera()
+		{
+			if (m_xMouse->IsDown(sf::Mouse::Right))
+			{
+				if (m_xMouse->IsDownOnce(sf::Mouse::Right))
+				{
+					m_lastRightClick = sf::Vector2f(sf::Mouse::getPosition(*m_xDrawManager->getWindow()));
+				}
+
+				sf::Vector2f currentPos = sf::Vector2f(sf::Mouse::getPosition(*m_xDrawManager->getWindow()));
+
+				sf::Vector2f direction = currentPos - m_lastRightClick;
+				Vector2f vec(direction);
+				vec.limit(300.f);
+				direction.x = vec.x;
+				direction.y = vec.y;
+				m_view.move(direction * 5.f * m_fDeltaTime);
+			}
+
+			sf::Vector2f pos = m_view.getCenter();
+			sf::Vector2f size = m_view.getSize();
+			sf::Vector2f halfSize = size * 0.5f;
+			sf::Vector2f newPos = pos;
+			if ((pos.x - halfSize.x) < 0.f)
+			{
+				newPos.x = 0.f + halfSize.x;
+			}
+			else if (pos.x + halfSize.x > m_map->getWidth() * m_map->getTileSize().x)
+			{
+				newPos.x = m_map->getWidth() * m_map->getTileSize().x - halfSize.x;
+			}
+
+			if (pos.y - halfSize.y < 0.f)
+			{
+				newPos.y = 0.f + halfSize.y;
+			}
+			else if (pos.y + halfSize.y > m_map->getHeight() * m_map->getTileSize().y)
+			{
+				newPos.y = m_map->getHeight() * m_map->getTileSize().y - halfSize.y;
+			}
+
+			m_view.setCenter(newPos);
+		}
+		
 		void Engine::SetDebugMode(const bool &p_bValue)
 		{
 			m_physics->setDebug(p_bValue);
+			//m_xDebugWindow->SetActive(p_bValue);
 		}
 
 		void Engine::SetScrollSpeed(const float &p_fNewSpeed)

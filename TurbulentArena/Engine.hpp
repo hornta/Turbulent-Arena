@@ -7,6 +7,7 @@
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
 #include "Utility.hpp"
+#include "DebugWindow.hpp"
 
 namespace bjoernligan
 {
@@ -31,6 +32,7 @@ namespace bjoernligan
 		private:
 			void UpdateDeltaTime();
 			void PollEvents();
+			void updateCamera();
 			void SetDebugMode(const bool &p_bValue);
 			void SetScrollSpeed(const float &p_fNewSpeed);
 
@@ -42,9 +44,12 @@ namespace bjoernligan
 			input::Keyboard::Ptr m_xKeyboard;
 			input::Mouse::Ptr m_xMouse;
 			Utility::Ptr m_xUtility;
+			DebugWindow::Ptr m_xDebugWindow;
 
+			sf::View m_view;
+			sf::Vector2f m_lastRightClick;
 			sf::Clock m_xDeltaClock;
-			float m_fDeltaTime;
+			float m_fDeltaTime, m_fDeltaTimeRaw;
 
 			std::unique_ptr<Visibility> m_visibility;
 			std::unique_ptr<Pathfinder> m_pathFinder;
