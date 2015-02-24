@@ -21,18 +21,16 @@ namespace bjoernligan
 			Pressed,
 		} m_eStatus;
 
-		UISlider(sf::RenderWindow* p_xWindow, const float &p_fDepth);
+		UISlider(const float &p_fDepth);
 		UISlider(const UISlider&);
 		UISlider& operator=(const UISlider&);
 
 	public:
-		static Ptr Create(sf::RenderWindow* p_xWindow, const float &p_fDepth);
-
-		~UISlider();
+		static Ptr Create(const float &p_fDepth);
 		
 		void Initialize(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fWidth, const float &p_fMin, const float &p_fMax);
 		void Update(const float &p_fDeltaTime);
-		void Draw();
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		void SetPos(const sf::Vector2f &p_xPos);
 
 		bool NewValue();

@@ -12,8 +12,8 @@ namespace bjoernligan
 	sf::Color UIButton::m_xDefaultHoverColor = sf::Color(110, 110, 110, 128);
 	sf::Color UIButton::m_xDefaultPressedColor = sf::Color(160, 160, 160, 128);
 
-	UIButton::UIButton(sf::RenderWindow* p_xWindow, const float &p_fDepth)
-		: UIBase(p_xWindow, p_fDepth)
+	UIButton::UIButton(const float &p_fDepth)
+		: UIBase(p_fDepth)
 		, m_bActive(false)
 		, m_bNewValue(false)
 		, m_eState(EButtonState::Idle)
@@ -25,14 +25,9 @@ namespace bjoernligan
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 	}
 
-	UIBase::Ptr UIButton::Create(sf::RenderWindow* p_xWindow, const float &p_fDepth)
+	UIBase::Ptr UIButton::Create(const float &p_fDepth)
 	{
-		return Ptr(new UIButton(p_xWindow, p_fDepth));
-	}
-
-	UIButton::~UIButton()
-	{
-
+		return Ptr(new UIButton(p_fDepth));
 	}
 
 	void UIButton::Initialize(
@@ -129,13 +124,14 @@ namespace bjoernligan
 		m_xButtonText.setPosition(p_xPos);
 	}
 
-	void UIButton::Draw()
+	void UIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
+		UIBase::draw(target, states);
 		if (!m_xButtonRect)
 			return;
 
-		m_xWindow->draw(*m_xButtonRect.get());
-		m_xWindow->draw(m_xButtonText);
+		target.draw(*m_xButtonRect.get(), states);
+		target.draw(m_xButtonText, states);
 	}
 
 	const bool UIButton::GetActive() const

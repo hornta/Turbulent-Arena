@@ -5,20 +5,14 @@
 
 namespace bjoernligan
 {
-	UIBase::UIBase(sf::RenderWindow* p_xWindow, const float &p_fDepth)
+	UIBase::UIBase(const float &p_fDepth)
 	{
-		m_xWindow = p_xWindow;
 		m_fDepth = p_fDepth;
 	}
 
-	UIBase::Ptr UIBase::Create(sf::RenderWindow* p_xWindow, const float &p_fDepth)
+	UIBase::Ptr UIBase::Create(const float &p_fDepth)
 	{
-		return Ptr(new UIBase(p_xWindow, p_fDepth));
-	}
-
-	UIBase::~UIBase()
-	{
-
+		return Ptr(new UIBase(p_fDepth));
 	}
 
 	void UIBase::Update(const float &p_fDeltaTime)
@@ -26,18 +20,11 @@ namespace bjoernligan
 		p_fDeltaTime;
 	}
 
-	void UIBase::Draw()
+	void UIBase::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		if (m_axSprites.empty())
-			return;
-
-		auto itr = m_axSprites.begin();
-		while (itr != m_axSprites.end())
+		for (auto &sprite : m_axSprites)
 		{
-			if ((*itr))
-				m_xWindow->draw(*(*itr));
-
-			++itr;
+			target.draw(*sprite, states);
 		}
 	}
 

@@ -12,26 +12,11 @@ namespace bjoernligan
 {
 	UIManager::UIManager()
 	{
-		m_xWindow = nullptr;
 	}
 
 	UIManager::Ptr UIManager::Create()
 	{
 		return Ptr(new UIManager());
-	}
-
-	UIManager::~UIManager()
-	{
-
-	}
-
-	bool UIManager::Initialize(sf::RenderWindow* p_xWindow)
-	{
-		m_xWindow = p_xWindow;
-		if (!m_xWindow)
-			return false;
-
-		return true;
 	}
 
 	void UIManager::Update(const float &p_fDeltaTime)
@@ -47,16 +32,11 @@ namespace bjoernligan
 		}
 	}
 
-	void UIManager::DrawElements()
+	void UIManager::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		if (m_axElements.empty())
-			return;
-
-		auto itr = m_axElements.begin();
-		while (itr != m_axElements.end())
+		for (auto& element : m_axElements)
 		{
-			(*itr)->Draw();
-			++itr;
+			target.draw(*element, states);
 		}
 	}
 

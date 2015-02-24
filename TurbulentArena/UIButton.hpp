@@ -25,14 +25,12 @@ namespace bjoernligan
 			Pressed,
 		} m_eState;
 		
-		UIButton(sf::RenderWindow* p_xWindow, const float &p_fDepth);
+		UIButton(const float &p_fDepth);
 		UIButton(const UIButton&);
 		UIButton& operator=(const UIButton&);
 
 	public:
-		static Ptr Create(sf::RenderWindow* p_xWindow, const float &p_fDepth);
-
-		~UIButton();
+		static Ptr Create(const float &p_fDepth);
 
 		void Initialize(
 			const std::string &p_sName,
@@ -44,7 +42,7 @@ namespace bjoernligan
 
 		void Update(const float &p_fDeltaTime);
 		void SetPos(const sf::Vector2f &p_xPos);
-		void Draw();
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		const bool HasNewValue(const float &p_bResetNew);
 		const bool GetActive() const;

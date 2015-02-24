@@ -11,7 +11,7 @@ namespace bjoernligan
 {
 	class UISlider;
 
-	class UIManager
+	class UIManager : public sf::Drawable
 	{
 	private:
 		UIManager();
@@ -22,11 +22,8 @@ namespace bjoernligan
 		typedef std::unique_ptr<UIManager> Ptr;
 		static Ptr Create();
 
-		~UIManager();
-
-		bool Initialize(sf::RenderWindow* p_xWindow);
 		void Update(const float &p_fDeltaTime);
-		void DrawElements();
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		template<class T>
 		UIBase* AddElement(const float &p_fDepth)
@@ -43,14 +40,14 @@ namespace bjoernligan
 				++itr;
 			}
 
-			m_axElements.insert(m_axElements.begin() + iPos, T::Create(m_xWindow, p_fDepth));
+			m_axElements.insert(m_axElements.begin() + iPos, T::Create(p_fDepth));
 			return m_axElements[iPos].get();
 		}
 
 		UISlider* AddSlider(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fDepth, const sf::Vector2f &p_xPos, const float &p_fWidth, const float &p_fMin, const float &p_fMax);
 
 	private:
-		sf::RenderWindow* m_xWindow;
+		sf::View m_view;
 		std::vector<UIBase::Ptr> m_axElements;
 		uint32_t m_iElementCount;
 	};

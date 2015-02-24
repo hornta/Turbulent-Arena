@@ -66,9 +66,6 @@ namespace bjoernligan
 			m_xDrawManager->getWindow()->create(sf::VideoMode(1920, 1080), "", sf::Style::None);
 			m_view = m_xDrawManager->getWindow()->getView();
 
-			if (!m_xUIManager->Initialize(m_xDrawManager->getWindow()))
-				return false;
-
 			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
 			xButton->Initialize("Debug", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 128, 32), std::bind(&bjoernligan::system::Engine::SetDebugMode, this, std::placeholders::_1));
 
@@ -77,7 +74,7 @@ namespace bjoernligan
 			m_clanManager = std::make_unique<ClanManager>();
 			m_map = std::make_unique<Map>("../data/");
 			m_map->load("map.tmx");
-			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
+			m_physics = std::make_unique<Physics>(9.8f, 1.f, m_xDrawManager->getWindow());
 			m_physics->setDebug(false);
 			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 			m_visibility = std::make_unique<Visibility>();
@@ -97,7 +94,7 @@ namespace bjoernligan
 							Physics::Params xParams;
 							xParams.m_xFixtureDef.friction = 0.2f;
 							xParams.m_xFixtureDef.density = 1.0f;
-							xParams.m_xFixtureDef.restitution = 1.0f;
+							xParams.m_xFixtureDef.restitution = 0.5f;
 
 							xParams.m_eShapeType = Physics::Box;
 							xParams.m_xShapeSize.m_xBox.x = tileSize.x;
@@ -164,9 +161,9 @@ namespace bjoernligan
 
 			Physics::Params clanMemberBodyDef;
 			clanMemberBodyDef.m_eShapeType = Physics::Circle;
-			clanMemberBodyDef.m_xFixtureDef.friction = 0.2f;
+			clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
 			clanMemberBodyDef.m_xFixtureDef.density = 1.0f;
-			clanMemberBodyDef.m_xFixtureDef.restitution = 1.0f;
+			clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
 			clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 16.f;
 			clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
 			
@@ -316,7 +313,7 @@ namespace bjoernligan
 				m_xDrawManager->Draw(m_visibility.get());
 				m_xDrawManager->Draw(m_clanManager.get());
 				m_physics->draw();
-				m_xUIManager->DrawElements();
+				m_xDrawManager->Draw(m_xUIManager.get());
 				m_xDrawManager->Display();
 
 				m_xMouse->PostUpdate();
@@ -377,7 +374,7 @@ namespace bjoernligan
 				vec.limit(300.f);
 				direction.x = vec.x;
 				direction.y = vec.y;
-				m_view.move(direction * 5.f * m_fDeltaTime);
+				m_view.move(direction * m_fScrollSpeed * m_fDeltaTime);
 			}
 
 			sf::Vector2f pos = m_view.getCenter();

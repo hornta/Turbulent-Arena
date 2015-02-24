@@ -11,8 +11,8 @@
 
 namespace bjoernligan
 {
-	UISlider::UISlider(sf::RenderWindow* p_xWindow, const float &p_fDepth)
-		: UIBase(p_xWindow, p_fDepth)
+	UISlider::UISlider(const float &p_fDepth)
+		: UIBase(p_fDepth)
 	{
 		m_eStatus = EStatus::Idle;
 
@@ -27,14 +27,9 @@ namespace bjoernligan
 		m_bNewValue = false;
 	}
 
-	UIBase::Ptr UISlider::Create(sf::RenderWindow* p_xWindow, const float &p_fDepth)
+	UIBase::Ptr UISlider::Create(const float &p_fDepth)
 	{
-		return Ptr(new UISlider(p_xWindow, p_fDepth));
-	}
-
-	UISlider::~UISlider()
-	{
-
+		return Ptr(new UISlider(p_fDepth));
 	}
 
 	void UISlider::Initialize(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fWidth, const float &p_fMin, const float &p_fMax)
@@ -51,6 +46,12 @@ namespace bjoernligan
 		{
 			m_axSprites[0]->setScale(sf::Vector2f((((p_fWidth + Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x) * Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x, 1.0f));
 		}
+	}
+
+	void UISlider::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		UIBase::draw(target, states);
+		target.draw(m_xLabelText, states);
 	}
 
 	void UISlider::Update(const float &p_fDeltaTime)
@@ -85,12 +86,6 @@ namespace bjoernligan
 			xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue(false);
 			m_xLabelText.setString(xStream.str());
 		}
-	}
-
-	void UISlider::Draw()
-	{
-		UIBase::Draw();
-		m_xWindow->draw(m_xLabelText);
 	}
 
 	void UISlider::SetPos(const sf::Vector2f &p_xPos)

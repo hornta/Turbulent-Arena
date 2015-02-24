@@ -41,7 +41,7 @@ namespace bjoernligan
 
 	void Physics::update(float deltatime)
 	{
-		m_b2World->Step(deltatime, 10, 10);
+		m_b2World->Step(deltatime, 8, 3);
 	}
 
 	void Physics::draw()
