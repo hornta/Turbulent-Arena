@@ -219,14 +219,14 @@
     <ClInclude Include="ClanMember.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SliderBridge.hpp">
-      <Filter>Header Files\gui</Filter>
-    </ClInclude>
     <ClInclude Include="UIButton.hpp">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
     <ClInclude Include="AIEvent.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugWindow.hpp">
+      <Filter>Header Files\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,10 +347,10 @@
     <ClCompile Include="ClanMember.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SliderBridge.cpp">
+    <ClCompile Include="UIButton.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="UIButton.cpp">
+    <ClCompile Include="DebugWindow.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
   </ItemGroup>

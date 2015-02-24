@@ -13,18 +13,16 @@ namespace bjoernligan
 {
 	UISlider::UISlider(const float &p_fDepth)
 		: UIBase(p_fDepth)
+		, m_eStatus(EStatus::Idle)
+		, m_fCurrent(0.0f)
+		, m_fWidth(0.0f)
+		, m_fMin(0.0f)
+		, m_fMax(0.0f)
 	{
-		m_eStatus = EStatus::Idle;
-
 		m_xLabelText.setFont(*ServiceLocator<system::DrawManager>::GetService()->GetFont());
 		m_xLabelText.setCharacterSize(18);
 
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
-
-		m_xBridge = nullptr;
-
-		m_fWidth = m_fCurrent = m_fMin = m_fMax = 0.0f;
-		m_bNewValue = false;
 	}
 
 	UIBase::Ptr UISlider::Create(const float &p_fDepth)
@@ -32,19 +30,20 @@ namespace bjoernligan
 		return Ptr(new UISlider(p_fDepth));
 	}
 
-	void UISlider::Initialize(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fWidth, const float &p_fMin, const float &p_fMax)
+	void UISlider::Initialize(const SliderDef &p_xDefinition)
 	{
-		m_sLabel = p_sLabel;
-		m_xLabelText.setString(p_sLabel);
-		m_xFunction = p_xFunction;
-		m_fWidth = p_fWidth;
-		m_fMin = p_fMin;
-		m_fMax = p_fMax;
-		m_xBridge = SliderBridge::Create(p_sLabel);
+		m_sLabel = p_xDefinition.m_sLabel;
+		m_xLabelText.setString(m_sLabel);
+		m_xFunction = std::move(p_xDefinition.m_xFunction);
+		m_fWidth = p_xDefinition.m_fWidth;
+		m_fMin = p_xDefinition.m_fMin;
+		m_fMax = p_xDefinition.m_fMax;
+		m_fCurrent = p_xDefinition.m_fCurrent / (m_fMax - m_fMin);
+		m_bContinous = p_xDefinition.m_bContinous;
 
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
 		{
-			m_axSprites[0]->setScale(sf::Vector2f((((p_fWidth + Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x) * Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x, 1.0f));
+			m_axSprites[0]->setScale(sf::Vector2f((((m_fWidth + Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x) * Settings::m_xSliderSize.x) / Settings::m_xSliderSize.x, 1.0f));
 		}
 	}
 
@@ -73,17 +72,18 @@ namespace bjoernligan
 			if (!m_xMouse->IsDown(sf::Mouse::Button::Left))
 			{
 				m_eStatus = EStatus::Idle;
-				m_bNewValue = true;
-				m_xFunction(GetValue(false));
-				m_xBridge->SetNewValue(GetValue(false));
+				m_xFunction(GetValue());
 				return;
 			}
 
 			m_axSprites[3]->setPosition(sf::Vector2f(GetAllowedX((float)m_xMouse->m_xPos.x), m_xPos.y));
 			m_fCurrent = (m_axSprites[3]->getPosition().x - m_xPos.x) / m_fWidth;
 
+			if (m_bContinous)
+				m_xFunction(GetValue());
+
 			std::stringstream xStream;
-			xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue(false);
+			xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue();
 			m_xLabelText.setString(xStream.str());
 		}
 	}
@@ -106,25 +106,9 @@ namespace bjoernligan
 		}
 	}
 
-	bool UISlider::NewValue()
+	float UISlider::GetValue()
 	{
-		return m_bNewValue;
-	}
-
-	float UISlider::GetValue(const bool &p_bResetBool)
-	{
-		if (p_bResetBool)
-			m_bNewValue = false;
-
 		return m_fMin + (m_fMax - m_fMin) * m_fCurrent;
-	}
-
-	SliderBridge* UISlider::GetBridge()
-	{
-		if (!m_xBridge)
-			return nullptr;
-
-		return m_xBridge.get();
 	}
 
 	float UISlider::GetAllowedX(float p_fX)

@@ -2,7 +2,6 @@
 
 #pragma once
 #include "UIBase.hpp"
-#include "SliderBridge.hpp"
 #include <functional>
 
 namespace bjoernligan
@@ -28,15 +27,20 @@ namespace bjoernligan
 	public:
 		static Ptr Create(const float &p_fDepth);
 		
-		void Initialize(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fWidth, const float &p_fMin, const float &p_fMax);
+		struct SliderDef
+		{
+			std::string m_sLabel;
+			std::function<void(float)> m_xFunction;
+			float m_fCurrent, m_fWidth, m_fMin, m_fMax;
+			bool m_bContinous;
+		};
+
+		void Initialize(const SliderDef &p_xDefinition);
 		void Update(const float &p_fDeltaTime);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		void SetPos(const sf::Vector2f &p_xPos);
 
-		bool NewValue();
-		float GetValue(const bool &p_bResetBool = true);
-
-		SliderBridge* GetBridge();
+		float GetValue();
 
 	private:
 		float UISlider::GetAllowedX(float p_fX);
@@ -44,10 +48,9 @@ namespace bjoernligan
 		sf::Text m_xLabelText;
 		std::string m_sLabel;
 		input::Mouse* m_xMouse;
-		SliderBridge::Ptr m_xBridge;
 		std::function<void(float)> m_xFunction;
 
-		bool m_bNewValue;
+		bool m_bContinous;
 		float m_fWidth, m_fCurrent, m_fMin, m_fMax;
 	};
 }

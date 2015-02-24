@@ -84,6 +84,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DebugWindow.hpp" />
     <ClInclude Include="SteeringManager.hpp" />
     <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
@@ -118,7 +119,6 @@
     <ClInclude Include="ServiceLocator.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="sfml_include.hpp" />
-    <ClInclude Include="SliderBridge.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -133,6 +133,7 @@
     <ClInclude Include="Visibility.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />
@@ -159,7 +160,6 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Scout.cpp" />
     <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="SliderBridge.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />

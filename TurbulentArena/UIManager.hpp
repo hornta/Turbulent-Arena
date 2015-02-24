@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML\Graphics.hpp>
 #include "UIBase.hpp"
+#include "UISlider.hpp"
 #include <functional>
 
 namespace bjoernligan
@@ -44,7 +45,7 @@ namespace bjoernligan
 			return m_axElements[iPos].get();
 		}
 
-		UISlider* AddSlider(const std::string &p_sLabel, const std::function<void(float)> &p_xFunction, const float &p_fDepth, const sf::Vector2f &p_xPos, const float &p_fWidth, const float &p_fMin, const float &p_fMax);
+		UISlider* AddSlider(const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth);
 
 	private:
 		sf::View m_view;

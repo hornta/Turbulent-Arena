@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SliderBridge.hpp"
-
 namespace bjoernligan
 {
 	class ClanMember;
@@ -19,8 +17,6 @@ namespace bjoernligan
 		sf::Color getColor() const;
 		std::vector<ClanMember*> getMembers() const;
 
-		void AddSliderBridge(SliderBridge* p_xBridge);
-
 		void SetSocial(const float &p_fNewValue);
 		void SetBrave(const float &p_fNewValue);
 		void SetAgression(const float &p_fNewValue);
@@ -30,7 +26,6 @@ namespace bjoernligan
 		std::string m_name;
 		
 		std::vector<std::unique_ptr<ClanMember>> m_clanMembers;
-		std::vector<SliderBridge*> m_xBridges;
 	};
 
 	template <typename T>
