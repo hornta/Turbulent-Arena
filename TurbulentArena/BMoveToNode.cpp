@@ -13,23 +13,17 @@ namespace bjoernligan
 
 		}
 
-		BMoveToNode::~BMoveToNode()
-		{
-
-		}
-
 		EBNodeStatus BMoveToNode::Process()
 		{
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			//m_xAgent->MoveToTarget();
-
-			//get move target from agent
-			//m_xTo = m_xAgent->GetMoveTarget()
+			m_xAgent->MoveToTargetPos();
 
 			//if (agent is on the way)
 			//return Running
+			if (!m_xAgent->AtMoveTarget())
+				return EBNodeStatus::Running;
 
 			return EBNodeStatus::Success;
 		}

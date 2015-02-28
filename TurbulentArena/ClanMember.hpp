@@ -15,9 +15,11 @@ namespace bjoernligan
 		friend class Clan;
 	public:
 		ClanMember();
+		~ClanMember();
 
 		virtual void initiate() = 0;
 		virtual void update(float deltatime);
+		void setBody(Physics::Body* body);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Sprite* getSprite();
 

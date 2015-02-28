@@ -34,11 +34,7 @@ namespace bjoernligan
 
 	b2Vec2 Utility::ConvertVector_SFtoB2(const sf::Vector2f &p_xPVect)
 	{
-		b2Vec2 xMVect(1.0f, 1.0f);
-		xMVect.x = ConvertFloat_SFtoB2(p_xPVect.x);
-		xMVect.y = ConvertFloat_SFtoB2(p_xPVect.y);
-
-		return xMVect;
+		return b2Vec2(ConvertFloat_SFtoB2(p_xPVect.x), ConvertFloat_SFtoB2(p_xPVect.y));
 	}
 
 	sf::Vector2f Utility::ConvertVector_B2toSF(const b2Vec2 &p_xMVect)

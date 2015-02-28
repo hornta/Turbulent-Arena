@@ -4,15 +4,27 @@
 #include "Agent.hpp"
 #include "BehaviorTree.hpp"
 #include "SteeringManager.hpp"
+#include "ClanMember.hpp"
+
+#define AGENT_SENSE_TIMER 0.3f
+#define AGENT_DECIDE_TIMER 1.0f
 
 namespace bjoernligan
 {
 	namespace ai
 	{
-		Agent::Agent()
+		Agent::Agent(ClanMember* p_xOwner)
+			: m_xSenseTimer(AGENT_SENSE_TIMER)
+			, m_xDecideTimer(AGENT_DECIDE_TIMER)
+			, m_xOwner(p_xOwner)
+			, m_xBT(nullptr)
 		{
-			m_xBT = nullptr;
 			m_Steering = new SteeringManager();
+
+			m_xBT = std::make_unique<BehaviorTree>();
+
+			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
+			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
 		}
 
 		Agent::~Agent()
@@ -21,6 +33,25 @@ namespace bjoernligan
 			{
 				delete m_Steering;
 				m_Steering = nullptr;
+			}
+		}
+
+		void Agent::Update(const float &p_fDeltaTime)
+		{
+			m_Steering->Update();
+
+			m_xSenseTimer.Update(p_fDeltaTime);
+			m_xDecideTimer.Update(p_fDeltaTime);
+
+			if (m_xSenseTimer.Done())
+			{
+				m_xSenseTimer.Reset();
+				Sense();
+			}
+			if (m_xDecideTimer.Done())
+			{
+				m_xDecideTimer.Reset();
+				Decide();
 			}
 		}
 
@@ -39,9 +70,9 @@ namespace bjoernligan
 
 		}
 
-		void Agent::SetBehaviorTree(BehaviorTree* p_xBT)
+		BehaviorTree* Agent::GetBehaviorTree()
 		{
-			m_xBT = p_xBT;
+			return m_xBT.get();
 		}
 
 		void Agent::setSenseRadius(float p_senseRadius)
@@ -60,7 +91,7 @@ namespace bjoernligan
 		}
 		/*void Agent::Wander()
 		{
-			m_Steering->Wander();
+		m_Steering->Wander();
 		}*/
 		void Agent::Seek(sf::Vector2f p_TargetPos)
 		{
@@ -81,6 +112,29 @@ namespace bjoernligan
 		void Agent::UpdateSteering()
 		{
 			m_Steering->Update();
+		}
+
+		//tomas BT-methods (bad solution)
+		int32_t Agent::SensedEnemyCount()
+		{
+			return 0;
+		}
+
+		void Agent::ChooseWanderPos()
+		{
+			m_xMoveTarget = sf::Vector2f(random::random(64.0f, 540.0f), random::random(64.0f, 540.0f));
+		}
+
+		void Agent::MoveToTargetPos()
+		{
+			//insert pathfinding here
+			
+			m_Steering->Seek(m_xMoveTarget); // <- temporary
+		}
+
+		bool Agent::AtMoveTarget()
+		{
+			return false;
 		}
 	}
 }

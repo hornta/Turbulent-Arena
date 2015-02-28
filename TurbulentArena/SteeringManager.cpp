@@ -49,12 +49,18 @@ namespace bjoernligan
 		}
 		void SteeringManager::Seek(sf::Vector2f p_TargetPos)
 		{
+			if (!m_CurrentBody)
+				return;
+
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
 			m_Steering = GetDesiredVelocity(Position, p_TargetPos, m_HasSlowDown) - Velocity;
 		}
 		void SteeringManager::Flee(sf::Vector2f p_TargetPos)
 		{
+			if (!m_CurrentBody)
+				return;
+
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
 			//send in positions in switched order compared to Seek() to get the negative.(the opposite side)
@@ -70,18 +76,22 @@ namespace bjoernligan
 		}
 		void SteeringManager::Update()
 		{
+			if (abs(m_Steering.x) < 0.01f || abs(m_Steering.y) < 0.01f || !m_CurrentBody)
+				return;
+
 			//OBS all in here needs testing
 
 			m_Steering = Truncate(m_Steering, m_MaxForce);
 			//(steering.scaleBy(1 / host.getMass());)
+			
 			float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
 			m_Steering = m_Steering / BodyMass;
 
 			//try this
 			m_CurrentBody->ApplyForce(m_Utility->ConvertVector_SFtoB2(m_Steering), m_CurrentBody->GetWorldCenter(), true);
 			//or this?
-			/*m_Velocity = Truncate(m_Velocity + m_Steering, m_MaxVelocity);
-			m_CurrentBody->SetLinearVelocity(m_Utility->ConvertVector_SFtoB2(m_Velocity));*/
+			/*m_Velocity = Truncate(m_Velocity + m_Steering, m_MaxVelocity);*/
+			//m_CurrentBody->SetLinearVelocity(m_Utility->ConvertVector_SFtoB2(m_Steering * 5000.0f));
 
 			// (position.incrementBy(velocity);) eller gör box2d detta?
 			/*p_CurrentPos = p_CurrentPos + m_Velocity;*/
@@ -136,7 +146,7 @@ namespace bjoernligan
 			//distance / speed, (this is basicly a prediction number on where target will be in T number of iterations) 
 			int PredictionCycle = static_cast<int>(round
 				(GetEuclideanDistance(CurrentBodyPos, TargetPosition) / GetEuclideanDistance(CurrentBodyPos, m_MaxVelocity)));
-			
+
 			sf::Vector2f PredictedPos;
 			PredictedPos.x = TargetPosition.x + TargetVelocity.x * PredictionCycle;
 			PredictedPos.y = TargetPosition.y + TargetVelocity.y * PredictionCycle;

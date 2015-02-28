@@ -17,19 +17,17 @@ namespace bjoernligan
 	{
 		m_xCombatStats.Initiate(1, 5);
 
-		ai::BehaviorTree* xBT = new ai::BehaviorTree;
+		ai::BehaviorTree* xBT = m_xAgent->GetBehaviorTree();
 
-		ai::BSelectorNode* xSelector = new ai::BSelectorNode;
-		xSelector->AttachAgent(m_xAgent);
+		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
+		xSequence->AttachAgent(m_xAgent);
 
-		ai::BMoveToNode* xMoveTo = xSelector->AddChild<ai::BMoveToNode>();
-		xMoveTo;
-		m_xAgent->SetBehaviorTree(xBT);
+		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
+		xSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}
 
 	void Scout::update(float deltatime)
 	{
 		ClanMember::update(deltatime);
-		deltatime;
 	}
 }

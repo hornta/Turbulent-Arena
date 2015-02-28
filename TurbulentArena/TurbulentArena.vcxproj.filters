@@ -216,9 +216,6 @@
     <ClInclude Include="tinyxml2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClanMember.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UIButton.hpp">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
@@ -227,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="DebugWindow.hpp">
       <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanMember.hpp">
+      <Filter>Header Files\objects\gameplay classes</Filter>
+    </ClInclude>
+    <ClInclude Include="BSetWanderTarget.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -344,14 +347,17 @@
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClanMember.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UIButton.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
     <ClCompile Include="DebugWindow.cpp">
       <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanMember.cpp">
+      <Filter>Source Files\objects\gameplay classes</Filter>
+    </ClCompile>
+    <ClCompile Include="BSetWanderTarget.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,9 +4,12 @@
 #include "AIObserver.hpp"
 #include "Visibility.hpp"
 #include "SteeringManager.hpp"
+#include "Timer.hpp"
 
 namespace bjoernligan
 {
+	class ClanMember;
+
 	namespace ai
 	{
 		class BehaviorTree;
@@ -15,16 +18,17 @@ namespace bjoernligan
 		class Agent : public AIObserver
 		{
 		public:
-			Agent();
+			Agent(ClanMember* p_xOwner);
 			virtual ~Agent();
 
+			void Update(const float &p_fDeltaTime);
 			void Sense();
 			void Decide();
 			//acting is performed by owner object
 
 			virtual void OnNotify(/*add parameters*/);
 
-			void SetBehaviorTree(BehaviorTree* p_xBT);
+			BehaviorTree* GetBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
 			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
 
@@ -38,19 +42,22 @@ namespace bjoernligan
 			void UpdateSteering();
 
 			//tomas BT-methods (bad solution)
-			bool EnemyClose();
-			void ChooseEnemyTarget();
+			int32_t SensedEnemyCount();
+			void ChooseWanderPos();
 			void MoveToTargetPos();
+			bool AtMoveTarget();
 
 		protected:
-			BehaviorTree* m_xBT;
+			std::unique_ptr<BehaviorTree> m_xBT;
 			float m_senseRadius;
 			Visibility::Light* m_senseVisibleArea;
+			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
 			SteeringManager* m_Steering;
 
 			//tomas BT-variables (bad solution)
-
+			sf::Vector2f m_xMoveTarget;
+			ClanMember* m_xOwner;
 		};
 	}
 }

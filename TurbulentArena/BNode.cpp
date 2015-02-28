@@ -21,10 +21,5 @@ namespace bjoernligan
 		{
 			m_xAgent = p_xAgent;
 		}
-
-		void BNode::CleanUp()
-		{
-
-		}
 	}
 }
