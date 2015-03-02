@@ -3,12 +3,12 @@
 #pragma once
 #include "AIObserver.hpp"
 #include "Visibility.hpp"
-#include "SteeringManager.hpp"
 
 namespace bjoernligan
 {
 	namespace ai
 	{
+		class SteeringManager;
 		class BehaviorTree;
 		class PhysicsBody;
 
@@ -29,10 +29,10 @@ namespace bjoernligan
 			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
 
 			//Steering stuff
-			void InitializeSteering(b2Body* p_CurrentBody);
+			void InitializeSteering(b2Body* p_CurrentBody, const b2Vec2& p_MaxVelocity, const float& p_SlowDownRadius);
 			void Wander();
-			void Seek(sf::Vector2f p_TargetPos);
-			void Flee(sf::Vector2f p_TargetPos);
+			void Seek(const b2Vec2& p_TargetPos);
+			void Flee(const b2Vec2& p_TargetPos);
 			void Pursuit(b2Body* p_TargetBody);
 			void Evade(b2Body* p_TargetBody);
 			void UpdateSteering();

@@ -31,13 +31,13 @@ namespace bjoernligan
 			return true;
 		}
 		/*Add more parameters to this function*/
-		void SteeringManager::SetCurrentBody(b2Body* p_CurrentBody)
+		void SteeringManager::SetCurrentBody(b2Body* p_CurrentBody, const b2Vec2& p_MaxVelocity, const float& p_SlowDownRadius)
 		{
 			Reset();
 			m_CurrentBody = p_CurrentBody;
-			m_MaxForce = sf::Vector2f(1, 1);
-			m_MaxVelocity = sf::Vector2f(2, 2);
-			m_SlowDownRadius = 32.0f;
+			m_MaxForce = m_Utility->ConvertVector_B2toSF(p_MaxVelocity);
+			m_MaxVelocity = m_Utility->ConvertVector_B2toSF(p_MaxVelocity);
+			m_SlowDownRadius = m_Utility->ConvertFloat_B2toSF(p_SlowDownRadius);
 			if (m_SlowDownRadius > 0.0f)
 			{
 				m_HasSlowDown = true;
@@ -47,26 +47,28 @@ namespace bjoernligan
 		{
 
 		}
-		void SteeringManager::Seek(sf::Vector2f p_TargetPos)
+		void SteeringManager::Seek(const b2Vec2& p_TargetPos)
 		{
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
-			m_Steering = GetDesiredVelocity(Position, p_TargetPos, m_HasSlowDown) - Velocity;
+			sf::Vector2f TargetPos = m_Utility->ConvertVector_B2toSF(p_TargetPos);
+			m_Steering = GetDesiredVelocity(Position, TargetPos, m_HasSlowDown) - Velocity;
 		}
-		void SteeringManager::Flee(sf::Vector2f p_TargetPos)
+		void SteeringManager::Flee(const b2Vec2& p_TargetPos)
 		{
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
+			sf::Vector2f TargetPos = m_Utility->ConvertVector_B2toSF(p_TargetPos);
 			//send in positions in switched order compared to Seek() to get the negative.(the opposite side)
-			m_Steering = GetDesiredVelocity(p_TargetPos, Position, false) - Velocity;
+			m_Steering = GetDesiredVelocity(TargetPos, Position, false) - Velocity;
 		}
 		void SteeringManager::Pursuit(b2Body* p_TargetBody)
 		{
-			Seek(GetPredictedPosition(p_TargetBody));
+			Seek(m_Utility->ConvertVector_SFtoB2(GetPredictedPosition(p_TargetBody)));
 		}
 		void SteeringManager::Evade(b2Body* p_TargetBody)
 		{
-			Flee(GetPredictedPosition(p_TargetBody));
+			Flee(m_Utility->ConvertVector_SFtoB2(GetPredictedPosition(p_TargetBody)));
 		}
 		void SteeringManager::Update()
 		{
@@ -74,8 +76,9 @@ namespace bjoernligan
 
 			m_Steering = Truncate(m_Steering, m_MaxForce);
 			//(steering.scaleBy(1 / host.getMass());)
-			float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
-			m_Steering = m_Steering / BodyMass;
+			//Add Body mass to calculations
+			//float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
+			//m_Steering = m_Steering / BodyMass;
 
 			//try this
 			m_CurrentBody->ApplyForce(m_Utility->ConvertVector_SFtoB2(m_Steering), m_CurrentBody->GetWorldCenter(), true);

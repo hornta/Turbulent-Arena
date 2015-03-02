@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "ClanMember.hpp"
+#include "Agent.hpp"
 
 namespace bjoernligan
 {
 	ClanMember::ClanMember()
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
+		m_xAgent = new ai::Agent();
 	}
 
 	void ClanMember::update(float deltatime)

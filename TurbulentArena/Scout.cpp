@@ -25,10 +25,18 @@ namespace bjoernligan
 		ai::BMoveToNode* xMoveTo = xSelector->AddChild<ai::BMoveToNode>();
 		xMoveTo;
 		m_xAgent->SetBehaviorTree(xBT);
+		//Init Steering, with body, max velocity and slowdown radius
+		m_xAgent->InitializeSteering(m_xPhysicsBody->m_body, b2Vec2(10,10), 10);
+		//Sets the current velocity
+		m_xPhysicsBody->m_body->SetLinearVelocity(b2Vec2(5, 0));
+		
 	}
 
 	void Scout::update(float deltatime)
 	{
+		m_xAgent->Seek(b2Vec2(30.0f, 20.0f));
+		//m_xAgent->Flee(b2Vec2(30.0f, 20.0f));
+		m_xAgent->UpdateSteering();
 		ClanMember::update(deltatime);
 		deltatime;
 	}

@@ -12,7 +12,6 @@ namespace bjoernligan
 		Agent::Agent()
 		{
 			m_xBT = nullptr;
-			m_Steering = new SteeringManager();
 		}
 
 		Agent::~Agent()
@@ -42,6 +41,7 @@ namespace bjoernligan
 		void Agent::SetBehaviorTree(BehaviorTree* p_xBT)
 		{
 			m_xBT = p_xBT;
+			m_Steering = nullptr;
 		}
 
 		void Agent::setSenseRadius(float p_senseRadius)
@@ -53,20 +53,21 @@ namespace bjoernligan
 		{
 			m_senseVisibleArea = p_senseVisibleArea;
 		}
-		void Agent::InitializeSteering(b2Body* p_CurrentBody)
+		void Agent::InitializeSteering(b2Body* p_CurrentBody, const b2Vec2& p_MaxVelocity, const float& p_SlowDownRadius)
 		{
+			m_Steering = new SteeringManager();
 			m_Steering->Initialize();
-			m_Steering->SetCurrentBody(p_CurrentBody);
+			m_Steering->SetCurrentBody(p_CurrentBody, p_MaxVelocity, p_SlowDownRadius);
 		}
 		/*void Agent::Wander()
 		{
 			m_Steering->Wander();
 		}*/
-		void Agent::Seek(sf::Vector2f p_TargetPos)
+		void Agent::Seek(const b2Vec2& p_TargetPos)
 		{
 			m_Steering->Seek(p_TargetPos);
 		}
-		void Agent::Flee(sf::Vector2f p_TargetPos)
+		void Agent::Flee(const b2Vec2& p_TargetPos)
 		{
 			m_Steering->Flee(p_TargetPos);
 		}

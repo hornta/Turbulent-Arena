@@ -16,11 +16,11 @@ namespace bjoernligan
 			
 			bool Initialize();
 
-			void SetCurrentBody(b2Body* p_CurrentBody);
+			void SetCurrentBody(b2Body* p_CurrentBody, const b2Vec2& p_MaxVelocity, const float& p_SlowDownRadius);
 
 			void Wander();
-			void Seek(sf::Vector2f p_TargetPos);
-			void Flee(sf::Vector2f p_TargetPos);
+			void Seek(const b2Vec2& p_TargetPos);
+			void Flee(const b2Vec2& p_TargetPos);
 			void Pursuit(b2Body* p_TargetBody);
 			void Evade(b2Body* p_TargetBody);
 
