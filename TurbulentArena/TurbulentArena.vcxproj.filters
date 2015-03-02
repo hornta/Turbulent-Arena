@@ -234,6 +234,9 @@
     <ClInclude Include="AudioManager.hpp">
       <Filter>Header Files\system</Filter>
     </ClInclude>
+    <ClInclude Include="MovementStats.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
       <Filter>Source Files\system</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementStats.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

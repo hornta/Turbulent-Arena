@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.hpp" />
+    <ClInclude Include="MovementStats.hpp" />
     <ClInclude Include="BSetWanderTarget.hpp" />
     <ClInclude Include="DebugWindow.hpp" />
     <ClInclude Include="SteeringManager.hpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="MovementStats.cpp" />
     <ClCompile Include="BSetWanderTarget.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="SteeringManager.cpp" />

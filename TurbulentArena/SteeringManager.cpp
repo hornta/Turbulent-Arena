@@ -86,8 +86,8 @@ namespace bjoernligan
 			m_Steering = Truncate(m_Steering, m_MaxForce);
 			//(steering.scaleBy(1 / host.getMass());)
 			//Add Body mass to calculations
-			float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
-			m_Steering = m_Steering / BodyMass;
+			/*float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
+			m_Steering = m_Steering / BodyMass;*/
 
 			//try this
 			m_CurrentBody->ApplyForce(m_Utility->ConvertVector_SFtoB2(m_Steering), m_CurrentBody->GetWorldCenter(), true);
