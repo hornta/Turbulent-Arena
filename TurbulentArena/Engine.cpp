@@ -67,7 +67,7 @@ namespace bjoernligan
 			m_xDebugWindow = DebugWindow::Create(false);
 			m_xDebugWindow->SetPos(16.0f, 16.0f);
 
-			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena", sf::Style::None);
+			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
 			m_view = m_xDrawManager->getWindow()->getView();
 			m_xUIManager->setView(m_view);
 

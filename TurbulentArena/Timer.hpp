@@ -12,9 +12,16 @@ namespace bjoernligan
 			m_fCurrent = m_fMax;
 		}
 
+		/*- also resets the timer*/
 		void SetNewMax(const float &p_fNew)
 		{
 			m_fMax = p_fNew;
+			Reset();
+		};
+
+		void SetOneTimeMax(const float &p_fNew)
+		{
+			m_fCurrent = p_fNew;
 		};
 
 		void Update(const float &p_fDeltaTime)

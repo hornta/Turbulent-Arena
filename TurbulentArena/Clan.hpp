@@ -32,6 +32,7 @@ namespace bjoernligan
 	ClanMember* Clan::createMember()
 	{
 		m_clanMembers.emplace_back(std::make_unique<T>());
+		m_clanMembers.back()->initiate();
 		return m_clanMembers.back().get();
 	}
 }

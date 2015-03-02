@@ -2,7 +2,7 @@
 
 #pragma once
 
-#pragma warning(disable:4099)
+//#pragma warning(disable:4099)
 #pragma warning(disable:4127)
 
 #include "targetver.h"

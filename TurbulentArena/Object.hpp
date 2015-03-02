@@ -22,8 +22,9 @@ namespace bjoernligan
 		virtual ~Object();
 
 		virtual void update(float deltatime);
-		void setBody(Physics::Body* body);
+		virtual void setBody(Physics::Body* body);
 		Physics::Body* getBody() const;
+
 	protected:
 		sf::Vector2f m_xPos;
 

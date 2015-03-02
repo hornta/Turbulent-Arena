@@ -7,10 +7,10 @@ namespace bjoernligan
 {
 	namespace ai
 	{
-		class BMoveToNode : public BNode
+		class BSetWanderTarget : public BNode
 		{
 		public:
-			BMoveToNode();
+			BSetWanderTarget();
 
 			EBNodeStatus Process();
 		};
