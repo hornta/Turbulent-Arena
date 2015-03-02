@@ -86,6 +86,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="BSetWanderTarget.hpp" />
     <ClInclude Include="DebugWindow.hpp" />
     <ClInclude Include="SteeringManager.hpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Visibility.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BSetWanderTarget.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="SteeringManager.cpp" />

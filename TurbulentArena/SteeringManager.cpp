@@ -77,7 +77,8 @@ namespace bjoernligan
 		}
 		void SteeringManager::Update()
 		{
-			if (abs(m_Steering.x) < 0.01f || abs(m_Steering.y) < 0.01f || !m_CurrentBody)
+			if ((abs(m_Steering.x) < 0.01f && abs(m_Steering.y) < 0.01f)
+				|| !m_CurrentBody)
 				return;
 
 			//OBS all in here needs testing

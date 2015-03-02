@@ -33,6 +33,7 @@ namespace bjoernligan
 		{
 			m_xDrawManager = nullptr;
 			m_xSpriteManager = nullptr;
+			m_xAudioManager = nullptr;
 			m_xUIManager = nullptr;
 			m_xKeyboard = nullptr;
 			m_xMouse = nullptr;
@@ -47,6 +48,7 @@ namespace bjoernligan
 		{
 			m_xDrawManager = DrawManager::Create();
 			m_xSpriteManager = SpriteManager::Create();
+			m_xAudioManager = AudioManager::Create();
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
@@ -60,6 +62,12 @@ namespace bjoernligan
 			ServiceLocator<Utility>::SetService(m_xUtility.get());
 			ServiceLocator<Physics>::SetService(m_physics.get());
 			ServiceLocator<Map>::SetService(m_map.get());
+			ServiceLocator<AudioManager>::SetService(m_xAudioManager.get());
+
+			m_xAudioManager->CreateSoundBuffer("Explode", "explode_0.wav");
+			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
+
+			m_xAudioManager->PlayMusic("Battle");
 
 			if (!m_xDrawManager->Initialize())
 				return false;
