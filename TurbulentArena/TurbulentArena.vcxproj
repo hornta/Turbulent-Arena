@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="BSetWanderTarget.hpp" />
     <ClInclude Include="DebugWindow.hpp" />
+    <ClInclude Include="Sense.hpp" />
     <ClInclude Include="SteeringManager.hpp" />
     <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
@@ -138,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="BSetWanderTarget.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
+    <ClCompile Include="Sense.cpp" />
     <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />

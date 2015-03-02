@@ -3,6 +3,12 @@
 namespace bjoernligan
 {
 	class ClanMember;
+	
+	namespace ai
+	{
+		class Sense;
+	}
+
 	class Clan : public sf::Drawable
 	{
 	public:
@@ -10,7 +16,7 @@ namespace bjoernligan
 		~Clan();
 
 		template <typename T>
-		ClanMember* createMember();
+		ClanMember* createMember(ai::Sense* sense);
 
 		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -29,9 +35,9 @@ namespace bjoernligan
 	};
 
 	template <typename T>
-	ClanMember* Clan::createMember()
+	ClanMember* Clan::createMember(ai::Sense* sense)
 	{
-		m_clanMembers.emplace_back(std::make_unique<T>());
+		m_clanMembers.emplace_back(std::make_unique<T>(sense));
 		m_clanMembers.back()->initiate();
 		return m_clanMembers.back().get();
 	}

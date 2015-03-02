@@ -33,7 +33,7 @@ namespace bjoernligan
 		{
 			for (unsigned int i = 0; i < m_AIObserverList.size(); i++)
 			{
-				m_AIObserverList[i]->OnNotify();
+				m_AIObserverList[i]->onNotify();
 			}
 		}
 	}

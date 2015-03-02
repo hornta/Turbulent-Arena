@@ -8,7 +8,8 @@
 
 namespace bjoernligan
 {
-	Scout::Scout()
+	Scout::Scout(ai::Sense* sense)
+		: ClanMember(sense)
 	{
 		m_MaxVelocity = sf::Vector2f(10.0f, 10.0f);
 	}
@@ -17,7 +18,7 @@ namespace bjoernligan
 	{
 		m_xCombatStats.Initiate(1, 5);
 
-		ai::BehaviorTree* xBT = m_xAgent->GetBehaviorTree();
+		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 
 		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
 		xSequence->AttachAgent(m_xAgent);

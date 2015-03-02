@@ -8,7 +8,8 @@
 
 namespace bjoernligan
 {
-	Axeman::Axeman()
+	Axeman::Axeman(ai::Sense* sense)
+		: ClanMember(sense)
 	{
 
 	}
@@ -17,7 +18,7 @@ namespace bjoernligan
 	{
 		m_xCombatStats.Initiate(3, 4);
 
-		ai::BehaviorTree* xBT = m_xAgent->GetBehaviorTree();
+		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 
 		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
 		xSequence->AttachAgent(m_xAgent);

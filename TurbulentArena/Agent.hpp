@@ -15,21 +15,24 @@ namespace bjoernligan
 		class SteeringManager;
 		class BehaviorTree;
 		class PhysicsBody;
+		class SenseData;
+		class Sense;
 
 		class Agent : public AIObserver
 		{
 		public:
-			Agent(ClanMember* p_xOwner);
+			Agent(ClanMember* p_xOwner, Sense* sense);
 			virtual ~Agent();
 
-			void Update(const float &p_fDeltaTime);
-			void Sense();
-			void Decide();
-			//acting is performed by owner object
+			void update(const float &p_fDeltaTime);
+			void sense();
+			void decide();
+			SenseData* getSense() const;
+			ClanMember* getOwner() const;
 
-			virtual void OnNotify(/*add parameters*/);
+			virtual void onNotify(/*add parameters*/);
 
-			BehaviorTree* GetBehaviorTree();
+			BehaviorTree* getBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
 			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
 
@@ -50,11 +53,10 @@ namespace bjoernligan
 
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;
-			float m_senseRadius;
-			Visibility::Light* m_senseVisibleArea;
+			std::unique_ptr<SteeringManager> m_Steering;
+			std::unique_ptr<SenseData> m_senseData;
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
-			SteeringManager* m_Steering;
 
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;

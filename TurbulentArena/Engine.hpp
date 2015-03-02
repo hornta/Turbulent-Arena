@@ -12,10 +12,13 @@
 namespace bjoernligan
 {
 	class Map;
-	class Pathfinder;
-	class Visibility;
 	class ClanManager;
 	class Physics;
+
+	namespace ai
+	{
+		class Sense;
+	}
 
 	namespace system
 	{
@@ -51,8 +54,7 @@ namespace bjoernligan
 			sf::Clock m_xDeltaClock;
 			float m_fDeltaTime, m_fDeltaTimeRaw;
 
-			std::unique_ptr<Visibility> m_visibility;
-			std::unique_ptr<Pathfinder> m_pathFinder;
+			std::unique_ptr<ai::Sense> m_sense;
 			std::unique_ptr<Map> m_map;
 			std::unique_ptr<ClanManager> m_clanManager;
 			std::unique_ptr<Physics> m_physics;

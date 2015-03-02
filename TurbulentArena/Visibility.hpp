@@ -79,7 +79,6 @@ namespace bjoernligan
 		public:
 			Light(const sf::Color& color);
 
-			void setTexture(sf::Texture* texture);
 			void setColor(const sf::Color color);
 			void updateSegments();
 			void sortEndPoints();
@@ -87,13 +86,13 @@ namespace bjoernligan
 			void addSegment(const PrepareSegment& segment);
 			void addTriangle(float angle1, float angle2, Segment* segment);
 			std::vector<std::unique_ptr<EndPoint>>& getEndPoints();
-
+			std::vector<Triangle*> getTriangles() const;
 		private:
 			std::vector<std::unique_ptr<EndPoint>> m_endPoints;
 			std::vector<std::unique_ptr<Segment>> m_segments;
+			std::vector<std::unique_ptr<Triangle>> m_triangles;
 			sf::VertexArray m_vertices;
 			sf::Color m_color;
-			sf::Texture* m_texture;
 		};
 
 		Visibility();

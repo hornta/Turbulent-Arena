@@ -4,11 +4,12 @@
 #include "Engine.hpp"
 #include "ServiceLocator.hpp"
 #include "Map.hpp"
-#include "Pathfinder.hpp"
 #include "Object.hpp"
-#include "Visibility.hpp"
 #include "Physics.hpp"
 #include "Settings.hpp"
+#include "Sense.hpp"
+#include "Pathfinder.hpp"
+#include "Visibility.hpp"
 
 #include "ClanManager.hpp"
 #include "Clan.hpp"
@@ -84,10 +85,11 @@ namespace bjoernligan
 			m_map->load("map.tmx");
 			m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
 			m_physics->setDebug(false);
-			m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
-			m_visibility = std::make_unique<Visibility>();
+
+			m_sense = std::make_unique<ai::Sense>(m_map->getSize());
 
 			// PATHFINDER
+			Pathfinder* pathfinder = m_sense->getPathfinder();
 			for (int x = 0; x < m_map->getWidth(); ++x)
 			{
 				for (int y = 0; y < m_map->getHeight(); ++y)
@@ -95,7 +97,7 @@ namespace bjoernligan
 					Map::Tile* tile = m_map->getLayer("objects")->getTile(x, y);
 					if (tile != nullptr)
 					{
-						m_pathFinder->getGrid().setWalkableAt(x, y, tile->hasProperty("walkable"));
+						pathfinder->getGrid().setWalkableAt(x, y, tile->hasProperty("walkable"));
 						if (!tile->hasProperty("walkable"))
 						{
 							sf::Vector2f tileSize = m_map->getTileSize();
@@ -116,6 +118,7 @@ namespace bjoernligan
 			}
 
 			// VISIBILITY
+			Visibility* visibility = m_sense->getVisibility();
 			std::vector<Map::Object*> objects = m_map->getObjectGroup("light_segments")->getObjects();
 			for (std::size_t i = 0; i < objects.size(); ++i)
 			{
@@ -126,7 +129,7 @@ namespace bjoernligan
 					{
 						sf::Vector2f p0(points[k]);
 						sf::Vector2f p1(points[k + 1]);
-						m_visibility->addSegment(p0, p1);
+						visibility->addSegment(p0, p1);
 					}
 				}
 			}
@@ -178,112 +181,128 @@ namespace bjoernligan
 			Clan* clan = m_clanManager->createClan("MacDonald");
 
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
 			}
 			{
-				ClanMember* member = clan->createMember<Scout>();
+				ClanMember* member = clan->createMember<Scout>(m_sense.get());
+				m_sense->addAgent(member->getAgent());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
@@ -331,7 +350,7 @@ namespace bjoernligan
 
 				//Updates
 				m_physics->update(m_fDeltaTime);
-				m_visibility->update();
+				m_sense->update(m_fDeltaTime);
 				m_xUIManager->Update(m_fDeltaTime);
 				m_clanManager->Update(m_fDeltaTime);
 				m_xDebugWindow->Update(m_fDeltaTimeRaw);
@@ -343,7 +362,6 @@ namespace bjoernligan
 				m_xDrawManager->ClearScr();
 				m_xDrawManager->getWindow()->setView(m_view);
 				m_xDrawManager->Draw(m_map.get());
-				m_xDrawManager->Draw(m_visibility.get());
 				m_xDrawManager->Draw(m_clanManager.get());
 				m_physics->draw();
 				m_xDrawManager->getWindow()->setView(m_xUIManager->getView());

@@ -12,7 +12,7 @@ namespace bjoernligan
 		{
 		public:
 			~AIObserver() {};
-			virtual void OnNotify(/*add parameters*/) = 0;
+			virtual void onNotify(/*add parameters*/) = 0;
 		};
 	}
 }

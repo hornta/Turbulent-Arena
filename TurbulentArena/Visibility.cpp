@@ -182,15 +182,9 @@ namespace bjoernligan
 
 	/* Light */
 	Visibility::Light::Light(const sf::Color& color)
-		: m_color(color),
-		m_texture(nullptr)
+		: m_color(color)
 	{
 		m_vertices.setPrimitiveType(sf::PrimitiveType::TrianglesFan);
-	}
-
-	void Visibility::Light::setTexture(sf::Texture* texture)
-	{
-		m_texture = texture;
 	}
 
 	void Visibility::Light::setColor(const sf::Color color)
@@ -201,6 +195,7 @@ namespace bjoernligan
 	void Visibility::Light::updateSegments()
 	{
 		sf::Vector2f position = getPosition();
+		m_triangles.clear();
 		m_vertices.clear();
 		m_vertices.append(sf::Vertex(position, m_color, getOrigin()));
 
@@ -236,7 +231,6 @@ namespace bjoernligan
 
 	void Visibility::Light::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		states.texture = m_texture;
 		states.blendMode = sf::BlendAdd;
 		target.draw(m_vertices, states);
 	}
@@ -269,6 +263,16 @@ namespace bjoernligan
 		return m_endPoints;
 	}
 
+	std::vector<Visibility::Triangle*> Visibility::Light::getTriangles() const
+	{
+		std::vector<Visibility::Triangle*> triangles;
+		for (std::size_t i = 0; i < m_triangles.size(); ++i)
+		{
+			triangles.push_back(m_triangles[i].get());
+		}
+		return triangles;
+	}
+
 	void Visibility::Light::addTriangle(float angle1, float angle2, Segment* segment)
 	{
 		sf::Vector2f p1 = getPosition();
@@ -294,8 +298,10 @@ namespace bjoernligan
 		p2.y = p1.y + sinf(angle2);
 		sf::Vector2f end = linesIntersection(p3, p4, p1, p2);
 
-		m_vertices.append(sf::Vertex(begin, m_color, getOrigin() + begin - getPosition()));
-		m_vertices.append(sf::Vertex(end, m_color, getOrigin() + end - getPosition()));
+		m_vertices.append(sf::Vertex(begin, m_color));
+		m_vertices.append(sf::Vertex(end, m_color));
+
+		m_triangles.emplace_back(std::make_unique<Triangle>(getPosition(), begin, end));
 	}
 
 	Visibility::Visibility()
