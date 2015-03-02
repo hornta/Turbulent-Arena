@@ -82,6 +82,12 @@
     <Filter Include="Source Files\gui">
       <UniqueIdentifier>{78def6db-4260-49d4-8d61-b3cc8841fc6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game_states">
+      <UniqueIdentifier>{7bb41f77-bf78-4e16-982b-82ca797bc00d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game_states">
+      <UniqueIdentifier>{16759926-064c-40a2-a935-54635acc1953}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServiceLocator.hpp">
@@ -237,6 +243,15 @@
     <ClInclude Include="MovementStats.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameStateManager.hpp">
+      <Filter>Header Files\system</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.hpp">
+      <Filter>Header Files\game_states</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayState.hpp">
+      <Filter>Header Files\game_states</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -370,6 +385,15 @@
     </ClCompile>
     <ClCompile Include="MovementStats.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Source Files\system</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files\game_states</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayState.cpp">
+      <Filter>Source Files\game_states</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

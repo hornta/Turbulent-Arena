@@ -39,10 +39,9 @@ namespace bjoernligan
 
 		void DrawManager::Draw(sf::Drawable* p_xDrawTarget)
 		{
-			if (p_xDrawTarget == nullptr)
-			{
+			if (!p_xDrawTarget)
 				return;
-			}
+
 			m_xWindow->draw(*p_xDrawTarget);
 		}
 

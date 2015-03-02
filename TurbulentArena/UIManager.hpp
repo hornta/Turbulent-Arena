@@ -22,7 +22,8 @@ namespace bjoernligan
 	public:
 		typedef std::unique_ptr<UIManager> Ptr;
 		static Ptr Create();
-
+		
+		void Clear();
 		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

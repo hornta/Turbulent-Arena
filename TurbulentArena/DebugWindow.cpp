@@ -10,12 +10,9 @@ namespace bjoernligan
 {
 	DebugWindow::DebugWindow(const bool &p_bActive)
 		: m_bActive(p_bActive)
+		, m_xBgRect(nullptr)
 	{
-		m_xFps.setFont(*ServiceLocator<system::DrawManager>::GetService()->GetFont());
-		m_xFps.setCharacterSize(18);
 
-		m_xBgRect = std::unique_ptr<sf::RectangleShape>(new sf::RectangleShape(sf::Vector2f(128.0f, 32.0f)));
-		m_xBgRect->setFillColor(sf::Color(80, 80, 80, 200));
 	}
 
 	DebugWindow::Ptr DebugWindow::Create(const bool &p_bActive)
@@ -23,9 +20,25 @@ namespace bjoernligan
 		return Ptr(new DebugWindow(p_bActive));
 	}
 
+	bool DebugWindow::Initialize()
+	{
+		system::DrawManager* xDrawManager = ServiceLocator<system::DrawManager>::GetService();
+
+		if (!xDrawManager)
+			return false;
+
+		m_xFps.setFont(*xDrawManager->GetFont());
+		m_xFps.setCharacterSize(18);
+
+		m_xBgRect = std::unique_ptr<sf::RectangleShape>(new sf::RectangleShape(sf::Vector2f(128.0f, 32.0f)));
+		m_xBgRect->setFillColor(sf::Color(80, 80, 80, 200));
+
+		return true;
+	}
+
 	void DebugWindow::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		if (!m_bActive)
+		if (!m_bActive || !m_xBgRect)
 			return;
 
 		target.draw(*m_xBgRect, states);

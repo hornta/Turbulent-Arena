@@ -87,9 +87,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.hpp" />
+    <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="GameStateManager.hpp" />
     <ClInclude Include="MovementStats.hpp" />
     <ClInclude Include="BSetWanderTarget.hpp" />
     <ClInclude Include="DebugWindow.hpp" />
+    <ClInclude Include="PlayState.hpp" />
     <ClInclude Include="SteeringManager.hpp" />
     <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
@@ -139,9 +142,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="MovementStats.cpp" />
     <ClCompile Include="BSetWanderTarget.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
+    <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />

@@ -18,9 +18,8 @@ namespace bjoernligan
 			, m_xDecideTimer(AGENT_DECIDE_TIMER)
 			, m_xOwner(p_xOwner)
 			, m_xBT(nullptr)
+			, m_Steering(nullptr)
 		{
-			m_Steering = new SteeringManager();
-
 			m_xBT = std::make_unique<BehaviorTree>();
 
 			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));

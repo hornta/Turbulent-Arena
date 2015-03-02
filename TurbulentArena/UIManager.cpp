@@ -11,11 +11,17 @@ namespace bjoernligan
 {
 	UIManager::UIManager()
 	{
+		m_view.setSize(sf::Vector2f(Settings::m_xWindowSize));
 	}
 
 	UIManager::Ptr UIManager::Create()
 	{
 		return Ptr(new UIManager());
+	}
+
+	void UIManager::Clear()
+	{
+		m_axElements.clear();
 	}
 
 	void UIManager::Update(const float &p_fDeltaTime)
