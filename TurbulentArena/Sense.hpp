@@ -1,11 +1,10 @@
 #pragma once
 
 #include "Visibility.hpp"
+#include "Pathfinder.hpp"
 
 namespace bjoernligan
 {
-	class Pathfinder;
-
 	namespace ai
 	{
 		class Sense;
@@ -18,6 +17,7 @@ namespace bjoernligan
 			Visibility::Light* m_visibilityArea;
 			Agent* m_me;
 			std::vector<Agent*> m_visibleAgents;
+			std::vector<Agent*> getVisibleAgents() const;
 
 		public:
 			SenseData(Agent* me, Sense* sense, float radius);
@@ -25,8 +25,7 @@ namespace bjoernligan
 			void update();
 			void setRadius(float radius);
 			float getRadius() const;
-			std::vector<Agent*> getVisibleAgents() const;
-			bool isVisible(Agent* agent, bool findPath = false) const;
+			bool isVisible(Agent* agent, bool findPath, Pathfinder::Path& path, Pathfinder::Options pathfinderOptions = Pathfinder::Options()) const;
 		};
 
 		class Sense
@@ -40,6 +39,7 @@ namespace bjoernligan
 			void addAgent(Agent* agent);
 
 			void update(float dt);
+			std::vector<Agent*>& getAgents();
 			Pathfinder* getPathfinder() const;
 			Visibility* getVisibility() const;
 		};

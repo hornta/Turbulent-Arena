@@ -100,6 +100,7 @@ namespace bjoernligan
 		ObjectGroup* getObjectGroup(const std::string& name) const;
 			
 		sf::Vector2i getSize() const;
+		sf::Vector2i getTilePosition(const sf::Vector2f& position) const;
 		int getWidth() const;
 		int getHeight() const;
 		sf::Vector2f getTileSize() const;
