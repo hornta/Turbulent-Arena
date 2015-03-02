@@ -54,6 +54,7 @@ namespace bjoernligan
 				Decide();
 			}
 			//ADD ACT?
+			Seek(m_xMoveTarget);
 			UpdateSteering();
 		}
 
@@ -86,11 +87,11 @@ namespace bjoernligan
 		{
 			m_senseVisibleArea = p_senseVisibleArea;
 		}
-		void Agent::InitializeSteering(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity, const float& p_SlowDownRadius)
+		void Agent::InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats)
 		{
 			m_Steering = new SteeringManager();
 			m_Steering->Initialize();
-			m_Steering->SetCurrentBody(p_CurrentBody, p_MaxVelocity, p_SlowDownRadius);
+			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxVelocity(), p_MovementStats->GetSlowDownRadius());
 		}
 		/*void Agent::Wander()
 		{
@@ -125,14 +126,13 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos()
 		{
-			//m_xMoveTarget = sf::Vector2f(540.0f,540.0f);
-			m_xMoveTarget = sf::Vector2f(random::random(64.0f, 540.0f), random::random(64.0f, 540.0f));
+			//m_xMoveTarget = sf::Vector2f(140.0f,140.0f);
+			m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
 		}
 
 		void Agent::MoveToTargetPos()
 		{
 			//insert pathfinding here
-			
 			m_Steering->Seek(m_xMoveTarget); // <- temporary
 		}
 

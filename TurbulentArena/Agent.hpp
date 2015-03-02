@@ -5,6 +5,7 @@
 #include "Visibility.hpp"
 #include "SteeringManager.hpp"
 #include "Timer.hpp"
+#include "MovementStats.hpp"
 
 namespace bjoernligan
 {
@@ -34,7 +35,7 @@ namespace bjoernligan
 			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
 
 			//Steering stuff
-			void InitializeSteering(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity, const float& p_SlowDownRadius);
+			void InitializeSteering(b2Body* p_CurrentBody,MovementStats* p_MovementStats);
 			void Wander();
 			void Seek(const sf::Vector2f& p_TargetPos);
 			void Flee(const sf::Vector2f& p_TargetPos);
@@ -58,7 +59,6 @@ namespace bjoernligan
 
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;
-			sf::Vector2f m_MaxVelocity;
 			ClanMember* m_xOwner;
 		};
 	}

@@ -231,6 +231,9 @@
     <ClInclude Include="BSetWanderTarget.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
+    <ClInclude Include="MovementStats.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -358,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="BSetWanderTarget.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementStats.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
