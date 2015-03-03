@@ -15,6 +15,7 @@ namespace bjoernligan
 		, m_bObscured(false)
 	{
 		m_xStateMngr = ServiceLocator<system::GameStateManager>::GetService();
+		m_xDrawManager = ServiceLocator<system::DrawManager>::GetService();
 	}
 
 	bool GameState::GetExclusive()

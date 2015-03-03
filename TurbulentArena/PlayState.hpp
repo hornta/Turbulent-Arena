@@ -22,6 +22,7 @@ namespace bjoernligan
 
 	namespace system
 	{
+		class AudioManager;
 		class SpriteManager;
 	}
 
@@ -42,6 +43,7 @@ namespace bjoernligan
 
 		//from engine
 		system::SpriteManager* m_xSpriteManager;
+		system::AudioManager* m_xAudioManager;
 		UIManager* m_xUIManager;
 		input::Mouse* m_xMouse;
 		input::Keyboard* m_xKeyboard;

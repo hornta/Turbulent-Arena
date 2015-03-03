@@ -28,10 +28,8 @@ namespace bjoernligan
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		template<class T>
-		UIBase* AddElement(const float &p_fDepth)
+		UIBase* AddElement(const std::string &p_sLabel, const float &p_fDepth)
 		{
-			++m_iElementCount;
-
 			uint32_t iPos = 0;
 			auto itr = m_axElements.begin();
 			while (itr != m_axElements.end())
@@ -42,17 +40,18 @@ namespace bjoernligan
 				++itr;
 			}
 
-			m_axElements.insert(m_axElements.begin() + iPos, T::Create(p_fDepth));
+			m_axElements.insert(m_axElements.begin() + iPos, T::Create(p_sLabel, p_fDepth));
 			return m_axElements[iPos].get();
 		}
 
-		UISlider* AddSlider(const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth);
+		UISlider* AddSlider(const std::string &p_sLabel, const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth);
+		void RemoveElementsByLabel(const std::string &p_sLabel);
 
 		void setView(const sf::View& view);
 		sf::View getView() const;
 	private:
 		sf::View m_view;
 		std::vector<UIBase::Ptr> m_axElements;
-		uint32_t m_iElementCount;
+		uint32_t m_iSliderCount;
 	};
 }

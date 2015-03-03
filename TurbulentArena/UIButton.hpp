@@ -25,12 +25,12 @@ namespace bjoernligan
 			Pressed,
 		} m_eState;
 		
-		UIButton(const float &p_fDepth);
+		UIButton(const std::string &p_sLabel, const float &p_fDepth);
 		UIButton(const UIButton&);
 		UIButton& operator=(const UIButton&);
 
 	public:
-		static Ptr Create(const float &p_fDepth);
+		static Ptr Create(const std::string &p_sLabel, const float &p_fDepth);
 
 		void Initialize(
 			const std::string &p_sName,
@@ -50,6 +50,7 @@ namespace bjoernligan
 	private:
 		bool m_bNewValue;
 		bool m_bActive;
+		bool m_bFunction;
 		std::function<void(bool)> m_xFunction;
 		sf::Text m_xButtonText;
 		input::Mouse* m_xMouse;

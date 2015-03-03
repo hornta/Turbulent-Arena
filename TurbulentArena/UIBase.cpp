@@ -5,14 +5,16 @@
 
 namespace bjoernligan
 {
-	UIBase::UIBase(const float &p_fDepth)
+	UIBase::UIBase(const std::string &p_sLabel, const float &p_fDepth)
+		: m_sLabel(p_sLabel)
+		, m_fDepth(p_fDepth)
 	{
-		m_fDepth = p_fDepth;
+
 	}
 
-	UIBase::Ptr UIBase::Create(const float &p_fDepth)
+	UIBase::Ptr UIBase::Create(const std::string &p_sLabel, const float &p_fDepth)
 	{
-		return Ptr(new UIBase(p_fDepth));
+		return Ptr(new UIBase(p_sLabel, p_fDepth));
 	}
 
 	void UIBase::Update(const float &p_fDeltaTime)

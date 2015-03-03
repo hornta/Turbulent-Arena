@@ -9,7 +9,7 @@
 #include "Visibility.hpp"
 #include "Physics.hpp"
 #include "Settings.hpp"
-#include "PlayState.hpp"
+#include "MainMenuState.hpp"
 
 #include "ClanManager.hpp"
 #include "Clan.hpp"
@@ -71,9 +71,12 @@ namespace bjoernligan
 
 			m_xSpriteManager->setTexturePath("../data/sprites/");
 
-			m_xAudioManager->CreateSoundBuffer("Explode", "explode_0.wav");
+			m_xAudioManager->CreateSoundBuffer("Button1", "button_click1.wav");
+			m_xAudioManager->CreateSoundBuffer("Button2", "button_click2.wav");
+			m_xAudioManager->CreateSoundBuffer("Button3", "button_click3.wav");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
-			m_xAudioManager->PlayMusic("Battle");
+			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
+			m_xAudioManager->PlayMusic("Menu");
 
 			if (!m_xDrawManager->Initialize())
 				return false;
@@ -85,7 +88,9 @@ namespace bjoernligan
 
 			if (!m_xStateManager->Initialize())
 				return false;
-			m_xStateManager->CreateState<PlayState>("PlayState");
+			m_xStateManager->CreateState<MainMenuState>("MainMenu");
+
+			m_xUIManager->setView(m_xDrawManager->getWindow()->getView());
 
 			return true;
 		}
@@ -99,7 +104,9 @@ namespace bjoernligan
 
 				//Updates
 				UpdateDeltaTime();
+				m_xUIManager->Update(m_fDeltaTime);
 				m_xStateManager->UpdateStates(m_fDeltaTime);
+				m_xDebugWindow->Update(m_fDeltaTimeRaw);
 
 				//Draw
 				m_xDrawManager->ClearScr();
@@ -111,6 +118,7 @@ namespace bjoernligan
 				//Post-updates
 				m_xMouse->PostUpdate();
 				m_xKeyboard->PostUpdate();
+				m_xStateManager->PostUpdate();
 			}
 		}
 

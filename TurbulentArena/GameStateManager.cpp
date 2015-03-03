@@ -36,6 +36,9 @@ namespace bjoernligan
 			{
 				for (int i = m_axStates.size() - 1; i >= 0; --i)
 				{
+					if (m_axStates[i]->m_bDeleteMe)
+						continue;
+
 					if (m_axStates[i]->GetObscured())
 					{
 						m_axStates[i]->Reveal();
@@ -71,6 +74,7 @@ namespace bjoernligan
 			{
 				if (m_axStates[i]->m_bDeleteMe)
 				{
+					m_axStates[i]->Exit();
 					RemoveStateByIndex(i);
 				}
 			}

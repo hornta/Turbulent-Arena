@@ -225,9 +225,6 @@
     <ClInclude Include="UIButton.hpp">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="AIEvent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DebugWindow.hpp">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
@@ -250,6 +247,12 @@
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
     <ClInclude Include="PlayState.hpp">
+      <Filter>Header Files\game_states</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.hpp">
+      <Filter>Header Files\game_states</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsState.hpp">
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
   </ItemGroup>
@@ -393,6 +396,12 @@
       <Filter>Source Files\game_states</Filter>
     </ClCompile>
     <ClCompile Include="PlayState.cpp">
+      <Filter>Source Files\game_states</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Source Files\game_states</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsState.cpp">
       <Filter>Source Files\game_states</Filter>
     </ClCompile>
   </ItemGroup>

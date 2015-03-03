@@ -5,6 +5,7 @@
 #include "ServiceLocator.hpp"
 #include "DrawManager.hpp"
 #include "SpriteManager.hpp"
+#include "AudioManager.hpp"
 #include "Map.hpp"
 #include "Physics.hpp"
 #include "Visibility.hpp"
@@ -20,6 +21,8 @@
 #include "UIButton.hpp"
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
+#include "GameStateManager.hpp"
+#include "MainMenuState.hpp"
 
 namespace bjoernligan
 {
@@ -32,10 +35,10 @@ namespace bjoernligan
 
 	void PlayState::Enter()
 	{
-		std::cout << "Entered playstate." << std::endl;
+		std::cout << "Entered PlayState." << std::endl;
 
 		m_xSpriteManager = ServiceLocator<system::SpriteManager>::GetService();
-		m_xDrawManager = ServiceLocator<system::DrawManager>::GetService();
+		m_xAudioManager = ServiceLocator<system::AudioManager>::GetService();
 		m_xUIManager = ServiceLocator<UIManager>::GetService();
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
@@ -43,7 +46,7 @@ namespace bjoernligan
 		m_xDebugWindow = ServiceLocator<DebugWindow>::GetService();
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
-
+		
 		m_map = std::make_unique<Map>("../data/");
 		m_map->load("map.tmx");
 
@@ -272,30 +275,36 @@ namespace bjoernligan
 			xDef.m_fCurrent = 5.0f;
 			xDef.m_bContinous = true;
 
-			m_xUIManager->AddSlider(xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
+			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
 
-			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
-			xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32), std::bind(&bjoernligan::PlayState::SetDebugMode, this, std::placeholders::_1));
+			UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+			xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32),
+				std::bind(&bjoernligan::PlayState::SetDebugMode, this, std::placeholders::_1));
 
-			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>(1.0f));
-			xButton->Initialize("Debug: Window", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32), std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow, std::placeholders::_1));
-
-			m_xUIManager->setView(m_view);
+			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+			xButton->Initialize("Debug: Window", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32),
+				std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow, std::placeholders::_1));
 	}
 
 	void PlayState::Exit()
 	{
-		std::cout << "Exited playstate." << std::endl;
+		m_xUIManager->RemoveElementsByLabel("PlayState");
 	}
 
 	bool PlayState::Update(const float &p_fDeltaTime)
 	{
 		m_physics->update(p_fDeltaTime);
 		m_visibility->update();
-		m_xUIManager->Update(p_fDeltaTime);
 		m_clanManager->Update(p_fDeltaTime);
-		m_xDebugWindow->Update(p_fDeltaTime);
 		updateCamera(p_fDeltaTime);
+
+		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Escape))
+		{
+			m_xAudioManager->StopAllMusic();
+			m_xAudioManager->PlayMusic("Menu");
+			m_xStateMngr->CreateState<MainMenuState>("MainMenu");
+			m_bDeleteMe = true;
+		}
 
 		return true;
 	}

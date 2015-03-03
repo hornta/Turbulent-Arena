@@ -5,6 +5,7 @@
 #include "ServiceLocator.hpp"
 #include "DrawManager.hpp"
 #include "Mouse.hpp"
+#include "AudioManager.hpp"
 
 namespace bjoernligan
 {
@@ -12,8 +13,8 @@ namespace bjoernligan
 	sf::Color UIButton::m_xDefaultHoverColor = sf::Color(110, 110, 110, 128);
 	sf::Color UIButton::m_xDefaultPressedColor = sf::Color(160, 160, 160, 128);
 
-	UIButton::UIButton(const float &p_fDepth)
-		: UIBase(p_fDepth)
+	UIButton::UIButton(const std::string &p_sLabel, const float &p_fDepth)
+		: UIBase(p_sLabel, p_fDepth)
 		, m_bActive(false)
 		, m_bNewValue(false)
 		, m_eState(EButtonState::Idle)
@@ -25,9 +26,9 @@ namespace bjoernligan
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 	}
 
-	UIBase::Ptr UIButton::Create(const float &p_fDepth)
+	UIBase::Ptr UIButton::Create(const std::string &p_sLabel, const float &p_fDepth)
 	{
-		return Ptr(new UIButton(p_fDepth));
+		return Ptr(new UIButton(p_sLabel, p_fDepth));
 	}
 
 	void UIButton::Initialize(
@@ -44,6 +45,8 @@ namespace bjoernligan
 
 		m_xButtonRect = std::unique_ptr<sf::RectangleShape>(new sf::RectangleShape(sf::Vector2f((float)p_xSize.width, (float)p_xSize.height)));
 		m_xButtonRect->setFillColor(p_xIdleColor);
+		m_xButtonRect->setOutlineColor(sf::Color::Black);
+		m_xButtonRect->setOutlineThickness(2);
 
 		m_xIdleColor = p_xIdleColor;
 		m_xHoverColor = p_xHoverColor;
@@ -65,6 +68,7 @@ namespace bjoernligan
 			{
 				m_bActive = !m_bActive;
 				m_eState = EButtonState::Idle;
+				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button3");
 
 				if (m_xFunction)
 					m_xFunction(m_bActive);
@@ -87,6 +91,7 @@ namespace bjoernligan
 				{
 					m_eState = EButtonState::Pressed;
 					m_xButtonRect->setFillColor(m_xPressedColor);
+					ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button1");
 				}
 			}
 
@@ -121,7 +126,14 @@ namespace bjoernligan
 
 		m_xButtonRect->setPosition(p_xPos);
 
-		m_xButtonText.setPosition(p_xPos);
+		sf::Vector2f xTextOffset;
+		xTextOffset.x = ceilf(abs(m_xButtonText.getLocalBounds().width - m_xButtonRect->getLocalBounds().width) / 2.0f);
+		xTextOffset.x -= 3;
+
+		xTextOffset.y = ceilf(abs(m_xButtonText.getLocalBounds().height - m_xButtonRect->getLocalBounds().height) / 2.0f);
+		xTextOffset.y -= 5;
+
+		m_xButtonText.setPosition(p_xPos + xTextOffset);
 	}
 
 	void UIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
