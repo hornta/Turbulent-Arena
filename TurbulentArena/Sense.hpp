@@ -17,7 +17,6 @@ namespace bjoernligan
 			Visibility::Light* m_visibilityArea;
 			Agent* m_me;
 			std::vector<Agent*> m_visibleAgents;
-			std::vector<Agent*> getVisibleAgents() const;
 
 		public:
 			SenseData(Agent* me, Sense* sense, float radius);
@@ -26,6 +25,7 @@ namespace bjoernligan
 			void setRadius(float radius);
 			float getRadius() const;
 			bool isVisible(Agent* agent, bool findPath, Pathfinder::Path& path, Pathfinder::Options pathfinderOptions = Pathfinder::Options()) const;
+			std::vector<Agent*> getVisibleAgents() const;
 		};
 
 		class Sense

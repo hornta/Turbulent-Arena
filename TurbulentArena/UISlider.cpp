@@ -4,6 +4,7 @@
 #include "UISlider.hpp"
 #include "ServiceLocator.hpp"
 #include "DrawManager.hpp"
+#include "AudioManager.hpp"
 #include "Mouse.hpp"
 #include "Settings.hpp"
 #include <sstream>
@@ -72,6 +73,9 @@ namespace bjoernligan
 			if (!m_xMouse->IsDown(sf::Mouse::Button::Left))
 			{
 				m_eStatus = EStatus::Idle;
+				
+				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Explode");
+
 				m_xFunction(GetValue());
 				return;
 			}

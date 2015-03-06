@@ -3,6 +3,7 @@
 #pragma once
 #include "DrawManager.hpp"
 #include "SpriteManager.hpp"
+#include "AudioManager.hpp"
 #include "UIManager.hpp"
 #include "Mouse.hpp"
 #include "Keyboard.hpp"
@@ -42,6 +43,7 @@ namespace bjoernligan
 			bool m_bRunning;
 			float m_fScrollSpeed;
 			SpriteManager::Ptr m_xSpriteManager;
+			AudioManager::Ptr m_xAudioManager;
 			DrawManager::Ptr m_xDrawManager;
 			UIManager::Ptr m_xUIManager;
 			input::Keyboard::Ptr m_xKeyboard;

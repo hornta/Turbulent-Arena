@@ -32,17 +32,17 @@ namespace bjoernligan
 	void ClanMember::setBody(Physics::Body* body)
 	{
 		Object::setBody(body);
-
+		InitSteeringStats();
+		
+	}
+	void ClanMember::InitSteeringStats()
+	{
 		if (m_xAgent)
 		{
-
-			//Init Steering, with body, max velocity and slowdown radius
-			m_xAgent->InitializeSteering(m_xPhysicsBody->m_body,m_MaxVelocity, 10);
-			//Sets the current velocity
-			m_xPhysicsBody->m_body->SetLinearVelocity(b2Vec2(15, 0));
+			//Init Steering, with Body and Movementstats
+			m_xAgent->InitializeSteering(m_xPhysicsBody->m_body, &m_MovementStats);
 		}
 	}
-
 	void ClanMember::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*m_sprite.get(), states);

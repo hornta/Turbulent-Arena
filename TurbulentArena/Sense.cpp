@@ -28,26 +28,7 @@ namespace bjoernligan
 
 		std::vector<Agent*> SenseData::getVisibleAgents() const
 		{
-			std::vector<Agent*> visibleAgents;
-			std::vector<Agent*> agents = m_sense->getAgents();
-
-			std::vector<Visibility::Triangle*> triangles = m_visibilityArea->getTriangles();
-
-			for (std::size_t k = 0; k < agents.size(); ++k)
-			{
-				for (std::size_t i = 0; i < triangles.size(); ++i)
-				{
-					sf::Vector2f agentPos = agents[k]->getOwner()->getSprite()->getPosition();
-
-					if (pointInTriangle(agentPos, triangles[i]->getPoint0(), triangles[i]->getPoint1(), triangles[i]->getPoint2()))
-					{
-						visibleAgents.push_back(agents[k]);
-						break;
-					}
-				}
-			}
-
-			return agents;
+			return m_visibleAgents;
 		}
 
 		SenseData::SenseData(Agent* me, Sense* sense, float radius) :
@@ -60,7 +41,24 @@ namespace bjoernligan
 
 		void SenseData::update()
 		{
-			m_visibleAgents = getVisibleAgents();
+			m_visibleAgents.clear();
+			std::vector<Agent*> agents = m_sense->getAgents();
+
+			std::vector<Visibility::Triangle*> triangles = m_visibilityArea->getTriangles();
+
+			for (std::size_t k = 0; k < agents.size(); ++k)
+			{
+				for (std::size_t i = 0; i < triangles.size(); ++i)
+				{
+					sf::Vector2f agentPos = agents[k]->getOwner()->getSprite()->getPosition();
+
+					if (pointInTriangle(agentPos, triangles[i]->getPoint0(), triangles[i]->getPoint1(), triangles[i]->getPoint2()))
+					{
+						m_visibleAgents.push_back(agents[k]);
+						break;
+					}
+				}
+			}
 		}
 
 		void SenseData::setRadius(float radius)

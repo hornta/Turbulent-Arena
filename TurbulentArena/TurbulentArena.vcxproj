@@ -86,6 +86,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.hpp" />
+    <ClInclude Include="BFindTargetNode.hpp" />
+    <ClInclude Include="MovementStats.hpp" />
     <ClInclude Include="BSetWanderTarget.hpp" />
     <ClInclude Include="DebugWindow.hpp" />
     <ClInclude Include="Sense.hpp" />
@@ -137,6 +140,9 @@
     <ClInclude Include="Visibility.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BFindTargetNode.cpp" />
+    <ClCompile Include="MovementStats.cpp" />
     <ClCompile Include="BSetWanderTarget.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="Sense.cpp" />

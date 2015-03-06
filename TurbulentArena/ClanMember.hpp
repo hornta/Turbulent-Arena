@@ -2,6 +2,7 @@
 
 #include "Object.hpp"
 #include "CombatStats.hpp"
+#include "MovementStats.hpp"
 
 namespace bjoernligan
 {
@@ -24,13 +25,15 @@ namespace bjoernligan
 		virtual void initiate() = 0;
 		virtual void update(float deltatime);
 		void setBody(Physics::Body* body);
+		void InitSteeringStats();
+
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Sprite* getSprite();
 		ai::Agent* getAgent() const;
 
 	protected:
 		ai::Agent* m_xAgent;
-		sf::Vector2f m_MaxVelocity;
+		MovementStats m_MovementStats;
 		CombatStats m_xCombatStats;
 		Clan* m_clan;
 		std::unique_ptr<sf::Sprite> m_sprite;

@@ -5,6 +5,7 @@
 #include "Agent.hpp"
 #include "BehaviorTree.hpp"
 #include "BNodesInclude.hpp"
+#include "BFindTargetNode.hpp"
 
 namespace bjoernligan
 {
@@ -23,6 +24,7 @@ namespace bjoernligan
 		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
 		xSequence->AttachAgent(m_xAgent);
 
+		xSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
 		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
 		xSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}
