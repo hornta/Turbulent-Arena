@@ -16,6 +16,8 @@ namespace bjoernligan
 		typedef std::unique_ptr<DebugWindow> Ptr;
 		static Ptr Create(const bool &p_bActive);
 
+		bool Initialize();
+
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		void Update(const float &p_fDeltaTime);

@@ -20,12 +20,12 @@ namespace bjoernligan
 			Pressed,
 		} m_eStatus;
 
-		UISlider(const float &p_fDepth);
+		UISlider(const std::string &p_sLabel, const float &p_fDepth);
 		UISlider(const UISlider&);
 		UISlider& operator=(const UISlider&);
 
 	public:
-		static Ptr Create(const float &p_fDepth);
+		static Ptr Create(const std::string &p_sLabel, const float &p_fDepth);
 		
 		struct SliderDef
 		{

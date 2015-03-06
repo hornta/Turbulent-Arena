@@ -14,7 +14,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		return -1;
 
 	xEngine.RunLoop();
-	xEngine.CleanUp();
 
 	return 0;
 }

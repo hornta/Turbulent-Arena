@@ -12,8 +12,8 @@
 
 namespace bjoernligan
 {
-	UISlider::UISlider(const float &p_fDepth)
-		: UIBase(p_fDepth)
+	UISlider::UISlider(const std::string &p_sLabel, const float &p_fDepth)
+		: UIBase(p_sLabel, p_fDepth)
 		, m_eStatus(EStatus::Idle)
 		, m_fCurrent(0.0f)
 		, m_fWidth(0.0f)
@@ -26,21 +26,24 @@ namespace bjoernligan
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 	}
 
-	UIBase::Ptr UISlider::Create(const float &p_fDepth)
+	UIBase::Ptr UISlider::Create(const std::string &p_sLabel, const float &p_fDepth)
 	{
-		return Ptr(new UISlider(p_fDepth));
+		return Ptr(new UISlider(p_sLabel, p_fDepth));
 	}
 
 	void UISlider::Initialize(const SliderDef &p_xDefinition)
 	{
 		m_sLabel = p_xDefinition.m_sLabel;
-		m_xLabelText.setString(m_sLabel);
 		m_xFunction = std::move(p_xDefinition.m_xFunction);
 		m_fWidth = p_xDefinition.m_fWidth;
 		m_fMin = p_xDefinition.m_fMin;
 		m_fMax = p_xDefinition.m_fMax;
 		m_fCurrent = p_xDefinition.m_fCurrent / (m_fMax - m_fMin);
 		m_bContinous = p_xDefinition.m_bContinous;
+
+		std::stringstream xStream;
+		xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue();
+		m_xLabelText.setString(xStream.str());
 
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
 		{
@@ -66,6 +69,7 @@ namespace bjoernligan
 			if (m_xMouse->IsDownOnce(sf::Mouse::Button::Left) && m_axSprites[0]->getGlobalBounds().contains(sf::Vector2f(m_xMouse->m_xPos)))
 			{
 				m_eStatus = EStatus::Pressed;
+				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button2");
 			}
 		}
 		if (m_eStatus == EStatus::Pressed)
@@ -73,8 +77,8 @@ namespace bjoernligan
 			if (!m_xMouse->IsDown(sf::Mouse::Button::Left))
 			{
 				m_eStatus = EStatus::Idle;
-				
-				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Explode");
+
+				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button1");
 
 				m_xFunction(GetValue());
 				return;

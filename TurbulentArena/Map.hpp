@@ -105,9 +105,9 @@ namespace bjoernligan
 		int getHeight() const;
 		sf::Vector2f getTileSize() const;
 
-	private:
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+	private:
 		sf::Vector2i m_size;
 		sf::Vector2f m_tileSize;
 		std::string m_path;

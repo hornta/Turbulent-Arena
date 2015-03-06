@@ -7,9 +7,13 @@
 #include "Object.hpp"
 #include "Physics.hpp"
 #include "Settings.hpp"
+<<<<<<< HEAD
 #include "Sense.hpp"
 #include "Pathfinder.hpp"
 #include "Visibility.hpp"
+=======
+#include "MainMenuState.hpp"
+>>>>>>> 557a866c28f9f0a331c36ebdc444a45779b7fb72
 
 #include "ClanManager.hpp"
 #include "Clan.hpp"
@@ -29,24 +33,27 @@ namespace bjoernligan
 	namespace system
 	{
 		Engine::Engine()
-			: m_physics(nullptr)
-			, m_fScrollSpeed(5.0f)
+			: m_xStateManager(nullptr)
+			, m_xDrawManager(nullptr)
+			, m_xSpriteManager(nullptr)
+			, m_xAudioManager(nullptr)
+			, m_xUIManager(nullptr)
+			, m_xKeyboard(nullptr)
+			, m_xMouse(nullptr)
+			, m_xUtility(nullptr)
+			, m_xDebugWindow(nullptr)
 		{
-			m_xDrawManager = nullptr;
-			m_xSpriteManager = nullptr;
-			m_xAudioManager = nullptr;
-			m_xUIManager = nullptr;
-			m_xKeyboard = nullptr;
-			m_xMouse = nullptr;
-			m_xUtility = nullptr;
+
 		}
 
 		Engine::~Engine()
 		{
+
 		}
 
 		bool Engine::Initialize()
 		{
+			m_xStateManager = GameStateManager::Create();
 			m_xDrawManager = DrawManager::Create();
 			m_xSpriteManager = SpriteManager::Create();
 			m_xAudioManager = AudioManager::Create();
@@ -54,29 +61,31 @@ namespace bjoernligan
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
 			m_xUIManager = UIManager::Create();
+			m_xDebugWindow = DebugWindow::Create(false);
 
+			ServiceLocator<GameStateManager>::SetService(m_xStateManager.get());
 			ServiceLocator<DrawManager>::SetService(m_xDrawManager.get());
 			ServiceLocator<SpriteManager>::SetService(m_xSpriteManager.get());
 			ServiceLocator<UIManager>::SetService(m_xUIManager.get());
 			ServiceLocator<input::Keyboard>::SetService(m_xKeyboard.get());
 			ServiceLocator<input::Mouse>::SetService(m_xMouse.get());
 			ServiceLocator<Utility>::SetService(m_xUtility.get());
-			ServiceLocator<Physics>::SetService(m_physics.get());
-			ServiceLocator<Map>::SetService(m_map.get());
 			ServiceLocator<AudioManager>::SetService(m_xAudioManager.get());
+			ServiceLocator<DebugWindow>::SetService(m_xDebugWindow.get());
 
-			m_xAudioManager->CreateSoundBuffer("Explode", "explode_0.wav");
+			m_xSpriteManager->setTexturePath("../data/sprites/");
+
+			m_xAudioManager->CreateSoundBuffer("Button1", "button_click1.wav");
+			m_xAudioManager->CreateSoundBuffer("Button2", "button_click2.wav");
+			m_xAudioManager->CreateSoundBuffer("Button3", "button_click3.wav");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
-
-			m_xAudioManager->PlayMusic("Battle");
+			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
+			m_xAudioManager->PlayMusic("Menu");
 
 			if (!m_xDrawManager->Initialize())
 				return false;
-
-			m_xDebugWindow = DebugWindow::Create(false);
-			m_xDebugWindow->SetPos(16.0f, 16.0f);
-
 			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
+<<<<<<< HEAD
 			m_view = m_xDrawManager->getWindow()->getView();
 			m_xUIManager->setView(m_view);
 
@@ -336,49 +345,58 @@ namespace bjoernligan
 			xDef.m_fMax = 20.0f;
 			xDef.m_fCurrent = 5.0f;
 			xDef.m_bContinous = true;
+=======
 
-			m_xUIManager->AddSlider(xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
+			if (!m_xDebugWindow->Initialize())
+				return false;
+			m_xDebugWindow->SetPos(16.0f, 16.0f);
+>>>>>>> 557a866c28f9f0a331c36ebdc444a45779b7fb72
 
-			return m_bRunning = true;
-		}
+			if (!m_xStateManager->Initialize())
+				return false;
+			m_xStateManager->CreateState<MainMenuState>("MainMenu");
 
-		void Engine::CleanUp()
-		{
+			m_xUIManager->setView(m_xDrawManager->getWindow()->getView());
+
+			return true;
 		}
 
 		void Engine::RunLoop()
 		{
-			while (m_bRunning && m_xDrawManager->getWindow()->isOpen())
+			while (m_xDrawManager->getWindow()->isOpen())
 			{
+				//Poll
 				PollEvents();
-				UpdateDeltaTime();
-
-				if (m_xKeyboard->IsDown(sf::Keyboard::Escape))
-					m_bRunning = false;
 
 				//Updates
+<<<<<<< HEAD
 				m_physics->update(m_fDeltaTime);
 				m_sense->update(m_fDeltaTime);
+=======
+				UpdateDeltaTime();
+>>>>>>> 557a866c28f9f0a331c36ebdc444a45779b7fb72
 				m_xUIManager->Update(m_fDeltaTime);
-				m_clanManager->Update(m_fDeltaTime);
+				m_xStateManager->UpdateStates(m_fDeltaTime);
 				m_xDebugWindow->Update(m_fDeltaTimeRaw);
-
-				updateCamera();
-				// Keep mouse inside window
 
 				//Draw
 				m_xDrawManager->ClearScr();
+<<<<<<< HEAD
 				m_xDrawManager->getWindow()->setView(m_view);
 				m_xDrawManager->Draw(m_map.get());
 				m_xDrawManager->Draw(m_clanManager.get());
 				m_physics->draw();
+=======
+				m_xStateManager->draw(*m_xDrawManager->getWindow(), sf::RenderStates::Default);
+>>>>>>> 557a866c28f9f0a331c36ebdc444a45779b7fb72
 				m_xDrawManager->getWindow()->setView(m_xUIManager->getView());
 				m_xDrawManager->Draw(m_xUIManager.get());
-				m_xDrawManager->Draw(m_xDebugWindow.get());
 				m_xDrawManager->Display();
 
+				//Post-updates
 				m_xMouse->PostUpdate();
 				m_xKeyboard->PostUpdate();
+				m_xStateManager->PostUpdate();
 			}
 		}
 
@@ -399,9 +417,7 @@ namespace bjoernligan
 					m_xDrawManager->getWindow()->close();
 
 				if (p_xEvent.type == sf::Event::MouseMoved)
-				{
 					m_xMouse->m_xPos = sf::Mouse::getPosition(*m_xDrawManager->getWindow());
-				}
 
 				//keyboard keys pressed or released
 				if (p_xEvent.type == sf::Event::KeyPressed)
@@ -415,62 +431,6 @@ namespace bjoernligan
 				if (p_xEvent.type == sf::Event::MouseButtonReleased)
 					m_xMouse->SetCurrent(p_xEvent.mouseButton.button, false);
 			}
-		}
-
-		void Engine::updateCamera()
-		{
-			if (m_xMouse->IsDown(sf::Mouse::Right))
-			{
-				if (m_xMouse->IsDownOnce(sf::Mouse::Right))
-				{
-					m_lastRightClick = sf::Vector2f(sf::Mouse::getPosition(*m_xDrawManager->getWindow()));
-				}
-
-				sf::Vector2f currentPos = sf::Vector2f(sf::Mouse::getPosition(*m_xDrawManager->getWindow()));
-
-				sf::Vector2f direction = currentPos - m_lastRightClick;
-				Vector2f vec(direction);
-				vec.limit(300.f);
-				direction.x = vec.x;
-				direction.y = vec.y;
-				m_view.move(direction * m_fScrollSpeed * m_fDeltaTime);
-			}
-
-			sf::Vector2f pos = m_view.getCenter();
-			sf::Vector2f size = m_view.getSize();
-			sf::Vector2f halfSize = size * 0.5f;
-			sf::Vector2f newPos = pos;
-			if ((pos.x - halfSize.x) < 0.f)
-			{
-				newPos.x = 0.f + halfSize.x;
-			}
-			else if (pos.x + halfSize.x > m_map->getWidth() * m_map->getTileSize().x)
-			{
-				newPos.x = m_map->getWidth() * m_map->getTileSize().x - halfSize.x;
-			}
-
-			if (pos.y - halfSize.y < 0.f)
-			{
-				newPos.y = 0.f + halfSize.y;
-			}
-			else if (pos.y + halfSize.y > m_map->getHeight() * m_map->getTileSize().y)
-			{
-				newPos.y = m_map->getHeight() * m_map->getTileSize().y - halfSize.y;
-			}
-
-			m_view.setCenter(newPos);
-		}
-		
-		void Engine::SetDebugMode(const bool &p_bValue)
-		{
-			m_physics->setDebug(p_bValue);
-			//m_xDebugWindow->SetActive(p_bValue);
-		}
-
-		void Engine::SetScrollSpeed(const float &p_fNewSpeed)
-		{
-			m_fScrollSpeed = p_fNewSpeed;
-			//std::cout << std::fixed << std::setprecision(2) << "new value: " << p_fNewSpeed << std::endl;
 		}
 	}
 }

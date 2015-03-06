@@ -87,13 +87,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.hpp" />
+<<<<<<< HEAD
     <ClInclude Include="BFindTargetNode.hpp" />
     <ClInclude Include="MovementStats.hpp" />
     <ClInclude Include="BSetWanderTarget.hpp" />
     <ClInclude Include="DebugWindow.hpp" />
     <ClInclude Include="Sense.hpp" />
+=======
+    <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="GameStateManager.hpp" />
+    <ClInclude Include="MainMenuState.hpp" />
+    <ClInclude Include="MovementStats.hpp" />
+    <ClInclude Include="BSetWanderTarget.hpp" />
+    <ClInclude Include="DebugWindow.hpp" />
+    <ClInclude Include="OptionsState.hpp" />
+    <ClInclude Include="PlayState.hpp" />
+>>>>>>> 557a866c28f9f0a331c36ebdc444a45779b7fb72
     <ClInclude Include="SteeringManager.hpp" />
-    <ClInclude Include="AIEvent.hpp" />
     <ClInclude Include="AISubject.hpp" />
     <ClInclude Include="AIObserver.hpp" />
     <ClInclude Include="Agent.hpp" />
@@ -141,11 +151,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="BFindTargetNode.cpp" />
     <ClCompile Include="MovementStats.cpp" />
     <ClCompile Include="BSetWanderTarget.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="Sense.cpp" />
+=======
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="MovementStats.cpp" />
+    <ClCompile Include="BSetWanderTarget.cpp" />
+    <ClCompile Include="DebugWindow.cpp" />
+    <ClCompile Include="OptionsState.cpp" />
+    <ClCompile Include="PlayState.cpp" />
+>>>>>>> 557a866c28f9f0a331c36ebdc444a45779b7fb72
     <ClCompile Include="SteeringManager.cpp" />
     <ClCompile Include="AISubject.cpp" />
     <ClCompile Include="Axeman.cpp" />
