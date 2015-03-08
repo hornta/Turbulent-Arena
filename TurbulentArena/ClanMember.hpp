@@ -11,11 +11,15 @@ namespace bjoernligan
 		class Agent;
 	}
 	class Clan;
+	namespace ai
+	{
+		class Sense;
+	}
 	class ClanMember : public Object, public sf::Drawable
 	{
 		friend class Clan;
 	public:
-		ClanMember();
+		ClanMember(ai::Sense* sense);
 		~ClanMember();
 
 		virtual void initiate() = 0;
@@ -25,6 +29,7 @@ namespace bjoernligan
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Sprite* getSprite();
+		ai::Agent* getAgent() const;
 
 	protected:
 		ai::Agent* m_xAgent;

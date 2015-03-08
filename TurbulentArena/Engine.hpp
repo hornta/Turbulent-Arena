@@ -14,8 +14,6 @@
 namespace bjoernligan
 {
 	class Map;
-	class Pathfinder;
-	class Visibility;
 	class ClanManager;
 	class Physics;
 

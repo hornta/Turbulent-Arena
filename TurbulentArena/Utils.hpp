@@ -270,6 +270,7 @@ namespace bjoernligan
 
 		Node* getNodeAt(int x, int y) const;
 		bool isInside(int x, int y) const;
+		sf::Vector2i getPosition(const sf::Vector2f& position) const;
 		std::vector<Node*> getNeighbors(Node* n, bool diagonals = false) const;
 
 	protected:

@@ -24,3 +24,4 @@
 #include "box2d_include.hpp"
 #include "tinyxml2.h"
 #include "Utils.hpp"
+#include "ServiceLocator.hpp"

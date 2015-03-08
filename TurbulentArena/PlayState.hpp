@@ -13,6 +13,10 @@ namespace bjoernligan
 	class Map;
 	class ClanManager;
 	class Physics;
+	namespace ai
+	{
+		class Sense;
+	}
 
 	namespace input
 	{
@@ -53,6 +57,7 @@ namespace bjoernligan
 		//play state specific
 		std::unique_ptr<Map> m_map;
 		std::unique_ptr<ClanManager> m_clanManager;
+		std::unique_ptr<ai::Sense> m_sense;
 		std::unique_ptr<Physics> m_physics;
 		std::unique_ptr<Pathfinder> m_pathFinder;
 		std::unique_ptr<Visibility> m_visibility;

@@ -20,6 +20,8 @@ namespace bjoernligan
 
 			m_xAgent->MoveToTargetPos();
 
+
+
 			//if (agent is on the way)
 			//return Running
 			if (!m_xAgent->AtMoveTarget())

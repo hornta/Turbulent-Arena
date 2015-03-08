@@ -277,6 +277,11 @@ namespace bjoernligan
 		return m_size;
 	}
 
+	sf::Vector2i Map::getTilePosition(const sf::Vector2f& position) const
+	{
+		return sf::Vector2i(static_cast<int>(position.x / m_tileSize.x), static_cast<int>(position.y / m_tileSize.y));
+	}
+
 	int Map::getWidth() const
 	{
 		return m_size.x;

@@ -3,10 +3,14 @@
 
 namespace bjoernligan
 {
+	namespace ai
+	{
+		class Sense;
+	}
 	class Axeman : public ClanMember
 	{
 	public:
-		Axeman();
+		Axeman(ai::Sense* sense);
 
 		void initiate();
 		void update(float deltatime);

@@ -7,6 +7,21 @@ namespace bjoernligan
 	class Map : public sf::Drawable
 	{
 	public:
+		enum Orientation
+		{
+			ORIENTATION_ORTHOGONAL,
+			ORIENTATION_ISOMETRIC,
+			ORIENTATION_STAGGERED
+		};
+
+		enum RenderOrder
+		{
+			RENDERORDER_RIGHT_DOWN,
+			RENDERORDER_RIGHT_UP,
+			RENDERORDER_LEFT_DOWN,
+			RENDERORDER_LEFT_UP
+		};
+
 		struct Tileset
 		{
 			sf::Texture m_texture;
@@ -85,6 +100,7 @@ namespace bjoernligan
 		ObjectGroup* getObjectGroup(const std::string& name) const;
 			
 		sf::Vector2i getSize() const;
+		sf::Vector2i getTilePosition(const sf::Vector2f& position) const;
 		int getWidth() const;
 		int getHeight() const;
 		sf::Vector2f getTileSize() const;
@@ -95,6 +111,9 @@ namespace bjoernligan
 		sf::Vector2i m_size;
 		sf::Vector2f m_tileSize;
 		std::string m_path;
+		sf::Color m_backgroundColor;
+		Orientation m_orientation;
+		RenderOrder m_renderOrder;
 
 		std::vector<std::unique_ptr<TileLayer>> m_tileLayers;
 		std::vector<std::unique_ptr<ObjectGroup>> m_objectGroups;

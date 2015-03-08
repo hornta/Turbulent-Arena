@@ -4,10 +4,10 @@
 
 namespace bjoernligan
 {
-	ClanMember::ClanMember()
+	ClanMember::ClanMember(ai::Sense* sense)
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
-		m_xAgent = new ai::Agent(this);
+		m_xAgent = new ai::Agent(this, sense);
 	}
 
 	ClanMember::~ClanMember()
@@ -51,5 +51,10 @@ namespace bjoernligan
 	sf::Sprite* ClanMember::getSprite()
 	{
 		return m_sprite.get();
+	}
+
+	ai::Agent* ClanMember::getAgent() const
+	{
+		return m_xAgent;
 	}
 }

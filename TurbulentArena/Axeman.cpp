@@ -5,10 +5,12 @@
 #include "Agent.hpp"
 #include "BehaviorTree.hpp"
 #include "BNodesInclude.hpp"
+#include "BFindTargetNode.hpp"
 
 namespace bjoernligan
 {
-	Axeman::Axeman()
+	Axeman::Axeman(ai::Sense* sense)
+		: ClanMember(sense)
 	{
 
 	}
@@ -17,11 +19,12 @@ namespace bjoernligan
 	{
 		m_xCombatStats.Initiate(3, 4);
 
-		ai::BehaviorTree* xBT = m_xAgent->GetBehaviorTree();
+		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 
 		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
 		xSequence->AttachAgent(m_xAgent);
 
+		xSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
 		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
 		xSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}

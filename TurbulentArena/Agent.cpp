@@ -8,6 +8,7 @@
 #include "ClanMember.hpp"
 #include "ServiceLocator.hpp"
 #include "Utility.hpp"
+#include "Sense.hpp"
 
 #define AGENT_SENSE_TIMER 0.3f
 #define AGENT_DECIDE_TIMER 1.0f
@@ -16,7 +17,7 @@ namespace bjoernligan
 {
 	namespace ai
 	{
-		Agent::Agent(ClanMember* p_xOwner)
+		Agent::Agent(ClanMember* p_xOwner, ai::Sense* sense)
 			: m_xSenseTimer(AGENT_SENSE_TIMER)
 			, m_xDecideTimer(AGENT_DECIDE_TIMER)
 			, m_xOwner(p_xOwner)
@@ -25,26 +26,22 @@ namespace bjoernligan
 			//, m_Pathfinder(nullptr)
 			, m_Utility(nullptr)
 		{
+			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
-
+			m_senseData = std::make_unique<SenseData>(this, sense, 32.f);
 			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
 			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
-			
+
 
 			//Pathfinding stuff
 			m_Utility = ServiceLocator<Utility>::GetService();
 			//m_Pathfinder = ServiceLocator<Pathfinder>::GetService();
 			//m_Pathfinder->getGrid();
-		
+
 		}
 
 		Agent::~Agent()
 		{
-			if (m_Steering != nullptr)
-			{
-				delete m_Steering;
-				m_Steering = nullptr;
-			}
 		}
 
 		void Agent::Update(const float &p_fDeltaTime)
@@ -66,12 +63,12 @@ namespace bjoernligan
 			}
 			//ACT
 			Act();
-		
+
 		}
 
 		void Agent::Sense()
 		{
-
+			m_senseData->update();
 		}
 
 		void Agent::Decide()
@@ -83,60 +80,35 @@ namespace bjoernligan
 		{
 			/*if (!m_xPath.nodes.empty())
 			{*/
-				m_Steering->Seek(m_xMoveTarget);
-				////LÄGG TILL NODE TA BORT NODE mellan steering
-				//}
+			m_Steering->Seek(m_xMoveTarget);
+			////LÄGG TILL NODE TA BORT NODE mellan steering
+			//}
 			m_Steering->Update();
 		}
 		void Agent::OnNotify(/*add parameters*/)
 		{
 
 		}
+		SenseData* Agent::getSense() const
+		{
+			return m_senseData.get();
+		}
 
-		BehaviorTree* Agent::GetBehaviorTree()
+		ClanMember* Agent::getOwner() const
+		{
+			return m_xOwner;
+		}
+
+		BehaviorTree* Agent::getBehaviorTree()
 		{
 			return m_xBT.get();
 		}
 
-		void Agent::setSenseRadius(float p_senseRadius)
-		{
-			m_senseRadius = p_senseRadius;
-		}
-
-		void Agent::setSenseVisibleArea(Visibility::Light* p_senseVisibleArea)
-		{
-			m_senseVisibleArea = p_senseVisibleArea;
-		}
 		void Agent::InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats)
 		{
-			m_Steering = new SteeringManager();
 			m_Steering->Initialize();
 			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxVelocity(), p_MovementStats->GetSlowDownRadius());
 		}
-		/*void Agent::Wander()
-		{
-		m_Steering->Wander();
-		}*/
-		/*void Agent::Seek(const sf::Vector2f& p_TargetPos)
-		{
-			m_Steering->Seek(p_TargetPos);
-		}
-		void Agent::Flee(const sf::Vector2f& p_TargetPos)
-		{
-			m_Steering->Flee(p_TargetPos);
-		}
-		void Agent::Pursuit(b2Body* p_TargetBody)
-		{
-			m_Steering->Pursuit(p_TargetBody);
-		}
-		void Agent::Evade(b2Body* p_TargetBody)
-		{
-			m_Steering->Evade(p_TargetBody);
-		}
-		void Agent::UpdateSteering()
-		{
-			m_Steering->Update();
-		}*/
 
 		//tomas BT-methods (bad solution)
 		int32_t Agent::SensedEnemyCount()
@@ -155,15 +127,25 @@ namespace bjoernligan
 
 		void Agent::MoveToTargetPos()
 		{
-			//insert pathfinding here
-			//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
+				//insert pathfinding here
+				//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
 
-			//m_Steering->Seek(m_xMoveTarget); // <- temporary
+				//m_Steering->Seek(m_xMoveTarget); // <- temporary
 		}
 
 		bool Agent::AtMoveTarget()
 		{
 			return false;
+		}
+
+		bool Agent::canFindTarget()
+		{
+			if (m_senseData->getVisibleAgents().size() > 0)
+			{
+				return true;
+			}
+			else
+				return false;
 		}
 	}
 }
