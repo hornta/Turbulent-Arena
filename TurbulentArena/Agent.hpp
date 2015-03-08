@@ -10,6 +10,8 @@
 namespace bjoernligan
 {
 	class ClanMember;
+	class Pathfinder;
+	class Utility;
 
 	namespace ai
 	{
@@ -26,7 +28,7 @@ namespace bjoernligan
 			void Update(const float &p_fDeltaTime);
 			void Sense();
 			void Decide();
-			//acting is performed by owner object
+			void Act();
 
 			virtual void OnNotify(/*add parameters*/);
 
@@ -36,12 +38,12 @@ namespace bjoernligan
 
 			//Steering stuff
 			void InitializeSteering(b2Body* p_CurrentBody,MovementStats* p_MovementStats);
-			void Wander();
+			/*void Wander();
 			void Seek(const sf::Vector2f& p_TargetPos);
 			void Flee(const sf::Vector2f& p_TargetPos);
 			void Pursuit(b2Body* p_TargetBody);
-			void Evade(b2Body* p_TargetBody);
-			void UpdateSteering();
+			//void Evade(b2Body* p_TargetBody);
+			void UpdateSteering();*/
 
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
@@ -56,6 +58,11 @@ namespace bjoernligan
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
 			SteeringManager* m_Steering;
+
+			/*Pathfinder* m_Pathfinder;
+			Pathfinder::Path m_CurrentPath;*/
+			Utility* m_Utility;
+
 
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;

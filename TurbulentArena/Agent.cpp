@@ -4,7 +4,10 @@
 #include "Agent.hpp"
 #include "BehaviorTree.hpp"
 #include "SteeringManager.hpp"
+#include "Pathfinder.hpp"
 #include "ClanMember.hpp"
+#include "ServiceLocator.hpp"
+#include "Utility.hpp"
 
 #define AGENT_SENSE_TIMER 0.3f
 #define AGENT_DECIDE_TIMER 1.0f
@@ -19,11 +22,20 @@ namespace bjoernligan
 			, m_xOwner(p_xOwner)
 			, m_xBT(nullptr)
 			, m_Steering(nullptr)
+			//, m_Pathfinder(nullptr)
+			, m_Utility(nullptr)
 		{
 			m_xBT = std::make_unique<BehaviorTree>();
 
 			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
 			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
+			
+
+			//Pathfinding stuff
+			m_Utility = ServiceLocator<Utility>::GetService();
+			//m_Pathfinder = ServiceLocator<Pathfinder>::GetService();
+			//m_Pathfinder->getGrid();
+		
 		}
 
 		Agent::~Agent()
@@ -37,24 +49,24 @@ namespace bjoernligan
 
 		void Agent::Update(const float &p_fDeltaTime)
 		{
-			m_Steering->Update();
-
 			m_xSenseTimer.Update(p_fDeltaTime);
 			m_xDecideTimer.Update(p_fDeltaTime);
 
+			//SENSE
 			if (m_xSenseTimer.Done())
 			{
 				m_xSenseTimer.Reset();
 				Sense();
 			}
+			//DECIDE
 			if (m_xDecideTimer.Done())
 			{
 				m_xDecideTimer.Reset();
 				Decide();
 			}
-			//ADD ACT?
-			Seek(m_xMoveTarget);
-			UpdateSteering();
+			//ACT
+			Act();
+		
 		}
 
 		void Agent::Sense()
@@ -67,6 +79,15 @@ namespace bjoernligan
 			m_xBT->Process();
 		}
 
+		void Agent::Act()
+		{
+			/*if (!m_xPath.nodes.empty())
+			{*/
+				m_Steering->Seek(m_xMoveTarget);
+				////LÄGG TILL NODE TA BORT NODE mellan steering
+				//}
+			m_Steering->Update();
+		}
 		void Agent::OnNotify(/*add parameters*/)
 		{
 
@@ -96,7 +117,7 @@ namespace bjoernligan
 		{
 		m_Steering->Wander();
 		}*/
-		void Agent::Seek(const sf::Vector2f& p_TargetPos)
+		/*void Agent::Seek(const sf::Vector2f& p_TargetPos)
 		{
 			m_Steering->Seek(p_TargetPos);
 		}
@@ -115,7 +136,7 @@ namespace bjoernligan
 		void Agent::UpdateSteering()
 		{
 			m_Steering->Update();
-		}
+		}*/
 
 		//tomas BT-methods (bad solution)
 		int32_t Agent::SensedEnemyCount()
@@ -127,12 +148,17 @@ namespace bjoernligan
 		{
 			//m_xMoveTarget = sf::Vector2f(140.0f,140.0f);
 			m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
+			//m_Pathfinder->setStart()
+			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
+
 		}
 
 		void Agent::MoveToTargetPos()
 		{
 			//insert pathfinding here
-			m_Steering->Seek(m_xMoveTarget); // <- temporary
+			//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
+
+			//m_Steering->Seek(m_xMoveTarget); // <- temporary
 		}
 
 		bool Agent::AtMoveTarget()
