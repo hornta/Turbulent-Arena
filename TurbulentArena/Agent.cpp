@@ -80,6 +80,13 @@ namespace bjoernligan
 		{
 			/*if (!m_xPath.nodes.empty())
 			{*/
+
+			if (!m_CurrentPath.nodes.empty())
+			{
+				m_xMoveTarget.x = m_CurrentPath.nodes[m_CurrentPath.currentNode].x * ServiceLocator<Map>::GetService()->getTileSize().x + ServiceLocator<Map>::GetService()->getTileSize().x / 2;
+				m_xMoveTarget.y = m_CurrentPath.nodes[m_CurrentPath.currentNode].y * ServiceLocator<Map>::GetService()->getTileSize().y + ServiceLocator<Map>::GetService()->getTileSize().y / 2;
+			}
+
 			m_Steering->Seek(m_xMoveTarget);
 			////LÄGG TILL NODE TA BORT NODE mellan steering
 			//}
@@ -119,7 +126,7 @@ namespace bjoernligan
 		void Agent::ChooseWanderPos()
 		{
 			//m_xMoveTarget = sf::Vector2f(140.0f,140.0f);
-			m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
+			//m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
 			//m_Pathfinder->setStart()
 			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
 
@@ -127,22 +134,22 @@ namespace bjoernligan
 			Map* xMap = ServiceLocator<Map>::GetService();
 			Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
-			xMap, xPathFinder;
+			m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
 
-			//do
-			//{
-			//	xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-			//	/*xPathFinder->setStart();
-			//	xPathFinder->setGoal();*/
-			//}while (xPathFinder->findPath(m_CurrentPath, ,) != PathfinderInfo::PathResult::PATHRESULT_FAILED);
+			xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
+			xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(10, 10));
+			xPathFinder->setStart(m_xCurrentMapPos);
+			xPathFinder->setGoal(xTargetPos);
+
+			xPathFinder->findPath(m_CurrentPath)/* != PathfinderInfo::PathResult::PATHRESULT_FAILED)*/;
 		}
 
 		void Agent::MoveToTargetPos()
 		{
-				//insert pathfinding here
-				//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
+			//insert pathfinding here
+			//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
 
-				//m_Steering->Seek(m_xMoveTarget); // <- temporary
+			//m_Steering->Seek(m_xMoveTarget); // <- temporary
 		}
 
 		bool Agent::AtMoveTarget()
