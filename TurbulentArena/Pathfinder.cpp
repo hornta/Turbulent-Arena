@@ -138,7 +138,7 @@ namespace bjoernligan
 	{
 		if (heuristic == PathfinderInfo::HEURISTIC_MANHATTAN)
 		{
-			return static_cast<float>(abs(x1 - x0) + abs(y1 - y0)) * 1000.f;
+			return static_cast<float>(abs(x1 - x0) + abs(y1 - y0));
 		}
 		else if (heuristic == PathfinderInfo::HEURISTIC_DIAGONAL)
 		{

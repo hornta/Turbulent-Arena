@@ -138,7 +138,7 @@ namespace bjoernligan
 			while (tilesetTileNode != nullptr)
 			{
 				int tile_id = tilesetTileNode->IntAttribute("id");
-				TileInfo* tileInfo = m_tileInfo[tile_id].get();
+				TileInfo* tileInfo = m_tileInfo[tile_id + 1].get();
 				tileInfo->m_properties.parseProperties(tilesetTileNode->FirstChildElement("properties"));
 
 				tilesetTileNode = tilesetTileNode->NextSiblingElement("tile");
