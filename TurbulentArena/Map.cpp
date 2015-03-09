@@ -198,7 +198,21 @@ namespace bjoernligan
 						}
 						else
 						{
-							layerSetIt->second->m_tiles.emplace_back(nullptr);
+							for (std::size_t i = 0; i < m_tileLayers.size(); ++i)
+							{
+								auto layerSetIt = m_tileLayers[i]->m_layerSets.begin();
+								while (layerSetIt != m_tileLayers[i]->m_layerSets.end())
+								{
+									if (layerSetIt->second->m_tiles.size() > static_cast<std::size_t>((x + y * m_size.x)) && layerSetIt->second->m_tiles[x + y * m_size.x] != nullptr)
+									{
+									}
+									else
+									{
+										layerSetIt->second->m_tiles.emplace_back(nullptr);
+									}
+									++layerSetIt;
+								}
+							}
 						}
 						
 						++layerSetIt;
