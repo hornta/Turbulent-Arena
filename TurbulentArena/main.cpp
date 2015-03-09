@@ -1,8 +1,11 @@
 //main.cpp
 
 #include "stdafx.h"
-#include <vld.h>
 #include "Engine.hpp"
+
+#if defined(_DEBUG)
+#include <vld.h>
+#endif
 
 int _tmain(int argc, _TCHAR* argv[])
 {

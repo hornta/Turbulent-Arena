@@ -146,13 +146,13 @@ namespace bjoernligan
 		Clan* clan = m_clanManager->createClan("MacDonald");
 
 		{
-			ClanMember* member = clan->createMember<Scout>(m_sense.get());
+			ClanMember* member = clan->createMember<Axeman>(m_sense.get());
 			member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 			member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 			member->setBody(m_physics->createBody(clanMemberBodyDef));
 			member->initiate();
 		}
-			{
+		/*	{
 				ClanMember* member = clan->createMember<Scout>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
@@ -256,7 +256,7 @@ namespace bjoernligan
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();
-			}
+			}*/
 
 			std::vector<Clan*> clans = m_clanManager->getClans();
 			std::vector<ClanMember*> members;

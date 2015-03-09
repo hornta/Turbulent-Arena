@@ -50,6 +50,7 @@ namespace bjoernligan
 		{
 			friend class Map;
 		public:
+			sf::Vector2i getPosition() const;
 
 		private:
 			TileInfo* m_tileInfo;
@@ -108,6 +109,8 @@ namespace bjoernligan
 		sf::Vector2f getTileSize() const;
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+		bool GetRandomTopmostWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize);
 
 	private:
 		sf::Vector2i m_size;

@@ -13,10 +13,6 @@
 
 namespace bjoernligan
 {
-	class Map;
-	class ClanManager;
-	class Physics;
-
 	namespace system
 	{
 		class Engine

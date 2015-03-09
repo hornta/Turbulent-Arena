@@ -67,6 +67,7 @@ namespace bjoernligan
 
 		void Agent::Sense()
 		{
+
 			m_senseData->update();
 		}
 
@@ -122,6 +123,18 @@ namespace bjoernligan
 			//m_Pathfinder->setStart()
 			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
 
+			sf::Vector2i xTargetPos;
+			Map* xMap = ServiceLocator<Map>::GetService();
+			Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
+
+			xMap, xPathFinder;
+
+			//do
+			//{
+			//	xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
+			//	/*xPathFinder->setStart();
+			//	xPathFinder->setGoal();*/
+			//}while (xPathFinder->findPath(m_CurrentPath, ,) != PathfinderInfo::PathResult::PATHRESULT_FAILED);
 		}
 
 		void Agent::MoveToTargetPos()
@@ -159,7 +172,7 @@ namespace bjoernligan
 			options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
 			options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
 
-			PathfinderInfo::PathResult result = pathfinder->findPath(m_currentPath, options);
+			PathfinderInfo::PathResult result = pathfinder->findPath(m_CurrentPath, options);
 			if (result == PathfinderInfo::PATHRESULT_SUCCEEDED)
 				return true;
 			return false;

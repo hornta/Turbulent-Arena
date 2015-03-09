@@ -80,5 +80,4 @@ namespace bjoernligan
 		PathfinderGrid::PathfinderNode* m_goal;
 		PathfinderGrid m_grid;
 	};
-
 }

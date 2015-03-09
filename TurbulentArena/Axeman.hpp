@@ -7,6 +7,7 @@ namespace bjoernligan
 	{
 		class Sense;
 	}
+
 	class Axeman : public ClanMember
 	{
 	public:

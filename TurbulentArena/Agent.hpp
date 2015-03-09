@@ -11,7 +11,6 @@
 namespace bjoernligan
 {
 	class ClanMember;
-	class Pathfinder;
 	class Utility;
 
 	namespace ai
@@ -58,9 +57,10 @@ namespace bjoernligan
 			std::unique_ptr<SenseData> m_senseData;
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
-			Pathfinder::Path m_currentPath;
-
+			Pathfinder::Path m_CurrentPath;
+			sf::Vector2i m_xCurrentMapPos;
 			Utility* m_Utility;
+
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;
 			ClanMember* m_xOwner;

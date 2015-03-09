@@ -19,14 +19,21 @@ namespace bjoernligan
 	{
 		m_xCombatStats.Initiate(3, 4);
 
+		m_MovementStats.Initiate(sf::Vector2f(300.0f, 300.0f), 0.1f, 2.0f);
+
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 
-		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
-		xSequence->AttachAgent(m_xAgent);
+		ai::BSelectorNode* xRootSelector = xBT->CreateRoot<ai::BSelectorNode>();
 
-		xSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
-		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
-		xSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
+		ai::BSequenceNode* xCombatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		xCombatSequence->AttachAgent(m_xAgent);
+		ai::BSequenceNode* xWanderSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		xWanderSequence->AttachAgent(m_xAgent);
+
+		xCombatSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
+		
+		xWanderSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
+		xWanderSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}
 
 	void Axeman::update(float deltatime)

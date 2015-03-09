@@ -30,6 +30,14 @@ namespace bjoernligan
 		}
 	}
 
+	sf::Vector2i Map::Tile::getPosition() const
+	{
+		float tileWidth = m_vertices[1].position.x - m_vertices[0].position.x;
+		float tileHeight = m_vertices[3].position.y - m_vertices[0].position.y;
+
+		return sf::Vector2i(static_cast<int>(m_vertices[0].position.x / tileWidth), static_cast<int>(m_vertices[0].position.y / tileHeight));
+	}
+
 	Map::Tile* Map::TileLayer::getTile(int x, int y)
 	{
 		Tile* tile = nullptr;
@@ -64,7 +72,7 @@ namespace bjoernligan
 	{
 		m_path = path;
 	}
-	
+
 	bool Map::load(const std::string& file)
 	{
 		tinyxml2::XMLDocument document;
@@ -192,7 +200,7 @@ namespace bjoernligan
 						{
 							layerSetIt->second->m_tiles.emplace_back();
 						}
-						
+
 						++layerSetIt;
 					}
 
@@ -329,5 +337,40 @@ namespace bjoernligan
 				target.draw(ls.second.get()->m_vertices, states);
 			}
 		}
+	}
+
+	bool Map::GetRandomTopmostWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize)
+	{
+		p_xTarget;
+
+		sf::Vector2i xStart(sf::Vector2i(p_xSearchStart.x - p_xSearchAreaSize.x / 2, p_xSearchStart.y - p_xSearchAreaSize.y / 2));
+		if (xStart.x < 0)
+			xStart.x = 0;
+		if (xStart.y < 0)
+			xStart.y = 0;
+
+		sf::Vector2i xEnd(sf::Vector2i(p_xSearchStart.x + p_xSearchAreaSize.x / 2, p_xSearchStart.y + p_xSearchAreaSize.y / 2));
+
+		if ((xEnd.x + xEnd.x) > m_size.x)
+			xEnd.x = m_size.x - p_xSearchStart.x;
+		if ((xEnd.y + xEnd.y) > m_size.y)
+			xEnd.y = m_size.y - p_xSearchStart.y;
+
+		std::vector<Tile*> xAvailableTiles;
+
+		for (int32_t x = xStart.x; x < xEnd.x; ++x)
+		{
+			for (int32_t y = xStart.y; y < xEnd.y; ++y)
+			{
+				Tile* xTile = getTopmostTileAt(x, y);
+				if (xTile && xTile->hasProperty("walkable"))
+					xAvailableTiles.push_back(xTile);
+			}
+		}
+
+		if (!xAvailableTiles.empty())
+			return xAvailableTiles[random::random(0, xAvailableTiles.size())]->getPosition();
+
+		return false;
 	}
 }
