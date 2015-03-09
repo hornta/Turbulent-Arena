@@ -30,6 +30,14 @@ namespace bjoernligan
 		}
 	}
 
+	sf::Vector2i Map::Tile::getPosition() const
+	{
+		float tileWidth = m_vertices[1].position.x - m_vertices[0].position.x;
+		float tileHeight = m_vertices[3].position.y - m_vertices[0].position.y;
+
+		return sf::Vector2i(static_cast<int>(m_vertices[0].position.x / tileWidth), static_cast<int>(m_vertices[0].position.y / tileHeight));
+	}
+
 	Map::Tile* Map::TileLayer::getTile(int x, int y)
 	{
 		Tile* tile = nullptr;

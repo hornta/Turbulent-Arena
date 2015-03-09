@@ -50,6 +50,7 @@ namespace bjoernligan
 		{
 			friend class Map;
 		public:
+			sf::Vector2i getPosition() const;
 
 		private:
 			TileInfo* m_tileInfo;
