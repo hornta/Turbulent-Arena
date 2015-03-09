@@ -137,11 +137,13 @@ namespace bjoernligan
 			m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
 
 			xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-			xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(10, 10));
-			xPathFinder->setStart(m_xCurrentMapPos);
-			xPathFinder->setGoal(xTargetPos);
+			if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(10, 10)))
+			{
+				xPathFinder->setStart(m_xCurrentMapPos);
+				xPathFinder->setGoal(xTargetPos);
 
-			xPathFinder->findPath(m_CurrentPath)/* != PathfinderInfo::PathResult::PATHRESULT_FAILED)*/;
+				xPathFinder->findPath(m_CurrentPath);
+			}
 		}
 
 		void Agent::MoveToTargetPos()
