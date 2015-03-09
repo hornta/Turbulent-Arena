@@ -72,7 +72,7 @@ namespace bjoernligan
 	{
 		m_path = path;
 	}
-
+	
 	bool Map::load(const std::string& file)
 	{
 		tinyxml2::XMLDocument document;
@@ -198,9 +198,9 @@ namespace bjoernligan
 						}
 						else
 						{
-							layerSetIt->second->m_tiles.emplace_back();
+							layerSetIt->second->m_tiles.emplace_back(nullptr);
 						}
-
+						
 						++layerSetIt;
 					}
 
@@ -338,7 +338,7 @@ namespace bjoernligan
 			}
 		}
 	}
-
+	
 	bool Map::GetRandomTopmostWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize)
 	{
 		sf::Vector2i xStart(sf::Vector2i(p_xSearchStart.x - p_xSearchAreaSize.x / 2, p_xSearchStart.y - p_xSearchAreaSize.y / 2));
