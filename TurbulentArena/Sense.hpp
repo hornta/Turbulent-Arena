@@ -30,17 +30,15 @@ namespace bjoernligan
 
 		class Sense
 		{
-			std::unique_ptr<Pathfinder> m_pathFinder;
 			std::unique_ptr<Visibility> m_visiblity;
 			std::vector<Agent*> m_agents;
 
 		public:
-			Sense(const sf::Vector2i& pathfinderSize);
+			Sense();
 			void addAgent(Agent* agent);
 
 			void update(float dt);
 			std::vector<Agent*>& getAgents();
-			Pathfinder* getPathfinder() const;
 			Visibility* getVisibility() const;
 		};
 	}

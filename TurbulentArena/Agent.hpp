@@ -6,6 +6,7 @@
 #include "SteeringManager.hpp"
 #include "Timer.hpp"
 #include "MovementStats.hpp"
+#include "Pathfinder.hpp"
 
 namespace bjoernligan
 {
@@ -48,6 +49,8 @@ namespace bjoernligan
 			void MoveToTargetPos();
 			bool AtMoveTarget();
 			bool canFindTarget();
+			bool getPathToVisibleTarget(Agent* agent);
+			bool getPathToRandomVisibleTarget();
 
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;
@@ -55,12 +58,9 @@ namespace bjoernligan
 			std::unique_ptr<SenseData> m_senseData;
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
+			Pathfinder::Path m_currentPath;
 
-			/*Pathfinder* m_Pathfinder;
-			Pathfinder::Path m_CurrentPath;*/
 			Utility* m_Utility;
-
-
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;
 			ClanMember* m_xOwner;

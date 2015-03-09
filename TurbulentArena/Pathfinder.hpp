@@ -56,8 +56,10 @@ namespace bjoernligan
 		Pathfinder(const sf::Vector2i& size);
 
 		void setStart(int x, int y);
+		void setStart(const sf::Vector2i& position);
 		void setStart(const Vector2i& position);
 		void setGoal(int x, int y);
+		void setGoal(const sf::Vector2i& position);
 		void setGoal(const Vector2i& position);
 		PathfinderInfo::PathResult findPath(Path& path, const Options& options = Options());
 		PathfinderGrid& getGrid();

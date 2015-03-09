@@ -262,6 +262,27 @@ namespace bjoernligan
 		return nullptr;
 	}
 
+	Map::Tile* Map::getTopmostTileAt(int x, int y)
+	{
+		Tile* currentTile = nullptr;
+		for (std::size_t i = m_tileLayers.size() - 1; i >= 0; --i)
+		{
+			currentTile = m_tileLayers[i]->getTile(x, y);
+
+			if (currentTile != nullptr)
+			{
+				return currentTile;
+			}
+		}
+
+		return nullptr;
+	}
+
+	Map::Tile* Map::getTopmostTileAt(const sf::Vector2i& position)
+	{
+		return getTopmostTileAt(position.x, position.y);
+	}
+
 	Map::ObjectGroup* Map::getObjectGroup(const std::string& name) const
 	{
 		for (std::size_t i = 0; i < m_objectGroups.size(); ++i)
