@@ -6,11 +6,11 @@
 #include "SteeringManager.hpp"
 #include "Timer.hpp"
 #include "MovementStats.hpp"
+#include "Pathfinder.hpp"
 
 namespace bjoernligan
 {
 	class ClanMember;
-	class Pathfinder;
 	class Utility;
 
 	namespace ai
@@ -55,11 +55,9 @@ namespace bjoernligan
 			std::unique_ptr<SenseData> m_senseData;
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
-
-			/*Pathfinder* m_Pathfinder;
-			Pathfinder::Path m_CurrentPath;*/
+			Pathfinder::Path m_CurrentPath;
+			sf::Vector2i m_xCurrentMapPos;
 			Utility* m_Utility;
-
 
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;

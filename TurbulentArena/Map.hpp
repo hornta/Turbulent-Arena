@@ -107,6 +107,8 @@ namespace bjoernligan
 
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+		bool GetRandomWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize);
+
 	private:
 		sf::Vector2i m_size;
 		sf::Vector2f m_tileSize;

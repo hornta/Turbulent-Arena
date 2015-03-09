@@ -13,7 +13,7 @@ namespace bjoernligan
 		float m_SlowDownRadius;
 
 	public:
-		void Initiate(const sf::Vector2f p_MaxVelocity, const float p_Acceleration, const float p_SlowDownRadius);
+		void Initiate(const sf::Vector2f &p_MaxVelocity, const float &p_Acceleration, const float &p_SlowDownRadius);
 	
 		const sf::Vector2f& GetMaxVelocity();
 		const float& GetAcceleration();

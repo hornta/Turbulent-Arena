@@ -9,6 +9,7 @@
 #include "ServiceLocator.hpp"
 #include "Utility.hpp"
 #include "Sense.hpp"
+#include "Map.hpp"
 
 #define AGENT_SENSE_TIMER 0.3f
 #define AGENT_DECIDE_TIMER 1.0f
@@ -68,6 +69,7 @@ namespace bjoernligan
 
 		void Agent::Sense()
 		{
+
 			m_senseData->update();
 		}
 
@@ -123,6 +125,18 @@ namespace bjoernligan
 			//m_Pathfinder->setStart()
 			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
 
+			sf::Vector2i xTargetPos;
+			Map* xMap = ServiceLocator<Map>::GetService();
+			Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
+
+			xMap, xPathFinder;
+
+			//do
+			//{
+			//	xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
+			//	/*xPathFinder->setStart();
+			//	xPathFinder->setGoal();*/
+			//}while (xPathFinder->findPath(m_CurrentPath, ,) != PathfinderInfo::PathResult::PATHRESULT_FAILED);
 		}
 
 		void Agent::MoveToTargetPos()

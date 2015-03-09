@@ -6,11 +6,7 @@
 #include "Settings.hpp"
 #include "MainMenuState.hpp"
 #include "Settings.hpp"
-#include "UISlider.hpp"
-#include "UIButton.hpp"
 #include <Windows.h>
-
-#include <iomanip>
 
 namespace bjoernligan
 {
@@ -70,8 +66,6 @@ namespace bjoernligan
 				return false;
 			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
 
-
-		
 			if (!m_xDebugWindow->Initialize())
 				return false;
 			m_xDebugWindow->SetPos(16.0f, 16.0f);
