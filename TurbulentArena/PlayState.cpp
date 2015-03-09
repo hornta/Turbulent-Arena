@@ -78,8 +78,8 @@ namespace bjoernligan
 				Map::Tile* tile = m_map->getLayer("objects")->getTile(x, y);
 				if (tile != nullptr)
 				{
-					m_pathFinder->getGrid().setWalkableAt(x, y, tile->hasProperty("walkable"));
-					if (!tile->hasProperty("walkable"))
+					m_pathFinder->getGrid().setWalkableAt(x, y, tile->getTileInfo()->m_properties.hasProperty("walkable"));
+					if (!tile->getTileInfo()->m_properties.hasProperty("walkable"))
 					{
 						sf::Vector2f tileSize = m_map->getTileSize();
 						Physics::Params xParams;
