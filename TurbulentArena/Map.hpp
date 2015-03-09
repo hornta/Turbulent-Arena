@@ -97,6 +97,8 @@ namespace bjoernligan
 		bool load(const std::string& file);
 
 		TileLayer* getLayer(const std::string& name) const;
+		Tile* getTopmostTileAt(int x, int y);
+		Tile* getTopmostTileAt(const sf::Vector2i& position);
 		ObjectGroup* getObjectGroup(const std::string& name) const;
 			
 		sf::Vector2i getSize() const;
