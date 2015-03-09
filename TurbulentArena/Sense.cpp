@@ -71,28 +71,8 @@ namespace bjoernligan
 			return m_radius;
 		}
 
-		bool SenseData::isVisible(Agent* agent, bool findPath, Pathfinder::Path& path, Pathfinder::Options pathfinderOptions) const
+		Sense::Sense()
 		{
-			Map* map = ServiceLocator<Map>::GetService();
-			for (std::size_t i = 0; i < m_visibleAgents.size(); ++i)
-			{
-				if (agent == m_visibleAgents[i])
-				{
-					if (findPath)
-					{
-						m_sense->getPathfinder()->setStart(Vector2i(map->getTilePosition(m_me->getOwner()->getSprite()->getPosition())));
-						m_sense->getPathfinder()->setGoal(Vector2i(map->getTilePosition(agent->getOwner()->getSprite()->getPosition())));
-						m_sense->getPathfinder()->findPath(path, pathfinderOptions);
-					}
-					return true;
-				}
-			}
-			return false;
-		}
-
-		Sense::Sense(const sf::Vector2i& pathfinderSize)
-		{
-			m_pathFinder = std::make_unique<Pathfinder>(pathfinderSize);
 			m_visiblity = std::make_unique<Visibility>();
 		}
 
@@ -110,11 +90,6 @@ namespace bjoernligan
 		std::vector<Agent*>& Sense::getAgents()
 		{
 			return m_agents;
-		}
-
-		Pathfinder* Sense::getPathfinder() const
-		{
-			return m_pathFinder.get();
 		}
 
 		Visibility* Sense::getVisibility() const

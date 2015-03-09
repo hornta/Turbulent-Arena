@@ -48,6 +48,8 @@ namespace bjoernligan
 			void MoveToTargetPos();
 			bool AtMoveTarget();
 			bool canFindTarget();
+			bool getPathToVisibleTarget(Agent* agent);
+			bool getPathToRandomVisibleTarget();
 
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;

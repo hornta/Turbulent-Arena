@@ -56,7 +56,7 @@ namespace bjoernligan
 		m_physics = std::make_unique<Physics>(0.f, 0.f, m_xDrawManager->getWindow());
 		m_physics->setDebug(false);
 
-		m_sense = std::make_unique<ai::Sense>(m_map->getSize());
+		m_sense = std::make_unique<ai::Sense>();
 
 		m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 

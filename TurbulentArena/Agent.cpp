@@ -3,8 +3,6 @@
 #include "stdafx.h"
 #include "Agent.hpp"
 #include "BehaviorTree.hpp"
-#include "SteeringManager.hpp"
-#include "Pathfinder.hpp"
 #include "ClanMember.hpp"
 #include "ServiceLocator.hpp"
 #include "Utility.hpp"
@@ -160,6 +158,31 @@ namespace bjoernligan
 			}
 			else
 				return false;
+		}
+
+		bool Agent::getPathToVisibleTarget(Agent* agent)
+		{
+			Map* map = ServiceLocator<Map>::GetService();
+			Pathfinder* pathfinder = ServiceLocator<Pathfinder>::GetService();
+			pathfinder->setStart(map->getTilePosition(m_xOwner->getSprite()->getPosition()));
+			pathfinder->setGoal(map->getTilePosition(agent->getOwner()->getSprite()->getPosition()));
+
+			Pathfinder::Options options;
+			options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+			options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
+			options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
+
+			PathfinderInfo::PathResult result = pathfinder->findPath(m_currentPath, options);
+			if (result == PathfinderInfo::PATHRESULT_SUCCEEDED)
+				return true;
+			return false;
+		}
+
+		bool Agent::getPathToRandomVisibleTarget()
+		{
+			std::vector<Agent*> visibleAgents = m_senseData->getVisibleAgents();
+			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
+			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
 		}
 	}
 }

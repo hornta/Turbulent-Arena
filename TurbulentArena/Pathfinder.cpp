@@ -31,6 +31,11 @@ namespace bjoernligan
 			m_start = static_cast<PathfinderGrid::PathfinderNode*>(m_grid.getNodeAt(x, y));
 	}
 
+	void Pathfinder::setStart(const sf::Vector2i& position)
+	{
+		setStart(position.x, position.y);
+	}
+
 	void Pathfinder::setStart(const Vector2i& position)
 	{
 		setStart(position.x, position.y);
@@ -40,6 +45,11 @@ namespace bjoernligan
 	{
 		if (m_grid.isInside(x, y))
 			m_goal = static_cast<PathfinderGrid::PathfinderNode*>(m_grid.getNodeAt(x, y));
+	}
+
+	void Pathfinder::setGoal(const sf::Vector2i& position)
+	{
+		setGoal(position.x, position.y);
 	}
 
 	void Pathfinder::setGoal(const Vector2i& position)
