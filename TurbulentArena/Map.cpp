@@ -341,8 +341,6 @@ namespace bjoernligan
 
 	bool Map::GetRandomTopmostWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize)
 	{
-		p_xTarget;
-
 		sf::Vector2i xStart(sf::Vector2i(p_xSearchStart.x - p_xSearchAreaSize.x / 2, p_xSearchStart.y - p_xSearchAreaSize.y / 2));
 		if (xStart.x < 0)
 			xStart.x = 0;
@@ -351,9 +349,9 @@ namespace bjoernligan
 
 		sf::Vector2i xEnd(sf::Vector2i(p_xSearchStart.x + p_xSearchAreaSize.x / 2, p_xSearchStart.y + p_xSearchAreaSize.y / 2));
 
-		if ((xEnd.x + xEnd.x) > m_size.x)
+		if (xEnd.x > m_size.x)
 			xEnd.x = m_size.x - p_xSearchStart.x;
-		if ((xEnd.y + xEnd.y) > m_size.y)
+		if (xEnd.y > m_size.y)
 			xEnd.y = m_size.y - p_xSearchStart.y;
 
 		std::vector<Tile*> xAvailableTiles;
@@ -369,7 +367,10 @@ namespace bjoernligan
 		}
 
 		if (!xAvailableTiles.empty())
-			return xAvailableTiles[random::random(0, xAvailableTiles.size())]->getPosition();
+		{
+			p_xTarget = xAvailableTiles[random::random(0, xAvailableTiles.size() - 1)]->getPosition();
+			return true;
+		}
 
 		return false;
 	}
