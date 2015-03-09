@@ -64,7 +64,7 @@ namespace bjoernligan
 	{
 		m_path = path;
 	}
-	
+
 	bool Map::load(const std::string& file)
 	{
 		tinyxml2::XMLDocument document;
@@ -192,7 +192,7 @@ namespace bjoernligan
 						{
 							layerSetIt->second->m_tiles.emplace_back();
 						}
-						
+
 						++layerSetIt;
 					}
 
@@ -331,7 +331,7 @@ namespace bjoernligan
 		}
 	}
 
-	bool Map::GetRandomWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize)
+	bool Map::GetRandomTopmostWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize)
 	{
 		p_xTarget;
 
@@ -348,18 +348,20 @@ namespace bjoernligan
 		if ((xEnd.y + xEnd.y) > m_size.y)
 			xEnd.y = m_size.y - p_xSearchStart.y;
 
-		std::map<Tile*, sf::Vector2i> xAvailableTiles;
+		std::vector<Tile*> xAvailableTiles;
 
-		/*for (int32_t x = xStart.x; x < xEnd.x; ++x)
+		for (int32_t x = xStart.x; x < xEnd.x; ++x)
 		{
 			for (int32_t y = xStart.y; y < xEnd.y; ++y)
 			{
-				xAvailableTiles.insert(xAvailableTiles.begin(), std::make_pair(GetTopMostTile(x, y), sf::Vector2i(x, y)));
+				Tile* xTile = getTopmostTileAt(x, y);
+				if (xTile && xTile->hasProperty("walkable"))
+					xAvailableTiles.push_back(xTile);
 			}
 		}
 
 		if (!xAvailableTiles.empty())
-			return xAvailableTiles.find(random::random(0, xAvailableTiles.size())->);*/
+			return xAvailableTiles[random::random(0, xAvailableTiles.size())]->getPosition();
 
 		return false;
 	}

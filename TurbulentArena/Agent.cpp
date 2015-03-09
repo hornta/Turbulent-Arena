@@ -172,7 +172,7 @@ namespace bjoernligan
 			options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
 			options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
 
-			PathfinderInfo::PathResult result = pathfinder->findPath(m_currentPath, options);
+			PathfinderInfo::PathResult result = pathfinder->findPath(m_CurrentPath, options);
 			if (result == PathfinderInfo::PATHRESULT_SUCCEEDED)
 				return true;
 			return false;
