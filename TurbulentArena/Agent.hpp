@@ -12,6 +12,7 @@ namespace bjoernligan
 {
 	class ClanMember;
 	class Utility;
+	class Map;
 
 	namespace ai
 	{
@@ -25,7 +26,6 @@ namespace bjoernligan
 		{
 		public:
 			Agent(ClanMember* p_xOwner, Sense* sense);
-			virtual ~Agent();
 
 			void Update(const float &p_fDeltaTime);
 			void Sense();
@@ -60,6 +60,7 @@ namespace bjoernligan
 			Pathfinder::Path m_CurrentPath;
 			sf::Vector2i m_xCurrentMapPos;
 			Utility* m_Utility;
+			Map* m_map;
 
 			//tomas BT-variables (bad solution)
 			sf::Vector2f m_xMoveTarget;

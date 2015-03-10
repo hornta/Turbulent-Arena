@@ -47,7 +47,9 @@ namespace bjoernligan
 		m_xDebugWindow = ServiceLocator<DebugWindow>::GetService();
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
-		
+
+		m_xAudioManager->PlayMusic("Battle");
+
 		m_map = std::make_unique<Map>("../data/");
 		m_map->load("map.tmx");
 

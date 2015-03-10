@@ -2,10 +2,13 @@
 
 #pragma once
 
-//#pragma warning(disable:4099)
-#pragma warning(disable:4127)
+#define NOMINMAX
 
+//#pragma warning(disable:4099)
+#pragma warning(disable: 4127 4005 4627)
 #include "targetver.h"
+
+#include "easylogging++.h"
 
 #include <stdio.h>
 #include <tchar.h>

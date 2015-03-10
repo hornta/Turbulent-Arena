@@ -5,6 +5,9 @@
 #include "ServiceLocator.hpp"
 #include "Settings.hpp"
 #include "MainMenuState.hpp"
+
+#include "PlayState.hpp"
+
 #include "Settings.hpp"
 #include <Windows.h>
 
@@ -60,7 +63,6 @@ namespace bjoernligan
 			m_xAudioManager->CreateSoundBuffer("Button3", "button_click3.wav");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
 			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
-			m_xAudioManager->PlayMusic("Menu");
 
 			if (!m_xDrawManager->Initialize())
 				return false;
@@ -72,7 +74,7 @@ namespace bjoernligan
 
 			if (!m_xStateManager->Initialize())
 				return false;
-			m_xStateManager->CreateState<MainMenuState>("MainMenu");
+			m_xStateManager->CreateState<PlayState>("PlayState");
 
 			m_xUIManager->setView(m_xDrawManager->getWindow()->getView());
 

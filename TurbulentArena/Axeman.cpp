@@ -33,7 +33,6 @@ namespace bjoernligan
 		xCombatSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
 		
 		xWanderSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
-		xWanderSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}
 
 	void Axeman::update(float deltatime)

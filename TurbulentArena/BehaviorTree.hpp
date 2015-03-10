@@ -11,6 +11,7 @@ namespace bjoernligan
 		{
 		public:
 			BehaviorTree();
+			~BehaviorTree();
 
 			void Break();
 			void Process();
