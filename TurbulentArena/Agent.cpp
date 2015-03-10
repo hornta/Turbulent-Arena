@@ -130,19 +130,22 @@ namespace bjoernligan
 			//m_Pathfinder->setStart()
 			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
 
-			sf::Vector2i xTargetPos;
-			Map* xMap = ServiceLocator<Map>::GetService();
-			Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
-
-			m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
-
-			xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-			if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(10, 10)))
+			if (m_CurrentPath.nodes.empty())
 			{
-				xPathFinder->setStart(m_xCurrentMapPos);
-				xPathFinder->setGoal(xTargetPos);
+				sf::Vector2i xTargetPos;
+				Map* xMap = ServiceLocator<Map>::GetService();
+				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
-				xPathFinder->findPath(m_CurrentPath);
+				m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
+
+				xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
+				if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(10, 10)))
+				{
+					xPathFinder->setStart(m_xCurrentMapPos);
+					xPathFinder->setGoal(xTargetPos);
+
+					xPathFinder->findPath(m_CurrentPath);
+				}
 			}
 		}
 
