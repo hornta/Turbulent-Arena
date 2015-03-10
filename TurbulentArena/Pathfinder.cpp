@@ -4,6 +4,41 @@
 namespace bjoernligan
 {
 
+	Pathfinder::Path::Path()
+		: currentNode(0)
+	{
+
+	}
+
+	bool Pathfinder::Path::isDone() const
+	{
+		return currentNode >= length - 1;
+	}
+
+	Pathfinder::PathNode* Pathfinder::Path::getCurrentNode()
+	{
+		if (currentNode >= 0 && currentNode < length)
+			return &nodes[currentNode];
+		else
+			return nullptr;
+	}
+
+	Pathfinder::PathNode* Pathfinder::Path::getNextNode()
+	{
+		if (currentNode + 1 >= 0 && currentNode + 1 < length)
+			return &nodes[currentNode + 1];
+		else
+			return nullptr;
+	}
+
+	Pathfinder::PathNode* Pathfinder::Path::getPreviousNode()
+	{
+		if (currentNode - 1 >= 0 && currentNode - 1 < length)
+			return &nodes[currentNode - 1];
+		else
+			return nullptr;
+	}
+
 	Pathfinder::Pathfinder(int width, int height)
 		: m_width(width),
 		m_height(height),
@@ -138,7 +173,7 @@ namespace bjoernligan
 	{
 		if (heuristic == PathfinderInfo::HEURISTIC_MANHATTAN)
 		{
-			return static_cast<float>(abs(x1 - x0) + abs(y1 - y0)) * 1000.f;
+			return static_cast<float>(abs(x1 - x0) + abs(y1 - y0));
 		}
 		else if (heuristic == PathfinderInfo::HEURISTIC_DIAGONAL)
 		{

@@ -167,9 +167,9 @@ namespace bjoernligan
 	PathfinderGrid::PathfinderGrid(int width, int height)
 		: Grid(width, height)
 	{
-		for (int x = 0; x < m_width; ++x)
+		for (int y = 0; y < m_height; ++y)
 		{
-			for (int y = 0; y < m_height; ++y)
+			for (int x = 0; x < m_width; ++x)
 			{
 				m_nodes.emplace_back(std::make_unique<PathfinderNode>(x, y, true));
 			}

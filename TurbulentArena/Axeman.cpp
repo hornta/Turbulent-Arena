@@ -24,16 +24,15 @@ namespace bjoernligan
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 
 		ai::BSelectorNode* xRootSelector = xBT->CreateRoot<ai::BSelectorNode>();
-
+		xRootSelector;
+/*
 		ai::BSequenceNode* xCombatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		xCombatSequence->AttachAgent(m_xAgent);
 		ai::BSequenceNode* xWanderSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		xWanderSequence->AttachAgent(m_xAgent);
 
 		xCombatSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
-		
-		xWanderSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
-		xWanderSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
+		xWanderSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);*/
 	}
 
 	void Axeman::update(float deltatime)

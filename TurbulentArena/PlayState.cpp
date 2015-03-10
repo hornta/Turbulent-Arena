@@ -47,7 +47,9 @@ namespace bjoernligan
 		m_xDebugWindow = ServiceLocator<DebugWindow>::GetService();
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
-		
+
+		m_xAudioManager->PlayMusic("Battle");
+
 		m_map = std::make_unique<Map>("../data/");
 		m_map->load("map.tmx");
 
@@ -71,9 +73,9 @@ namespace bjoernligan
 		m_view = m_xDrawManager->getWindow()->getView();
 
 		// PATHFINDER
-		for (int x = 0; x < m_map->getWidth(); ++x)
+		for (int y = 0; y < m_map->getHeight(); ++y)
 		{
-			for (int y = 0; y < m_map->getHeight(); ++y)
+			for (int x = 0; x < m_map->getWidth(); ++x)
 			{
 				Map::Tile* tile = m_map->getLayer("objects")->getTile(x, y);
 				if (tile != nullptr)

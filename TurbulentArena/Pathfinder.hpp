@@ -34,14 +34,15 @@ namespace bjoernligan
 		{
 			friend class Pathfinder;
 		public:
-			Path()
-				: currentNode(0)
-			{
+			Path();
 
-			}
+			bool isDone() const;
+			PathNode* getCurrentNode();
+			PathNode* getNextNode();
+			PathNode* getPreviousNode();
 
-			std::size_t length;
-			std::size_t currentNode;
+			int length;
+			int currentNode;
 			sf::Time time;
 			std::vector<PathNode> nodes;
 

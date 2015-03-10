@@ -1,6 +1,7 @@
 //main.cpp
 
 #include "stdafx.h"
+INITIALIZE_EASYLOGGINGPP
 #include "Engine.hpp"
 
 #if defined(_DEBUG)

@@ -26,7 +26,6 @@ namespace bjoernligan
 
 		//xSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
 		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
-		xSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}
 
 	void Scout::update(float deltatime)

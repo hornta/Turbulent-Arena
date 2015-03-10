@@ -171,9 +171,6 @@
     <ClInclude Include="BNodesInclude.hpp">
       <Filter>Header Files\AI\BT</Filter>
     </ClInclude>
-    <ClInclude Include="BMoveToNode.hpp">
-      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
-    </ClInclude>
     <ClInclude Include="SteeringManager.hpp">
       <Filter>Header Files\AI</Filter>
     </ClInclude>
@@ -245,7 +242,7 @@
     </ClInclude>
     <ClInclude Include="BFindTargetNode.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="GameStateManager.hpp">
       <Filter>Header Files\system</Filter>
     </ClInclude>
@@ -326,9 +323,6 @@
     <ClCompile Include="Axeman.cpp">
       <Filter>Source Files\objects\gameplay classes</Filter>
     </ClCompile>
-    <ClCompile Include="BMoveToNode.cpp">
-      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
-    </ClCompile>
     <ClCompile Include="SteeringManager.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
@@ -400,7 +394,7 @@
     </ClCompile>
     <ClCompile Include="BFindTargetNode.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
-	  </ClCompile>
+    </ClCompile>
     <ClCompile Include="GameStateManager.cpp">
       <Filter>Source Files\system</Filter>
     </ClCompile>
@@ -415,6 +409,9 @@
     </ClCompile>
     <ClCompile Include="OptionsState.cpp">
       <Filter>Source Files\game_states</Filter>
+    </ClCompile>
+    <ClCompile Include="easylogging++.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
