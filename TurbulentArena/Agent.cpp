@@ -119,9 +119,7 @@ namespace bjoernligan
 		void Agent::ChooseWanderPos()
 		{
 			//m_xMoveTarget = sf::Vector2f(140.0f,140.0f);
-			m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
-			//m_Pathfinder->setStart()
-			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
+			//m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
 
 			sf::Vector2i xTargetPos;
 			Map* xMap = ServiceLocator<Map>::GetService();

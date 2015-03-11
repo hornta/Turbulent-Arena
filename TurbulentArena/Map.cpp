@@ -369,8 +369,10 @@ namespace bjoernligan
 		}
 
 		if (!xAvailableTiles.empty())
-			return xAvailableTiles[random::random(0, xAvailableTiles.size())]->getPosition();
-
+		{
+			p_xTarget = xAvailableTiles[random::random(0, xAvailableTiles.size())]->getPosition();
+			return true;
+		}
 		return false;
 	}
 }

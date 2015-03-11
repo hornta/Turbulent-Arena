@@ -40,7 +40,7 @@ namespace bjoernligan
 			void setSenseRadius(float p_senseRadius);
 			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
 
-			void InitializeSteering(b2Body* p_CurrentBody,MovementStats* p_MovementStats);
+			void InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats);
 
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
