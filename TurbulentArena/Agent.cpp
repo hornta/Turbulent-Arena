@@ -74,20 +74,32 @@ namespace bjoernligan
 
 		void Agent::Act()
 		{
-			if (!m_CurrentPath.isDone() && m_CurrentPath.length != 0)
+			// Trace current path
+			if (!m_CurrentPath.isDone())
 			{
-				sf::Vector2f target;
+				// Get the position to the current node in our path
+				Vector2f target;
 				target.x = m_CurrentPath.getCurrentNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
 				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
-				m_Steering->Seek(target);
+				m_Steering->Seek(sf::Vector2f(target.x, target.y));
+
+				// Check if we have reached our current node
+				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
+
+				if (target.dist(currentPosition) < 10)
+				{
+					++m_CurrentPath.currentNode;
+				}
 			}
 
 			m_Steering->Update();
 		}
+
 		void Agent::OnNotify(/*add parameters*/)
 		{
 
 		}
+
 		SenseData* Agent::getSense() const
 		{
 			return m_senseData.get();
@@ -117,13 +129,7 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos()
 		{
-			LOG(INFO) << "Finding idle wander path for agent";
-			//m_xMoveTarget = sf::Vector2f(140.0f,140.0f);
-			//m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
-			//m_Pathfinder->setStart()
-			//m_Pathfinder->setStart(m_Utility->ConvertVector_B2toSF(m_xOwner->getBody()->m_body->GetPosition()));
-
-			if (m_CurrentPath.nodes.empty())
+			if (m_CurrentPath.isDone())
 			{
 				sf::Vector2i xTargetPos;
 				Map* xMap = ServiceLocator<Map>::GetService();
@@ -132,19 +138,11 @@ namespace bjoernligan
 				m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
 
 				xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-				if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(10, 10)))
+				if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(20, 20)))
 				{
 					xPathFinder->setStart(m_xCurrentMapPos);
 					xPathFinder->setGoal(xTargetPos);
-					PathfinderInfo::PathResult result = xPathFinder->findPath(m_CurrentPath);
-					if (result == PathfinderInfo::PATHRESULT_SUCCEEDED)
-					{
-						LOG(INFO) << "Found path for agent with length " << m_CurrentPath.length;
-					}
-					else
-					{
-						LOG(INFO) << "Failed to find path for agent ";
-					}
+					xPathFinder->findPath(m_CurrentPath);
 				}
 			}
 		}

@@ -289,6 +289,10 @@ namespace bjoernligan
 			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 			xButton->Initialize("Debug: Window", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32),
 				std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow, std::placeholders::_1));
+
+			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+			xButton->Initialize("Debug: Pathfinder", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 170, 140, 32),
+				std::bind(&bjoernligan::PlayState::ToggleDebugPathfinder, this, std::placeholders::_1));
 	}
 
 	void PlayState::Exit()
@@ -329,6 +333,19 @@ namespace bjoernligan
 	void PlayState::SetDebugMode(const bool &p_bValue)
 	{
 		m_physics->setDebug(p_bValue);
+	}
+
+	void PlayState::ToggleDebugPathfinder(bool value)
+	{
+		m_debugPathfinder = value;
+
+		for (auto& clan : m_clanManager->getClans())
+		{
+			for (auto& member : clan->getMembers())
+			{
+				member->drawPathfinder(m_debugPathfinder);
+			}
+		}
 	}
 
 	void PlayState::SetScrollSpeed(const float &p_fNewSpeed)

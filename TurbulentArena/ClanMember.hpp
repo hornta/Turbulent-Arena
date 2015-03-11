@@ -30,6 +30,7 @@ namespace bjoernligan
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Sprite* getSprite();
 		ai::Agent* getAgent() const;
+		void drawPathfinder(bool value);
 
 	protected:
 		ai::Agent* m_xAgent;
@@ -37,5 +38,6 @@ namespace bjoernligan
 		CombatStats m_xCombatStats;
 		Clan* m_clan;
 		std::unique_ptr<sf::Sprite> m_sprite;
+		bool m_drawPathfinder;
 	};
 }

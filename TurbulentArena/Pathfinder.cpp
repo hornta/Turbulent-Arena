@@ -12,7 +12,7 @@ namespace bjoernligan
 
 	bool Pathfinder::Path::isDone() const
 	{
-		return currentNode >= length - 1;
+		return currentNode >= length;
 	}
 
 	Pathfinder::PathNode* Pathfinder::Path::getCurrentNode()

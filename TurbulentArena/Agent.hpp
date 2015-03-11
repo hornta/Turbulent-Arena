@@ -24,6 +24,7 @@ namespace bjoernligan
 
 		class Agent : public AIObserver
 		{
+			friend ClanMember;
 		public:
 			Agent(ClanMember* p_xOwner, Sense* sense);
 
