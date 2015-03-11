@@ -43,6 +43,7 @@ namespace bjoernligan
 	private:
 		void updateCamera(const float &p_fDeltaTime);
 		void SetDebugMode(const bool &p_bValue);
+		void ToggleDebugPathfinder(bool value);
 		void SetScrollSpeed(const float &p_fNewSpeed);
 
 		//from engine
@@ -65,5 +66,7 @@ namespace bjoernligan
 		float m_fScrollSpeed;
 		sf::View m_view;
 		sf::Vector2f m_lastRightClick;
+
+		bool m_debugPathfinder = false;
 	};
 }

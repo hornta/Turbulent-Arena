@@ -47,7 +47,9 @@ namespace bjoernligan
 		m_xDebugWindow = ServiceLocator<DebugWindow>::GetService();
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
-		
+
+		m_xAudioManager->PlayMusic("Battle");
+
 		m_map = std::make_unique<Map>("../data/");
 		m_map->load("map.tmx");
 
@@ -71,15 +73,15 @@ namespace bjoernligan
 		m_view = m_xDrawManager->getWindow()->getView();
 
 		// PATHFINDER
-		for (int x = 0; x < m_map->getWidth(); ++x)
+		for (int y = 0; y < m_map->getHeight(); ++y)
 		{
-			for (int y = 0; y < m_map->getHeight(); ++y)
+			for (int x = 0; x < m_map->getWidth(); ++x)
 			{
 				Map::Tile* tile = m_map->getLayer("objects")->getTile(x, y);
 				if (tile != nullptr)
 				{
-					m_pathFinder->getGrid().setWalkableAt(x, y, tile->hasProperty("walkable"));
-					if (!tile->hasProperty("walkable"))
+					m_pathFinder->getGrid().setWalkableAt(x, y, tile->getTileInfo()->m_properties.hasProperty("walkable"));
+					if (!tile->getTileInfo()->m_properties.hasProperty("walkable"))
 					{
 						sf::Vector2f tileSize = m_map->getTileSize();
 						Physics::Params xParams;
@@ -287,6 +289,10 @@ namespace bjoernligan
 			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 			xButton->Initialize("Debug: Window", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32),
 				std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow, std::placeholders::_1));
+
+			xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+			xButton->Initialize("Debug: Pathfinder", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 170, 140, 32),
+				std::bind(&bjoernligan::PlayState::ToggleDebugPathfinder, this, std::placeholders::_1));
 	}
 
 	void PlayState::Exit()
@@ -327,6 +333,19 @@ namespace bjoernligan
 	void PlayState::SetDebugMode(const bool &p_bValue)
 	{
 		m_physics->setDebug(p_bValue);
+	}
+
+	void PlayState::ToggleDebugPathfinder(bool value)
+	{
+		m_debugPathfinder = value;
+
+		for (auto& clan : m_clanManager->getClans())
+		{
+			for (auto& member : clan->getMembers())
+			{
+				member->drawPathfinder(m_debugPathfinder);
+			}
+		}
 	}
 
 	void PlayState::SetScrollSpeed(const float &p_fNewSpeed)

@@ -38,6 +38,11 @@ namespace bjoernligan
 		return sf::Vector2i(static_cast<int>(m_vertices[0].position.x / tileWidth), static_cast<int>(m_vertices[0].position.y / tileHeight));
 	}
 
+	Map::TileInfo* Map::Tile::getTileInfo() const
+	{
+		return m_tileInfo;
+	}
+
 	Map::Tile* Map::TileLayer::getTile(int x, int y)
 	{
 		Tile* tile = nullptr;
@@ -72,7 +77,7 @@ namespace bjoernligan
 	{
 		m_path = path;
 	}
-
+	
 	bool Map::load(const std::string& file)
 	{
 		tinyxml2::XMLDocument document;
@@ -129,6 +134,17 @@ namespace bjoernligan
 				}
 			}
 
+			tinyxml2::XMLElement* tilesetTileNode = tilesetNode->FirstChildElement("tile");
+			while (tilesetTileNode != nullptr)
+			{
+				int tile_id = tilesetTileNode->IntAttribute("id");
+				TileInfo* tileInfo = m_tileInfo[tile_id + 1].get();
+				tileInfo->m_properties.parseProperties(tilesetTileNode->FirstChildElement("properties"));
+
+				tilesetTileNode = tilesetTileNode->NextSiblingElement("tile");
+			}
+
+
 			tilesetNode = tilesetNode->NextSiblingElement("tileset");
 		}
 
@@ -175,6 +191,7 @@ namespace bjoernligan
 							layerSet->m_tiles.emplace_back(std::make_unique<Tile>());
 							Tile* tile = layerSet->m_tiles.back().get();
 
+							tile->m_tileInfo = m_tileInfo[gid].get();
 							tile->m_vertices = &layerSet->m_vertices[(x + y * m_size.x) * 4];
 							tile->m_vertices[0].texCoords = m_tileInfo[gid]->m_textureCoordinates[0] + sf::Vector2f(0.5f, 0.5f);
 							tile->m_vertices[1].texCoords = m_tileInfo[gid]->m_textureCoordinates[1] + sf::Vector2f(-0.5f, 0.5f);
@@ -198,9 +215,23 @@ namespace bjoernligan
 						}
 						else
 						{
-							layerSetIt->second->m_tiles.emplace_back();
+							for (std::size_t i = 0; i < m_tileLayers.size(); ++i)
+							{
+								auto layerSetIt = m_tileLayers[i]->m_layerSets.begin();
+								while (layerSetIt != m_tileLayers[i]->m_layerSets.end())
+								{
+									if (layerSetIt->second->m_tiles.size() > static_cast<std::size_t>((x + y * m_size.x)) && layerSetIt->second->m_tiles[x + y * m_size.x] != nullptr)
+									{
+									}
+									else
+									{
+										layerSetIt->second->m_tiles.emplace_back(nullptr);
+									}
+									++layerSetIt;
+								}
+							}
 						}
-
+						
 						++layerSetIt;
 					}
 
@@ -338,11 +369,9 @@ namespace bjoernligan
 			}
 		}
 	}
-
+	
 	bool Map::GetRandomTopmostWalkableTile(const sf::Vector2i &p_xSearchStart, sf::Vector2i &p_xTarget, sf::Vector2i p_xSearchAreaSize)
 	{
-		p_xTarget;
-
 		sf::Vector2i xStart(sf::Vector2i(p_xSearchStart.x - p_xSearchAreaSize.x / 2, p_xSearchStart.y - p_xSearchAreaSize.y / 2));
 		if (xStart.x < 0)
 			xStart.x = 0;
@@ -351,9 +380,9 @@ namespace bjoernligan
 
 		sf::Vector2i xEnd(sf::Vector2i(p_xSearchStart.x + p_xSearchAreaSize.x / 2, p_xSearchStart.y + p_xSearchAreaSize.y / 2));
 
-		if ((xEnd.x + xEnd.x) > m_size.x)
+		if (xEnd.x > m_size.x)
 			xEnd.x = m_size.x - p_xSearchStart.x;
-		if ((xEnd.y + xEnd.y) > m_size.y)
+		if (xEnd.y > m_size.y)
 			xEnd.y = m_size.y - p_xSearchStart.y;
 
 		std::vector<Tile*> xAvailableTiles;
@@ -363,14 +392,15 @@ namespace bjoernligan
 			for (int32_t y = xStart.y; y < xEnd.y; ++y)
 			{
 				Tile* xTile = getTopmostTileAt(x, y);
-				if (xTile && xTile->hasProperty("walkable"))
+				if (xTile && xTile->m_tileInfo->m_properties.hasProperty("walkable"))
 					xAvailableTiles.push_back(xTile);
 			}
 		}
 
 		if (!xAvailableTiles.empty())
 		{
-			p_xTarget = xAvailableTiles[random::random(0, xAvailableTiles.size())]->getPosition();
+
+			p_xTarget = xAvailableTiles[random::random(0, xAvailableTiles.size() - 1)]->getPosition();
 			return true;
 		}
 		return false;

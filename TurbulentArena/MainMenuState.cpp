@@ -31,6 +31,7 @@ namespace bjoernligan
 		m_xUIManager = ServiceLocator<UIManager>::GetService();
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
 		m_xAudioManager = ServiceLocator<system::AudioManager>::GetService();
+		m_xAudioManager->PlayMusic("Menu");
 
 		struct ButtonSpacing
 		{
@@ -66,6 +67,7 @@ namespace bjoernligan
 
 	void MainMenuState::Exit()
 	{
+		m_xAudioManager->StopAllMusic();
 		m_xUIManager->RemoveElementsByLabel("MainMenu");
 	}
 
@@ -88,8 +90,6 @@ namespace bjoernligan
 	{
 		p_bButtonValue;
 		m_bDeleteMe = true;
-		m_xAudioManager->StopAllMusic();
-		m_xAudioManager->PlayMusic("Battle");
 		m_xStateMngr->CreateState<PlayState>("PlayState");
 	}
 

@@ -16,8 +16,6 @@ namespace bjoernligan
 			m_Steering = sf::Vector2f(0, 0);
 			m_MaxVelocity = sf::Vector2f(0, 0);
 			m_MaxForce = sf::Vector2f(0, 0);
-			m_SlowDownRadius = 0.0f;
-			m_HasSlowDown = false;
 			m_CurrentBody = nullptr;
 			m_Utility = nullptr;
 		}
@@ -31,18 +29,13 @@ namespace bjoernligan
 			return true;
 		}
 		/*Add more parameters to this function*/
-		void SteeringManager::SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity, const float& p_SlowDownRadius)
+		void SteeringManager::SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity)
 		{
 			Reset();
 			m_CurrentBody = p_CurrentBody;
 			//MaxForce and max velocity is now the same thing. this might change.
-			m_MaxForce = p_MaxVelocity;
+			m_MaxForce = sf::Vector2f(p_MaxVelocity.x, p_MaxVelocity.y);
 			m_MaxVelocity = p_MaxVelocity;
-			m_SlowDownRadius = m_Utility->ConvertFloat_B2toSF(p_SlowDownRadius);
-			if (m_SlowDownRadius > 0.0f)
-			{
-				m_HasSlowDown = true;
-			}
 		}
 		void SteeringManager::Wander()
 		{
@@ -55,7 +48,7 @@ namespace bjoernligan
 
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
-			m_Steering = GetDesiredVelocity(Position, p_TargetPos, m_HasSlowDown) - Velocity;
+			m_Steering = GetDesiredVelocity(Position, p_TargetPos, false) - Velocity;
 		}
 		void SteeringManager::Flee(const sf::Vector2f& p_TargetPos)
 		{
@@ -75,6 +68,13 @@ namespace bjoernligan
 		{
 			Flee(GetPredictedPosition(p_TargetBody));
 		}
+		void SteeringManager::Arrival(const sf::Vector2f& p_TargetPos, const float& p_SlowDownRadius)
+		{
+			m_SlowDownRadius = m_Utility->ConvertFloat_B2toSF(p_SlowDownRadius);
+			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
+			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
+			m_Steering = GetDesiredVelocity(Position, p_TargetPos, true) - Velocity;
+		}
 		void SteeringManager::Update()
 		{
 			if ((abs(m_Steering.x) < 0.01f && abs(m_Steering.y) < 0.01f)
@@ -84,19 +84,15 @@ namespace bjoernligan
 			//OBS all in here needs testing
 
 			m_Steering = Truncate(m_Steering, m_MaxForce);
-			//(steering.scaleBy(1 / host.getMass());)
-			//Add Body mass to calculations
+
 			/*float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
 			m_Steering = m_Steering / BodyMass;*/
 
-			//try this
+	
 			m_CurrentBody->ApplyForce(m_Utility->ConvertVector_SFtoB2(m_Steering), m_CurrentBody->GetWorldCenter(), true);
-			//or this?
-			/*m_Velocity = Truncate(m_Velocity + m_Steering, m_MaxVelocity);*/
-			//m_CurrentBody->SetLinearVelocity(m_Utility->ConvertVector_SFtoB2(m_Steering * 5000.0f));
-
-			// (position.incrementBy(velocity);) eller gör box2d detta?
-			/*p_CurrentPos = p_CurrentPos + m_Velocity;*/
+	
+			//m_Velocity = Truncate(m_Velocity + m_Steering, m_MaxVelocity);*/
+			//m_CurrentBody->SetLinearVelocity(m_Utility->ConvertVector_SFtoB2(m_Steering));
 		}
 		void SteeringManager::Reset()
 		{
@@ -104,7 +100,6 @@ namespace bjoernligan
 			m_MaxVelocity = sf::Vector2f(0, 0);
 			m_MaxForce = sf::Vector2f(0, 0);
 			m_SlowDownRadius = 0.0f;
-			m_HasSlowDown = false;
 			m_CurrentBody = nullptr;
 		}
 		sf::Vector2f SteeringManager::GetDesiredVelocity(sf::Vector2f p_CurrentPos, sf::Vector2f p_TargetPos, bool p_HasSlowDown)
@@ -130,7 +125,6 @@ namespace bjoernligan
 					DesiredVelocity.y *= m_MaxVelocity.y;
 				}
 			}
-			//Used without slow down Radius
 			else
 			{
 				DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
@@ -148,7 +142,7 @@ namespace bjoernligan
 			//distance / speed, (this is basicly a prediction number on where target will be in T number of iterations) 
 			int PredictionCycle = static_cast<int>(round
 				(GetEuclideanDistance(CurrentBodyPos, TargetPosition) / GetEuclideanDistance(CurrentBodyPos, m_MaxVelocity)));
-			
+
 			sf::Vector2f PredictedPos;
 			PredictedPos.x = TargetPosition.x + TargetVelocity.x * PredictionCycle;
 			PredictedPos.y = TargetPosition.y + TargetVelocity.y * PredictionCycle;

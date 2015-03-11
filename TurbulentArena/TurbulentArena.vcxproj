@@ -102,7 +102,6 @@
     <ClInclude Include="AIObserver.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="Axeman.hpp" />
-    <ClInclude Include="BMoveToNode.hpp" />
     <ClInclude Include="BNodesInclude.hpp" />
     <ClInclude Include="Box2DWorldDraw.h" />
     <ClInclude Include="ClanManager.hpp" />
@@ -146,6 +145,10 @@
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BFindTargetNode.cpp" />
+    <ClCompile Include="easylogging++.h">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Sense.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
@@ -160,7 +163,6 @@
     <ClCompile Include="Axeman.cpp" />
     <ClCompile Include="BCompositeNode.cpp" />
     <ClCompile Include="BInverterNode.cpp" />
-    <ClCompile Include="BMoveToNode.cpp" />
     <ClCompile Include="BNode.cpp" />
     <ClCompile Include="Box2DWorldDraw.cpp" />
     <ClCompile Include="BSelectorNode.cpp" />

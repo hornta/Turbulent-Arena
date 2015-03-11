@@ -46,12 +46,12 @@ namespace bjoernligan
 			Properties m_properties;
 		};
 
-		class Tile : public Properties
+		class Tile
 		{
 			friend class Map;
 		public:
 			sf::Vector2i getPosition() const;
-
+			TileInfo* getTileInfo() const;
 		private:
 			TileInfo* m_tileInfo;
 			sf::Vertex* m_vertices;

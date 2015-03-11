@@ -1,5 +1,3 @@
-//BMoveToNode.hpp
-
 #pragma once
 #include "BNode.hpp"
 

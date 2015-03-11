@@ -30,17 +30,13 @@ namespace bjoernligan
 			m_senseData = std::make_unique<SenseData>(this, sense, 32.f);
 			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
 			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
-
+			m_map = ServiceLocator<Map>::GetService();
 
 			//Pathfinding stuff
 			m_Utility = ServiceLocator<Utility>::GetService();
 			//m_Pathfinder = ServiceLocator<Pathfinder>::GetService();
 			//m_Pathfinder->getGrid();
 
-		}
-
-		Agent::~Agent()
-		{
 		}
 
 		void Agent::Update(const float &p_fDeltaTime)
@@ -78,17 +74,48 @@ namespace bjoernligan
 
 		void Agent::Act()
 		{
-			/*if (!m_xPath.nodes.empty())
-			{*/
-			m_Steering->Seek(m_xMoveTarget);
-			////LÄGG TILL NODE TA BORT NODE mellan steering
-			//}
+			// Trace current path
+			if (!m_CurrentPath.isDone())
+			{
+				// Get the position to the current node in our path
+				Vector2f target;
+				target.x = m_CurrentPath.getCurrentNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
+				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
+
+				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
+				float fTargetDist = target.dist(currentPosition);
+
+				if (fTargetDist < 32)
+				{
+					++m_CurrentPath.currentNode;
+				}
+				//if (fTargetDist < 64 && m_CurrentPath.getNextNode())
+				//{
+				//	Vector2f nexttarget;
+				//	nexttarget.x = m_CurrentPath.getNextNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
+				//	nexttarget.y = m_CurrentPath.getNextNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
+				//	//m_Steering->Seek(sf::Vector2f(nexttarget.x, nexttarget.y));
+				//}
+				if (!m_CurrentPath.getNextNode())
+				{
+					m_Steering->Arrival(sf::Vector2f(target.x, target.y), 8.0f);
+				}
+				else
+				{
+					m_Steering->Seek(sf::Vector2f(target.x, target.y));
+				}
+			}
+			else
+				m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()));
+
 			m_Steering->Update();
 		}
+
 		void Agent::OnNotify(/*add parameters*/)
 		{
 
 		}
+
 		SenseData* Agent::getSense() const
 		{
 			return m_senseData.get();
@@ -107,7 +134,7 @@ namespace bjoernligan
 		void Agent::InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats)
 		{
 			m_Steering->Initialize();
-			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxVelocity(), p_MovementStats->GetSlowDownRadius());
+			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxVelocity());
 		}
 
 		//tomas BT-methods (bad solution)
@@ -118,29 +145,30 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos()
 		{
-			//m_xMoveTarget = sf::Vector2f(140.0f,140.0f);
-			//m_xMoveTarget = sf::Vector2f(random::random(64.0f, 1040.0f), random::random(64.0f, 1040.0f));
+			if (m_CurrentPath.isDone())
+			{
+				sf::Vector2i xTargetPos;
+				Map* xMap = ServiceLocator<Map>::GetService();
+				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
-			sf::Vector2i xTargetPos;
-			Map* xMap = ServiceLocator<Map>::GetService();
-			Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
+				m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
 
-			xMap, xPathFinder;
-
-			//do
-			//{
-			//	xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-			//	/*xPathFinder->setStart();
-			//	xPathFinder->setGoal();*/
-			//}while (xPathFinder->findPath(m_CurrentPath, ,) != PathfinderInfo::PathResult::PATHRESULT_FAILED);
+				xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
+				if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(20, 20)))
+				{
+					xPathFinder->setStart(m_xCurrentMapPos);
+					xPathFinder->setGoal(xTargetPos);
+					xPathFinder->findPath(m_CurrentPath);
+				}
+			}
 		}
 
 		void Agent::MoveToTargetPos()
 		{
-				//insert pathfinding here
-				//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
+			//insert pathfinding here
+			//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
 
-				//m_Steering->Seek(m_xMoveTarget); // <- temporary
+			//m_Steering->Seek(m_xMoveTarget); // <- temporary
 		}
 
 		bool Agent::AtMoveTarget()

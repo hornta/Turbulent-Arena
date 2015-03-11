@@ -19,14 +19,13 @@ namespace bjoernligan
 		m_xCombatStats.Initiate(1, 5);
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
-		m_MovementStats.Initiate(sf::Vector2f(300.0f, 300.0f), 0.1f, 2.0f);
+		m_MovementStats.Initiate(sf::Vector2f(300.0f, 300.0f), 0.1f);
 
 		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
 		xSequence->AttachAgent(m_xAgent);
 
 		//xSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
 		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
-		xSequence->AddChild<ai::BMoveToNode>()->AttachAgent(m_xAgent);
 	}
 
 	void Scout::update(float deltatime)
