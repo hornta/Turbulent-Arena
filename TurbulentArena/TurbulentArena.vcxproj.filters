@@ -268,7 +268,7 @@
       <Filter>Header Files\clans</Filter>
     </ClInclude>
     <ClInclude Include="GameOverChecker.hpp">
-      <Filter>Header Files</Filter> </ClInclude>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

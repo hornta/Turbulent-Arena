@@ -7,7 +7,8 @@ namespace bjoernligan
 	{
 		enum B2UserDataType
 		{
-			CLANMEMBER
+			CLANMEMBER,
+			NATURE
 		};
 
 		B2UserData(B2UserDataType _type) :

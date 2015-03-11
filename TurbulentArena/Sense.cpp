@@ -61,16 +61,23 @@ namespace bjoernligan
 					Physics::RaycastResult result = physics->raycast(m_me->getOwner()->getSprite()->getPosition(), agent->getOwner()->getSprite()->getPosition());
 					for (auto& object : result.bodies)
 					{
-						B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
-						if (ud->type == B2UserData::CLANMEMBER)
+						if (object->GetUserData() != NULL)
 						{
-							ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
-
-							
+							B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
+							if (ud->type == B2UserData::CLANMEMBER)
+							{
+								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
+								if (!m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
+								{
+									m_visibleAgents.push_back(clanMemberUD->clanMember->getAgent());
+								}
+							}
 						}
 					}
 				}
 			}
+
+			LOG(INFO) << "Enemies detected: " << m_visibleAgents.size();
 		}
 
 		void SenseData::setRadius(float radius)
