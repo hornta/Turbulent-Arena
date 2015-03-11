@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="BFindTargetNode.hpp" />
+    <ClInclude Include="HealthBar.hpp" />
     <ClInclude Include="Sense.hpp" />
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="GameStateManager.hpp" />

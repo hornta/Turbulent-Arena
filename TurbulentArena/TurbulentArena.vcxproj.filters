@@ -258,6 +258,9 @@
     <ClInclude Include="OptionsState.hpp">
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
+    <ClInclude Include="HealthBar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -86,7 +86,7 @@ namespace bjoernligan
 				// Check if we have reached our current node
 				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
 
-				if (target.dist(currentPosition) < 10)
+				if (target.dist(currentPosition) < 32)
 				{
 					++m_CurrentPath.currentNode;
 				}
