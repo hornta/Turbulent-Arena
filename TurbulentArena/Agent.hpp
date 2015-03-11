@@ -39,7 +39,7 @@ namespace bjoernligan
 			BehaviorTree* getBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
 
-			void InitializeSteering(b2Body* p_CurrentBody,MovementStats* p_MovementStats);
+			void InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats);
 
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
@@ -62,7 +62,6 @@ namespace bjoernligan
 			Map* m_map;
 
 			//tomas BT-variables (bad solution)
-			sf::Vector2f m_xMoveTarget;
 			ClanMember* m_xOwner;
 		};
 	}

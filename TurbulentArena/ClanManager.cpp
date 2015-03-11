@@ -12,9 +12,9 @@ namespace bjoernligan
 	{
 	}
 
-	Clan* ClanManager::createClan(const std::string& name)
+	Clan* ClanManager::createClan(const std::string& name, const sf::Color &p_xTeamColor)
 	{
-		m_clans.emplace_back(std::make_unique<Clan>(name));
+		m_clans.emplace_back(std::make_unique<Clan>(name, p_xTeamColor));
 		return m_clans.back().get();
 	}
 	

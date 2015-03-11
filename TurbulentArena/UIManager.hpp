@@ -52,6 +52,7 @@ namespace bjoernligan
 	private:
 		sf::View m_view;
 		std::vector<UIBase::Ptr> m_axElements;
+		std::vector< std::unique_ptr<sf::Text> > m_axTexts;
 		uint32_t m_iSliderCount;
 	};
 }

@@ -16,12 +16,13 @@ namespace bjoernligan
 			
 			bool Initialize();
 
-			void SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity, const float& p_SlowDownRadius);
+			void SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity);
 			void Wander();
 			void Seek(const sf::Vector2f& p_TargetPos);
 			void Flee(const sf::Vector2f& p_TargetPos);
 			void Pursuit(b2Body* p_TargetBody);
 			void Evade(b2Body* p_TargetBody);
+			void Arrival(const sf::Vector2f& p_TargetPos, const float& p_SlowDownRadius);
 
 			void Update();
 
@@ -37,8 +38,6 @@ namespace bjoernligan
 			sf::Vector2f m_Steering;
 			sf::Vector2f m_MaxForce;
 			sf::Vector2f m_MaxVelocity;
-
-			bool m_HasSlowDown;
 			float m_SlowDownRadius;
 			b2Body* m_CurrentBody;
 			Utility* m_Utility;
