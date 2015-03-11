@@ -4,6 +4,7 @@
 #include "GameState.hpp"
 #include "Pathfinder.hpp"
 #include "Visibility.hpp"
+#include "GameOverChecker.hpp"
 
 namespace bjoernligan
 {
@@ -68,5 +69,7 @@ namespace bjoernligan
 		sf::Vector2f m_lastRightClick;
 
 		bool m_debugPathfinder = false;
+
+		GameOverChecker m_xGameOverChecker;
 	};
 }

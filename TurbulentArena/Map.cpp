@@ -381,9 +381,9 @@ namespace bjoernligan
 		sf::Vector2i xEnd(sf::Vector2i(p_xSearchStart.x + p_xSearchAreaSize.x / 2, p_xSearchStart.y + p_xSearchAreaSize.y / 2));
 
 		if (xEnd.x > m_size.x)
-			xEnd.x = m_size.x - p_xSearchStart.x;
+			xEnd.x = p_xSearchStart.x + (m_size.x - p_xSearchStart.x);
 		if (xEnd.y > m_size.y)
-			xEnd.y = m_size.y - p_xSearchStart.y;
+			xEnd.y = p_xSearchStart.y + m_size.y - p_xSearchStart.y;
 
 		std::vector<Tile*> xAvailableTiles;
 

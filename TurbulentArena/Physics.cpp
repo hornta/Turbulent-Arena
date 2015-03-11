@@ -65,8 +65,8 @@ namespace bjoernligan
 	Physics::Body* Physics::createBody(const Params& params)
 	{
 		b2Body* body = m_b2World->CreateBody(&params.m_xBodyDef);
-		body->SetLinearDamping(0.6f);
-		body->SetAngularDamping(0.6f);
+		body->SetLinearDamping(params.m_xBodyDef.linearDamping);
+		body->SetAngularDamping(params.m_xBodyDef.angularDamping);
 
 		b2PolygonShape xBoxShape;
 		b2CircleShape xCircleShape;

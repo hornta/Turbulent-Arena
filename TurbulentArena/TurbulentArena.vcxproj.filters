@@ -25,12 +25,6 @@
     <Filter Include="Header Files\input">
       <UniqueIdentifier>{af814d0b-3f0e-497d-8637-03cd39e935ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\objects">
-      <UniqueIdentifier>{7bd8750a-4327-49f5-996b-164c7f5b21ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\objects">
-      <UniqueIdentifier>{16ef05bc-e1ee-40f2-8286-5ec17a9b2cb4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\AI">
       <UniqueIdentifier>{dbfebe71-336b-478f-a415-0203677fb665}</UniqueIdentifier>
     </Filter>
@@ -52,17 +46,11 @@
     <Filter Include="Source Files\AI\BT\Nodes">
       <UniqueIdentifier>{ffae4e63-f6d8-4e3d-ab5f-c49293875728}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\objects\gameplay classes">
-      <UniqueIdentifier>{902edfdf-42f8-4da1-a3a4-16d80c2d8cc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\AI\observer">
       <UniqueIdentifier>{5bd5219d-6598-4129-8438-1bede2579845}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\AI\observer">
       <UniqueIdentifier>{77929fc7-c505-48dd-8940-2155ebc0225d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\objects\gameplay classes">
-      <UniqueIdentifier>{d4be5f9e-00d9-4bbf-9f85-1bae27afe301}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\AI\BT\Nodes\Leafs">
       <UniqueIdentifier>{410b60e5-de19-47df-ba4c-af7d2c8af97f}</UniqueIdentifier>
@@ -88,6 +76,12 @@
     <Filter Include="Source Files\game_states">
       <UniqueIdentifier>{16759926-064c-40a2-a935-54635acc1953}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\clans">
+      <UniqueIdentifier>{7bd8750a-4327-49f5-996b-164c7f5b21ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\clans">
+      <UniqueIdentifier>{16ef05bc-e1ee-40f2-8286-5ec17a9b2cb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServiceLocator.hpp">
@@ -112,7 +106,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Object.hpp">
-      <Filter>Header Files\objects</Filter>
+      <Filter>Header Files\clans</Filter>
     </ClInclude>
     <ClInclude Include="Agent.hpp">
       <Filter>Header Files\AI</Filter>
@@ -165,9 +159,6 @@
     <ClInclude Include="CombatStats.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Axeman.hpp">
-      <Filter>Header Files\objects\gameplay classes</Filter>
-    </ClInclude>
     <ClInclude Include="BNodesInclude.hpp">
       <Filter>Header Files\AI\BT</Filter>
     </ClInclude>
@@ -178,15 +169,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Visibility.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scout.hpp">
-      <Filter>Header Files\objects\gameplay classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Clan.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClanManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Box2DWorldDraw.h">
@@ -225,9 +207,6 @@
     <ClInclude Include="DebugWindow.hpp">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="ClanMember.hpp">
-      <Filter>Header Files\objects\gameplay classes</Filter>
-    </ClInclude>
     <ClInclude Include="BSetWanderTarget.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
@@ -258,6 +237,27 @@
     <ClInclude Include="OptionsState.hpp">
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
+    <ClInclude Include="HealthBar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Axeman.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanMember.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="Scout.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanManager.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="Clan.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverChecker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -276,7 +276,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>Source Files\objects</Filter>
+      <Filter>Source Files\clans</Filter>
     </ClCompile>
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files\AI</Filter>
@@ -320,9 +320,6 @@
     <ClCompile Include="CombatStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Axeman.cpp">
-      <Filter>Source Files\objects\gameplay classes</Filter>
-    </ClCompile>
     <ClCompile Include="SteeringManager.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
@@ -330,15 +327,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Visibility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scout.cpp">
-      <Filter>Source Files\objects\gameplay classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Clan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ClanManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Box2DWorldDraw.cpp">
@@ -377,9 +365,6 @@
     <ClCompile Include="DebugWindow.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="ClanMember.cpp">
-      <Filter>Source Files\objects\gameplay classes</Filter>
-    </ClCompile>
     <ClCompile Include="BSetWanderTarget.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
@@ -412,6 +397,27 @@
     </ClCompile>
     <ClCompile Include="easylogging++.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Axeman.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanMember.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="Scout.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanManager.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="Clan.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverChecker.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

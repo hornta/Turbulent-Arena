@@ -11,7 +11,7 @@ namespace bjoernligan
 	class Axeman : public ClanMember
 	{
 	public:
-		Axeman(ai::Sense* sense);
+		Axeman(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);
 
 		void initiate();
 		void update(float deltatime);

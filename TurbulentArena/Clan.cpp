@@ -6,12 +6,9 @@
 
 namespace bjoernligan
 {
-	Clan::Clan(const std::string& name)
+	Clan::Clan(const std::string& name, const sf::Color &p_xTeamColor)
 		: m_name(name)
-	{
-	}
-
-	Clan::~Clan()
+		, m_color(p_xTeamColor)
 	{
 	}
 
@@ -46,6 +43,11 @@ namespace bjoernligan
 		return members;
 	}
 
+	bool Clan::IsAlive()
+	{
+		return !m_clanMembers.empty();
+	}
+
 	void Clan::SetSocial(const float &p_fNewValue)
 	{
 		p_fNewValue; // <-- for compile
@@ -73,5 +75,9 @@ namespace bjoernligan
 		{
 			//m_members[k]->SetSocial(p_fNewValue);
 		}
+	}
+	const std::string &Clan::GetName() const
+	{
+		return m_name;
 	}
 }

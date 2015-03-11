@@ -9,8 +9,8 @@
 
 namespace bjoernligan
 {
-	Axeman::Axeman(ai::Sense* sense)
-		: ClanMember(sense)
+	Axeman::Axeman(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan)
+		: ClanMember(sense, p_xTeamColor, p_xClan)
 	{
 
 	}
@@ -18,7 +18,6 @@ namespace bjoernligan
 	void Axeman::initiate()
 	{
 		m_xCombatStats.Initiate(3, 4);
-
 		m_MovementStats.Initiate(sf::Vector2f(300.0f, 300.0f), 0.1f);
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();

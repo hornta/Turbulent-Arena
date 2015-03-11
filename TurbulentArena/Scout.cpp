@@ -9,23 +9,28 @@
 
 namespace bjoernligan
 {
-	Scout::Scout(ai::Sense* sense)
-		: ClanMember(sense)
+	Scout::Scout(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan)
+		: ClanMember(sense, p_xTeamColor, p_xClan)
 	{
 	}
 
 	void Scout::initiate()
 	{
 		m_xCombatStats.Initiate(1, 5);
+		m_MovementStats.Initiate(sf::Vector2f(350.0f, 350.0f), 0.1f);
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
-		m_MovementStats.Initiate(sf::Vector2f(300.0f, 300.0f), 0.1f);
 
-		ai::BSequenceNode* xSequence = xBT->CreateRoot<ai::BSequenceNode>();
-		xSequence->AttachAgent(m_xAgent);
+		ai::BSelectorNode* xRootSelector = xBT->CreateRoot<ai::BSelectorNode>();
+		xRootSelector;
 
-		//xSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
-		xSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
+		ai::BSequenceNode* xCombatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		xCombatSequence->AttachAgent(m_xAgent);
+		ai::BSequenceNode* xWanderSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		xWanderSequence->AttachAgent(m_xAgent);
+
+		xCombatSequence->AddChild<ai::BFindTargetNode>()->AttachAgent(m_xAgent);
+		xWanderSequence->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent);
 	}
 
 	void Scout::update(float deltatime)

@@ -83,9 +83,8 @@ namespace bjoernligan
 				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
 
 				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
-				float fTargetDist = target.dist(currentPosition);
-
-				if (fTargetDist < 32)
+		
+				if (target.dist(currentPosition) < 32)
 				{
 					++m_CurrentPath.currentNode;
 				}
