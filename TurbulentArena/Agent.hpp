@@ -2,7 +2,6 @@
 
 #pragma once
 #include "AIObserver.hpp"
-#include "Visibility.hpp"
 #include "SteeringManager.hpp"
 #include "Timer.hpp"
 #include "MovementStats.hpp"
@@ -39,7 +38,6 @@ namespace bjoernligan
 
 			BehaviorTree* getBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
-			void setSenseVisibleArea(Visibility::Light * p_senseVisibleArea);
 
 			void InitializeSteering(b2Body* p_CurrentBody,MovementStats* p_MovementStats);
 

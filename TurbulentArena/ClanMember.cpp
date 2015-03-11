@@ -9,6 +9,7 @@ namespace bjoernligan
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
 		m_xAgent = new ai::Agent(this, sense);
+		m_userData = std::make_unique<ClanMemberUD>(this);
 	}
 
 	ClanMember::~ClanMember()
@@ -33,8 +34,8 @@ namespace bjoernligan
 	void ClanMember::setBody(Physics::Body* body)
 	{
 		Object::setBody(body);
+		body->m_body->SetUserData(m_userData.get());
 		InitSteeringStats();
-		
 	}
 	void ClanMember::InitSteeringStats()
 	{

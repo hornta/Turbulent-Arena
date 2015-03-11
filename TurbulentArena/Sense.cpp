@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "Sense.hpp"
-#include "Visibility.hpp"
-#include "Pathfinder.hpp"
 #include "Agent.hpp"
 #include "ClanMember.hpp"
 #include "Map.hpp"
@@ -36,26 +34,40 @@ namespace bjoernligan
 			m_sense(sense),
 			m_radius(radius)
 		{
-			m_visibilityArea = m_sense->getVisibility()->create(m_me->getOwner()->getSprite()->getPosition());
 		}
 
 		void SenseData::update()
 		{
 			m_visibleAgents.clear();
-			std::vector<Agent*> agents = m_sense->getAgents();
 
-			std::vector<Visibility::Triangle*> triangles = m_visibilityArea->getTriangles();
+			Physics* physics = ServiceLocator<Physics>::GetService();
 
-			for (std::size_t k = 0; k < agents.size(); ++k)
+			// First check all agents are in our sense range
+			for (auto& agent : m_sense->getAgents())
 			{
-				for (std::size_t i = 0; i < triangles.size(); ++i)
-				{
-					sf::Vector2f agentPos = agents[k]->getOwner()->getSprite()->getPosition();
+				// Dont check against myself
+				if (agent == m_me)
+					continue;
 
-					if (pointInTriangle(agentPos, triangles[i]->getPoint0(), triangles[i]->getPoint1(), triangles[i]->getPoint2()))
+				// Calculate distance from me and other agent
+				sf::Vector2f agentPosition = agent->getOwner()->getSprite()->getPosition();
+				sf::Vector2f myPosition = m_me->getOwner()->getSprite()->getPosition();
+				float distance = Vector2f::dist(Vector2f(agentPosition), Vector2f(myPosition));
+				
+				// Is the agent in our sense range?
+				if (distance <= m_radius)
+				{
+					// Perform a raycasting to check if we REALLY can see the other agent
+					Physics::RaycastResult result = physics->raycast(m_me->getOwner()->getSprite()->getPosition(), agent->getOwner()->getSprite()->getPosition());
+					for (auto& object : result.bodies)
 					{
-						m_visibleAgents.push_back(agents[k]);
-						break;
+						B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
+						if (ud->type == B2UserData::CLANMEMBER)
+						{
+							ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
+
+							
+						}
 					}
 				}
 			}
@@ -73,7 +85,6 @@ namespace bjoernligan
 
 		Sense::Sense()
 		{
-			m_visiblity = std::make_unique<Visibility>();
 		}
 
 		void Sense::addAgent(Agent* agent)
@@ -81,20 +92,9 @@ namespace bjoernligan
 			m_agents.push_back(agent);
 		}
 
-		void Sense::update(float dt)
-		{
-			dt;
-			m_visiblity->update();
-		}
-
 		std::vector<Agent*>& Sense::getAgents()
 		{
 			return m_agents;
-		}
-
-		Visibility* Sense::getVisibility() const
-		{
-			return m_visiblity.get();
 		}
 	}
 }

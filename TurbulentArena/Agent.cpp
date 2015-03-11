@@ -25,9 +25,10 @@ namespace bjoernligan
 			//, m_Pathfinder(nullptr)
 			, m_Utility(nullptr)
 		{
+			sense->addAgent(this);
 			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
-			m_senseData = std::make_unique<SenseData>(this, sense, 32.f);
+			m_senseData = std::make_unique<SenseData>(this, sense, 300.f);
 			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
 			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
 			m_map = ServiceLocator<Map>::GetService();

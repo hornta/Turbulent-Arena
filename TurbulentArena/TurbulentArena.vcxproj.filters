@@ -177,9 +177,6 @@
     <ClInclude Include="ContactListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Visibility.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scout.hpp">
       <Filter>Header Files\objects\gameplay classes</Filter>
     </ClInclude>
@@ -261,6 +258,9 @@
     <ClInclude Include="HealthBar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UserData.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -330,9 +330,6 @@
       <Filter>Source Files\AI</Filter>
     </ClCompile>
     <ClCompile Include="ContactListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Visibility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scout.cpp">

@@ -9,7 +9,6 @@
 #include "Map.hpp"
 #include "Physics.hpp"
 #include "Sense.hpp"
-#include "Visibility.hpp"
 #include "ClanManager.hpp"
 #include "ClanMember.hpp"
 #include "Clan.hpp"
@@ -62,9 +61,6 @@ namespace bjoernligan
 
 		m_pathFinder = std::make_unique<Pathfinder>(m_map->getSize());
 
-		m_visibility = std::make_unique<Visibility>();
-
-		ServiceLocator<Visibility>::SetService(m_visibility.get());
 		ServiceLocator<Pathfinder>::SetService(m_pathFinder.get());
 		ServiceLocator<Map>::SetService(m_map.get());
 		ServiceLocator<ClanManager>::SetService(m_clanManager.get());
@@ -100,23 +96,6 @@ namespace bjoernligan
 			}
 		}
 
-		// VISIBILITY
-		std::vector<Map::Object*> objects = m_map->getObjectGroup("light_segments")->getObjects();
-		for (std::size_t i = 0; i < objects.size(); ++i)
-		{
-			std::vector<sf::Vector2f> points = objects[i]->m_points;
-			for (std::size_t k = 0; k < points.size(); ++k)
-			{
-				if (k != points.size() - 1)
-				{
-					sf::Vector2f p0(points[k]);
-					sf::Vector2f p1(points[k + 1]);
-					m_visibility->addSegment(p0, p1);
-				}
-			}
-		}
-		//m_visibility->create(sf::Vector2f(100, 100), sf::Color::Red);
-
 		// CLANS
 		std::vector<Map::Object*> spawns = m_map->getObjectGroup("spawns")->getObjects();
 		std::map<int, std::vector<sf::Vector2f>> team_spawns;
@@ -150,7 +129,7 @@ namespace bjoernligan
 		{
 			Clan* clan = m_clanManager->createClan("MacDonald");
 
-			for (int32_t i = 0; i < 8; ++i)
+			for (int32_t i = 0; i < 4; ++i)
 			{
 				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
@@ -162,7 +141,7 @@ namespace bjoernligan
 		{
 			Clan* clan = m_clanManager->createClan("MacMuffin");
 
-			for (int32_t i = 0; i < 8; ++i)
+			for (int32_t i = 0; i < 4; ++i)
 			{
 				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
@@ -215,8 +194,6 @@ namespace bjoernligan
 	bool PlayState::Update(const float &p_fDeltaTime)
 	{
 		m_physics->update(p_fDeltaTime);
-		m_sense->update(p_fDeltaTime);
-		m_visibility->update();
 		m_clanManager->Update(p_fDeltaTime);
 		updateCamera(p_fDeltaTime);
 
@@ -236,7 +213,6 @@ namespace bjoernligan
 		m_xDrawManager->getWindow()->setView(m_view);
 
 		m_map->draw(target, states);
-		m_visibility->draw(target, states);
 		m_clanManager->draw(target, states);
 		m_physics->draw();
 		m_xDebugWindow->draw(target, states);
