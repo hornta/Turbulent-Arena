@@ -9,8 +9,8 @@
 
 namespace bjoernligan
 {
-	Scout::Scout(ai::Sense* sense, const sf::Color &p_xTeamColor)
-		: ClanMember(sense, p_xTeamColor)
+	Scout::Scout(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan)
+		: ClanMember(sense, p_xTeamColor, p_xClan)
 	{
 	}
 

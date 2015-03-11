@@ -20,7 +20,7 @@ namespace bjoernligan
 	{
 		friend class Clan;
 	public:
-		ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor);
+		ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);
 		~ClanMember();
 
 		virtual void initiate() = 0;
@@ -32,6 +32,8 @@ namespace bjoernligan
 		sf::Sprite* getSprite();
 		ai::Agent* getAgent() const;
 		void drawPathfinder(bool value);
+		bool IsFriend(ClanMember* p_xMember);
+		Clan* GetClan();
 
 	protected:
 		ai::Agent* m_xAgent;

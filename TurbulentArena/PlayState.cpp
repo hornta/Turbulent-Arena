@@ -148,7 +148,8 @@ namespace bjoernligan
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
 
 		{
-			Clan* clan = m_clanManager->createClan("MacDonald", sf::Color(80, 80, 255));
+			Clan* clan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
+			m_xGameOverChecker.AddClan(clan);
 
 			for (int32_t i = 0; i < 8; ++i)
 			{
@@ -160,7 +161,8 @@ namespace bjoernligan
 			}
 		}
 		{
-			Clan* clan = m_clanManager->createClan("MacMuffin", sf::Color(255, 80, 80));
+			Clan* clan = m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70));
+			m_xGameOverChecker.AddClan(clan);
 
 			for (int32_t i = 0; i < 8; ++i)
 			{

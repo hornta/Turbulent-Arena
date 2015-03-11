@@ -5,10 +5,12 @@
 
 namespace bjoernligan
 {
-	ClanMember::ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor)
+	ClanMember::ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan)
 		: m_xHealthBar(sf::Vector2f(-16, -32), 32, p_xTeamColor)
+		, m_clan(p_xClan)
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
+		m_xHealthBar.SetCombatStats(&m_xCombatStats);
 		m_xAgent = new ai::Agent(this, sense);
 	}
 
@@ -93,5 +95,15 @@ namespace bjoernligan
 	void ClanMember::drawPathfinder(bool value)
 	{
 		m_drawPathfinder = value;
+	}
+
+	bool ClanMember::IsFriend(ClanMember* p_xMember)
+	{
+		return m_clan == p_xMember->GetClan();
+	}
+
+	Clan* ClanMember::GetClan()
+	{
+		return m_clan;
 	}
 }

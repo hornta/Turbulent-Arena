@@ -11,7 +11,7 @@ namespace bjoernligan
 	class Scout : public ClanMember
 	{
 	public:
-		Scout(ai::Sense* sense, const sf::Color &p_xTeamColor);
+		Scout(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);
 
 		void initiate();
 		void update(float deltatime);
