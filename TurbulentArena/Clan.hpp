@@ -12,8 +12,7 @@ namespace bjoernligan
 	class Clan : public sf::Drawable
 	{
 	public:
-		Clan(const std::string& name);
-		~Clan();
+		Clan(const std::string& name, const sf::Color &p_xTeamColor);
 
 		template <typename T>
 		ClanMember* createMember(ai::Sense* sense);
@@ -37,7 +36,7 @@ namespace bjoernligan
 	template <typename T>
 	ClanMember* Clan::createMember(ai::Sense* sense)
 	{
-		m_clanMembers.emplace_back(std::make_unique<T>(sense));
+		m_clanMembers.emplace_back(std::make_unique<T>(sense, m_color));
 		m_clanMembers.back()->initiate();
 		return m_clanMembers.back().get();
 	}

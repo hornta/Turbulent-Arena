@@ -5,7 +5,8 @@
 
 namespace bjoernligan
 {
-	ClanMember::ClanMember(ai::Sense* sense)
+	ClanMember::ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor)
+		: m_xHealthBar(sf::Vector2f(-16, -32), 32, p_xTeamColor)
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
 		m_xAgent = new ai::Agent(this, sense);
@@ -23,6 +24,7 @@ namespace bjoernligan
 	void ClanMember::update(float deltatime)
 	{
 		Object::update(deltatime);
+		m_xHealthBar.Update(m_xPos);
 
 		if (m_sprite)
 			m_sprite->setPosition(m_xPos);
@@ -74,6 +76,8 @@ namespace bjoernligan
 				}
 			}
 		}
+
+		target.draw(m_xHealthBar, states);
 	}
 
 	sf::Sprite* ClanMember::getSprite()

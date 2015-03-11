@@ -31,4 +31,9 @@ namespace bjoernligan
 	{
 		return m_iCurrentHealth <= 0;
 	}
+
+	float CombatStats::GetHealthPercentage()
+	{
+		return (float)m_iCurrentHealth / m_iMaxHealth;
+	}
 }

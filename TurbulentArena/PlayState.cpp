@@ -148,7 +148,7 @@ namespace bjoernligan
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
 
 		{
-			Clan* clan = m_clanManager->createClan("MacDonald");
+			Clan* clan = m_clanManager->createClan("MacDonald", sf::Color(80, 80, 255));
 
 			for (int32_t i = 0; i < 8; ++i)
 			{
@@ -160,12 +160,12 @@ namespace bjoernligan
 			}
 		}
 		{
-			Clan* clan = m_clanManager->createClan("MacMuffin");
+			Clan* clan = m_clanManager->createClan("MacMuffin", sf::Color(255, 80, 80));
 
 			for (int32_t i = 0; i < 8; ++i)
 			{
 				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
-				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
+				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
 				member->initiate();

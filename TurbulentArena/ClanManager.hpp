@@ -9,7 +9,7 @@ namespace bjoernligan
 		ClanManager();
 		~ClanManager();
 
-		Clan* createClan(const std::string& name);
+		Clan* createClan(const std::string& name, const sf::Color &p_xTeamColor);
 		std::size_t getAmount() const;
 
 		void Update(const float &p_fDeltaTime);

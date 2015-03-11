@@ -17,5 +17,6 @@ namespace bjoernligan
 		void TakeDamage(const int32_t &p_iValue);
 		int32_t GetDamage();
 		bool Alive();
+		float GetHealthPercentage();
 	};
 }

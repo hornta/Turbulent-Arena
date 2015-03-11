@@ -6,12 +6,9 @@
 
 namespace bjoernligan
 {
-	Clan::Clan(const std::string& name)
+	Clan::Clan(const std::string& name, const sf::Color &p_xTeamColor)
 		: m_name(name)
-	{
-	}
-
-	Clan::~Clan()
+		, m_color(p_xTeamColor)
 	{
 	}
 

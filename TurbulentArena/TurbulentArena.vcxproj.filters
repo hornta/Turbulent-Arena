@@ -416,6 +416,9 @@
     <ClCompile Include="easylogging++.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="HealthBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
