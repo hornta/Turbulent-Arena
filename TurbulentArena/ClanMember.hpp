@@ -32,6 +32,7 @@ namespace bjoernligan
 		void drawPathfinder(bool value);
 		bool IsFriend(ClanMember* p_xMember);
 		Clan* GetClan();
+		MovementStats* GetMovementStats();
 
 	protected:
 		std::unique_ptr<ai::Agent> m_xAgent;

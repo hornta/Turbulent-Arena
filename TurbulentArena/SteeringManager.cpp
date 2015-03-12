@@ -14,8 +14,10 @@ namespace bjoernligan
 		SteeringManager::SteeringManager()
 		{
 			m_Steering = sf::Vector2f(0, 0);
-			m_MaxVelocity = sf::Vector2f(0, 0);
+			m_MaxWalkVelocity = sf::Vector2f(0, 0);
+			m_MaxRunVelocity = sf::Vector2f(0, 0);
 			m_MaxForce = sf::Vector2f(0, 0);
+			m_Distance = 0.0f;
 			m_CurrentBody = nullptr;
 			m_Utility = nullptr;
 		}
@@ -29,26 +31,27 @@ namespace bjoernligan
 			return true;
 		}
 		/*Add more parameters to this function*/
-		void SteeringManager::SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxVelocity)
+		void SteeringManager::SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxWalkVelocity, const sf::Vector2f& p_MaxRunVelocity)
 		{
 			Reset();
 			m_CurrentBody = p_CurrentBody;
 			//MaxForce and max velocity is now the same thing. this might change.
-			m_MaxForce = sf::Vector2f(p_MaxVelocity.x, p_MaxVelocity.y);
-			m_MaxVelocity = p_MaxVelocity;
+			//m_MaxForce = sf::Vector2f(p_MaxVelocity.x, p_MaxVelocity.y);
+			m_MaxWalkVelocity = p_MaxWalkVelocity;
+			m_MaxRunVelocity = p_MaxRunVelocity;
 		}
 		void SteeringManager::Wander()
 		{
 
 		}
-		void SteeringManager::Seek(const sf::Vector2f& p_TargetPos)
+		void SteeringManager::Seek(const sf::Vector2f& p_TargetPos, bool p_Run)
 		{
 			if (!m_CurrentBody)
 				return;
 
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
-			m_Steering = GetDesiredVelocity(Position, p_TargetPos, false) - Velocity;
+			m_Steering = GetDesiredVelocity(Position, p_TargetPos, p_Run, false) - Velocity;
 		}
 		void SteeringManager::Flee(const sf::Vector2f& p_TargetPos)
 		{
@@ -58,22 +61,22 @@ namespace bjoernligan
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
 			//send in positions in switched order compared to Seek() to get the negative.(the opposite side)
-			m_Steering = GetDesiredVelocity(p_TargetPos, Position, false) - Velocity;
+			m_Steering = GetDesiredVelocity(p_TargetPos, Position, true , false) - Velocity;
 		}
 		void SteeringManager::Pursuit(b2Body* p_TargetBody)
 		{
-			Seek(GetPredictedPosition(p_TargetBody));
+			Seek(GetPredictedPosition(p_TargetBody), true);
 		}
 		void SteeringManager::Evade(b2Body* p_TargetBody)
 		{
 			Flee(GetPredictedPosition(p_TargetBody));
 		}
-		void SteeringManager::Arrival(const sf::Vector2f& p_TargetPos, const float& p_SlowDownRadius)
+		void SteeringManager::Arrival(const sf::Vector2f& p_TargetPos, bool p_Run, const float& p_SlowDownRadius)
 		{
 			m_SlowDownRadius = m_Utility->ConvertFloat_B2toSF(p_SlowDownRadius);
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
-			m_Steering = GetDesiredVelocity(Position, p_TargetPos, true) - Velocity;
+			m_Steering = GetDesiredVelocity(Position, p_TargetPos, p_Run, true) - Velocity;
 		}
 		void SteeringManager::Update()
 		{
@@ -83,12 +86,11 @@ namespace bjoernligan
 
 			//OBS all in here needs testing
 
-			m_Steering = Truncate(m_Steering, m_MaxForce);
+			//m_Steering = Truncate(m_Steering, m_MaxForce);
 
-			/*float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
-			m_Steering = m_Steering / BodyMass;*/
+			float BodyMass = m_Utility->ConvertFloat_B2toSF(m_CurrentBody->GetMass());
+			m_Steering = m_Steering / BodyMass;
 
-	
 			m_CurrentBody->ApplyForce(m_Utility->ConvertVector_SFtoB2(m_Steering), m_CurrentBody->GetWorldCenter(), true);
 	
 			//m_Velocity = Truncate(m_Velocity + m_Steering, m_MaxVelocity);*/
@@ -97,39 +99,75 @@ namespace bjoernligan
 		void SteeringManager::Reset()
 		{
 			m_Steering = sf::Vector2f(0, 0);
-			m_MaxVelocity = sf::Vector2f(0, 0);
-			m_MaxForce = sf::Vector2f(0, 0);
+			m_MaxWalkVelocity = sf::Vector2f(0, 0);
+			m_MaxRunVelocity = sf::Vector2f(0, 0);
+			//m_MaxForce = sf::Vector2f(0, 0);
 			m_SlowDownRadius = 0.0f;
+			m_Distance = 0.0f;
 			m_CurrentBody = nullptr;
 		}
-		sf::Vector2f SteeringManager::GetDesiredVelocity(sf::Vector2f p_CurrentPos, sf::Vector2f p_TargetPos, bool p_HasSlowDown)
+		sf::Vector2f SteeringManager::GetDesiredVelocity(sf::Vector2f p_CurrentPos, sf::Vector2f p_TargetPos, bool p_Run, bool p_HasSlowDown)
 		{
 			sf::Vector2f DesiredVelocity;
-			//if has slow down radius
-			if (p_HasSlowDown)
-			{
-				float Distance = GetEuclideanDistance(p_CurrentPos, p_TargetPos);
 
-				if (Distance < m_SlowDownRadius)
+			if (p_Run)
+			{
+				if (p_HasSlowDown)
 				{
-					// Inside the slowing area
-					DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
-					DesiredVelocity.x *= m_MaxVelocity.x * (Distance / m_SlowDownRadius);
-					DesiredVelocity.y *= m_MaxVelocity.y * (Distance / m_SlowDownRadius);
+					m_Distance = GetEuclideanDistance(p_CurrentPos, p_TargetPos);
+
+
+					if (m_Distance < m_SlowDownRadius)
+					{
+						// Inside the slowing area
+						DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
+						DesiredVelocity.x *= m_MaxRunVelocity.x * (m_Distance / m_SlowDownRadius);
+						DesiredVelocity.y *= m_MaxRunVelocity.y * (m_Distance / m_SlowDownRadius);
+					}
+					else
+					{
+						// Outside the slowing area.
+						DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
+						DesiredVelocity.x *= m_MaxRunVelocity.x;
+						DesiredVelocity.y *= m_MaxRunVelocity.y;
+					}
 				}
 				else
 				{
-					// Outside the slowing area.
 					DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
-					DesiredVelocity.x *= m_MaxVelocity.x;
-					DesiredVelocity.y *= m_MaxVelocity.y;
+					DesiredVelocity.x *= m_MaxRunVelocity.x;
+					DesiredVelocity.y *= m_MaxRunVelocity.y;
 				}
 			}
 			else
 			{
-				DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
-				DesiredVelocity.x *= m_MaxVelocity.x;
-				DesiredVelocity.y *= m_MaxVelocity.y;
+				//if has slow down radius
+				if (p_HasSlowDown)
+				{
+					m_Distance = GetEuclideanDistance(p_CurrentPos, p_TargetPos);
+
+
+					if (m_Distance < m_SlowDownRadius)
+					{
+						// Inside the slowing area
+						DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
+						DesiredVelocity.x *= m_MaxWalkVelocity.x * (m_Distance / m_SlowDownRadius);
+						DesiredVelocity.y *= m_MaxWalkVelocity.y * (m_Distance / m_SlowDownRadius);
+					}
+					else
+					{
+						// Outside the slowing area.
+						DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
+						DesiredVelocity.x *= m_MaxWalkVelocity.x;
+						DesiredVelocity.y *= m_MaxWalkVelocity.y;
+					}
+				}
+				else
+				{
+					DesiredVelocity = Normalize(p_TargetPos - p_CurrentPos);
+					DesiredVelocity.x *= m_MaxWalkVelocity.x;
+					DesiredVelocity.y *= m_MaxWalkVelocity.y;
+				}
 			}
 			return DesiredVelocity;
 		}
@@ -141,7 +179,7 @@ namespace bjoernligan
 
 			//distance / speed, (this is basicly a prediction number on where target will be in T number of iterations) 
 			int PredictionCycle = static_cast<int>(round
-				(GetEuclideanDistance(CurrentBodyPos, TargetPosition) / GetEuclideanDistance(CurrentBodyPos, m_MaxVelocity)));
+				(GetEuclideanDistance(CurrentBodyPos, TargetPosition) / GetEuclideanDistance(CurrentBodyPos, m_MaxRunVelocity)));
 
 			sf::Vector2f PredictedPos;
 			PredictedPos.x = TargetPosition.x + TargetVelocity.x * PredictionCycle;

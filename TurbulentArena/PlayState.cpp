@@ -120,11 +120,11 @@ namespace bjoernligan
 		}
 
 		Physics::Params clanMemberBodyDef;
-		clanMemberBodyDef.m_xBodyDef.linearDamping = 1.5f;
+		clanMemberBodyDef.m_xBodyDef.linearDamping = 3.0f;
 		clanMemberBodyDef.m_xBodyDef.angularDamping = 1.5f;
 		clanMemberBodyDef.m_eShapeType = Physics::Circle;
 		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
-		clanMemberBodyDef.m_xFixtureDef.density = 1.0f;
+		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
 		clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
 		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 16.f;
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
