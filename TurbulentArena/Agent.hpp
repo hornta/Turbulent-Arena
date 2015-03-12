@@ -63,8 +63,6 @@ namespace bjoernligan
 			Utility* m_Utility;
 			Map* m_map;
 
-			//tomas BT-variables (bad solution)
-			sf::Vector2f m_xMoveTarget;
 			ClanMember* m_xOwner;
 		};
 	}

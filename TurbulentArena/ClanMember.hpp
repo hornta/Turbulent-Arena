@@ -4,13 +4,10 @@
 #include "CombatStats.hpp"
 #include "MovementStats.hpp"
 #include "HealthBar.hpp"
+#include "Agent.hpp"
 
 namespace bjoernligan
 {
-	namespace ai
-	{
-		class Agent;
-	}
 	class Clan;
 	namespace ai
 	{
@@ -36,7 +33,7 @@ namespace bjoernligan
 		Clan* GetClan();
 
 	protected:
-		ai::Agent* m_xAgent;
+		std::unique_ptr<ai::Agent> m_xAgent;
 		MovementStats m_MovementStats;
 		CombatStats m_xCombatStats;
 		HealthBar m_xHealthBar;

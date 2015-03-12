@@ -64,12 +64,6 @@
     <Filter Include="Header Files\physics">
       <UniqueIdentifier>{5573b368-bb7b-4812-a686-83194491c935}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\gui">
-      <UniqueIdentifier>{43d618bc-7b64-46a6-ad4b-4ea9fea53118}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\gui">
-      <UniqueIdentifier>{78def6db-4260-49d4-8d61-b3cc8841fc6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\game_states">
       <UniqueIdentifier>{7bb41f77-bf78-4e16-982b-82ca797bc00d}</UniqueIdentifier>
     </Filter>
@@ -81,6 +75,12 @@
     </Filter>
     <Filter Include="Source Files\clans">
       <UniqueIdentifier>{16ef05bc-e1ee-40f2-8286-5ec17a9b2cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{78def6db-4260-49d4-8d61-b3cc8841fc6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{43d618bc-7b64-46a6-ad4b-4ea9fea53118}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -181,13 +181,13 @@
       <Filter>Header Files\physics</Filter>
     </ClInclude>
     <ClInclude Include="UIManager.hpp">
-      <Filter>Header Files\gui</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="UIBase.hpp">
-      <Filter>Header Files\gui</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="UISlider.hpp">
-      <Filter>Header Files\gui</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="DrawManager.hpp">
       <Filter>Header Files\system</Filter>
@@ -202,10 +202,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIButton.hpp">
-      <Filter>Header Files\gui</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="DebugWindow.hpp">
-      <Filter>Header Files\gui</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="BSetWanderTarget.hpp">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
@@ -256,6 +256,12 @@
       <Filter>Header Files\clans</Filter>
     </ClInclude>
     <ClInclude Include="GameOverChecker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinMenu.hpp">
+      <Filter>Header Files\game_states</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioRandomizer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -348,22 +354,22 @@
       <Filter>Source Files\system</Filter>
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
-      <Filter>Source Files\gui</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="UIBase.cpp">
-      <Filter>Source Files\gui</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="UISlider.cpp">
-      <Filter>Source Files\gui</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UIButton.cpp">
-      <Filter>Source Files\gui</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="DebugWindow.cpp">
-      <Filter>Source Files\gui</Filter>
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="BSetWanderTarget.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
@@ -417,6 +423,12 @@
       <Filter>Source Files\clans</Filter>
     </ClCompile>
     <ClCompile Include="GameOverChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMenu.cpp">
+      <Filter>Source Files\game_states</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioRandomizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

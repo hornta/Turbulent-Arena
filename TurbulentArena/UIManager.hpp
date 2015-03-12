@@ -6,6 +6,7 @@
 #include <SFML\Graphics.hpp>
 #include "UIBase.hpp"
 #include "UISlider.hpp"
+#include "DebugWindow.hpp"
 #include <functional>
 
 namespace bjoernligan
@@ -19,10 +20,18 @@ namespace bjoernligan
 		UIManager(const UIManager&);
 		UIManager& operator=(const UIManager&);
 
+		struct UIText
+		{
+			sf::Text m_xText;
+			std::string m_sLabel;
+		};
+
 	public:
 		typedef std::unique_ptr<UIManager> Ptr;
 		static Ptr Create();
 		
+		bool Initialize();
+
 		void Clear();
 		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -44,6 +53,9 @@ namespace bjoernligan
 			return m_axElements[iPos].get();
 		}
 
+		void AddText(const std::string &p_sTextName, const std::string &p_sTextString, const std::string &p_sLabel, const sf::Vector2f &p_xPos, const uint32_t &p_iTextSize = 30U);
+		void ChangeTextString(const std::string &p_sTextName, const std::string &p_sTextString);
+
 		UISlider* AddSlider(const std::string &p_sLabel, const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth);
 		void RemoveElementsByLabel(const std::string &p_sLabel);
 
@@ -52,7 +64,9 @@ namespace bjoernligan
 	private:
 		sf::View m_view;
 		std::vector<UIBase::Ptr> m_axElements;
-		std::vector< std::unique_ptr<sf::Text> > m_axTexts;
+		std::map< std::string, UIText > m_axTexts;
 		uint32_t m_iSliderCount;
+
+		DebugWindow::Ptr m_xDebugWindow;
 	};
 }

@@ -24,12 +24,15 @@
 #include "Keyboard.hpp"
 #include "GameStateManager.hpp"
 #include "MainMenuState.hpp"
+#include "WinMenu.hpp"
 
 namespace bjoernligan
 {
 	PlayState::PlayState(const std::string &p_sName, const bool &p_bExclusive)
 		: GameState(p_sName, p_bExclusive)
 		, m_fScrollSpeed(5.0f)
+		, m_xGameOverTimer(6)
+		, m_bGameOver(false)
 	{
 
 	}
@@ -149,6 +152,7 @@ namespace bjoernligan
 
 		{
 			Clan* clan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
+			ServiceLocator<Clan>::SetService(clan); //<- temporary
 			m_xGameOverChecker.AddClan(clan);
 
 			for (int32_t i = 0; i < 8; ++i)
@@ -225,10 +229,18 @@ namespace bjoernligan
 		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Escape))
 		{
 			m_xAudioManager->StopAllMusic();
-			m_xAudioManager->PlayMusic("Menu");
 			m_xStateMngr->CreateState<MainMenuState>("MainMenu");
 			m_bDeleteMe = true;
 		}
+
+		//temporary for testing
+		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Y))
+		{
+			m_xAudioManager->PlaySoundClip("Punch");
+			ServiceLocator<Clan>::GetService()->DamageRandomMember(1);
+		}
+
+		GameOverCheck(p_fDeltaTime);
 
 		return true;
 	}
@@ -237,11 +249,10 @@ namespace bjoernligan
 	{
 		m_xDrawManager->getWindow()->setView(m_view);
 
-		m_map->draw(target, states);
-		m_visibility->draw(target, states);
-		m_clanManager->draw(target, states);
+		target.draw(*m_map.get(), states);
+		target.draw(*m_visibility.get(), states);
+		target.draw(*m_clanManager.get(), states);
 		m_physics->draw();
-		m_xDebugWindow->draw(target, states);
 	}
 
 	void PlayState::SetDebugMode(const bool &p_bValue)
@@ -258,6 +269,26 @@ namespace bjoernligan
 			for (auto& member : clan->getMembers())
 			{
 				member->drawPathfinder(m_debugPathfinder);
+			}
+		}
+	}
+
+	void PlayState::GameOverCheck(const float &p_fDeltaTime)
+	{
+		if (m_bGameOver != m_xGameOverChecker.GameOver())
+		{
+			m_xStateMngr->CreateState<WinMenu>("WinMenu")->SetWinningTeam(m_xGameOverChecker.GetWinningTeam());
+			m_bGameOver = !m_bGameOver;
+		}
+		if (m_bGameOver)
+		{
+			m_xGameOverTimer.Update(p_fDeltaTime);
+			m_xUIManager->ChangeTextString("GameOver", std::string("Returning to main menu in: ") + std::to_string(m_xGameOverTimer.GetSecondsLeft()) + " seconds");
+			if (m_xGameOverTimer.Done())
+			{
+				m_xAudioManager->StopAllMusic();
+				m_xStateMngr->CreateState<MainMenuState>("MainMenu");
+				m_bDeleteMe = true;
 			}
 		}
 	}

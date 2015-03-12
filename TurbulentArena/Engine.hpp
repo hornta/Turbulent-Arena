@@ -36,7 +36,6 @@ namespace bjoernligan
 			input::Keyboard::Ptr m_xKeyboard;
 			input::Mouse::Ptr m_xMouse;
 			Utility::Ptr m_xUtility;
-			DebugWindow::Ptr m_xDebugWindow;
 
 			sf::Vector2f m_lastRightClick;
 			sf::Clock m_xDeltaClock;

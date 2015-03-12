@@ -10,13 +10,24 @@ namespace bjoernligan
 		: m_name(name)
 		, m_color(p_xTeamColor)
 	{
+		m_xRandomDeathSound.AddSoundName("Death1");
+		m_xRandomDeathSound.AddSoundName("Death2");
+		m_xRandomDeathSound.AddSoundName("Death3");
 	}
 
 	void Clan::Update(const float &p_fDeltaTime)
 	{
-		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
+		for (int32_t i = (int32_t)m_clanMembers.size() - 1; i >= 0; --i)
 		{
 			m_clanMembers[i]->update(p_fDeltaTime);
+
+			//dead-check
+			if (!m_clanMembers[i]->m_xCombatStats.Alive())
+			{
+				m_clanMembers.erase(m_clanMembers.begin() + i);
+
+				m_xRandomDeathSound.PlayRandomSound();
+			}
 		}
 	}
 
@@ -79,5 +90,12 @@ namespace bjoernligan
 	const std::string &Clan::GetName() const
 	{
 		return m_name;
+	}
+	void Clan::DamageRandomMember(const int32_t &p_iAmount)
+	{
+		if (m_clanMembers.empty())
+			return;
+
+		m_clanMembers[random::random(0, m_clanMembers.size() - 1)]->m_xCombatStats.TakeDamage(p_iAmount);
 	}
 }

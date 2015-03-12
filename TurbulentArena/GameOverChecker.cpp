@@ -30,4 +30,15 @@ namespace bjoernligan
 
 		return iClansAlive <= 1;
 	}
+
+	std::string GameOverChecker::GetWinningTeam()
+	{
+		for (uint32_t i = 0; i < m_axClans.size(); ++i)
+		{
+			if (m_axClans[i]->IsAlive())
+				return m_axClans[i]->GetName();
+		}
+
+		return "";
+	}
 }

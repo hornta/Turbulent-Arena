@@ -14,6 +14,7 @@ namespace bjoernligan
 		void AddClan(Clan* p_xClan);
 
 		bool GameOver();
+		std::string GetWinningTeam();
 
 	private:
 		std::vector<Clan*> m_axClans;

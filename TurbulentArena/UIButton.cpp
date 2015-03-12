@@ -48,11 +48,15 @@ namespace bjoernligan
 		m_xButtonRect->setOutlineColor(sf::Color::Black);
 		m_xButtonRect->setOutlineThickness(2);
 
+		m_xButtonRect->setOrigin(sf::Vector2f(m_xButtonRect->getLocalBounds().width / 2, m_xButtonRect->getLocalBounds().height / 2));
+		sf::Vector2f xTextCenterAdjustment(3,5);
+		m_xButtonText.setOrigin(sf::Vector2f(ceilf(m_xButtonText.getLocalBounds().width / 2), ceilf(m_xButtonText.getLocalBounds().height / 2)) + xTextCenterAdjustment);
+
 		m_xIdleColor = p_xIdleColor;
 		m_xHoverColor = p_xHoverColor;
 		m_xPressedColor = p_xPressedColor;
 
-		SetPos(sf::Vector2f((float)p_xSize.left, (float)p_xSize.top));
+		SetPos(sf::Vector2f((float)p_xSize.left + p_xSize.width / 2, (float)p_xSize.top + p_xSize.height / 2));
 	}
 
 	void UIButton::Update(const float &p_fDeltaTime)
@@ -68,7 +72,7 @@ namespace bjoernligan
 			{
 				m_bActive = !m_bActive;
 				m_eState = EButtonState::Idle;
-				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button3");
+				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button3");
 
 				if (m_xFunction)
 					m_xFunction(m_bActive);
@@ -91,7 +95,7 @@ namespace bjoernligan
 				{
 					m_eState = EButtonState::Pressed;
 					m_xButtonRect->setFillColor(m_xPressedColor);
-					ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button1");
+					ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button1");
 				}
 			}
 
@@ -121,28 +125,17 @@ namespace bjoernligan
 
 	void UIButton::SetPos(const sf::Vector2f &p_xPos)
 	{
-		if (!m_xButtonRect)
-			return;
+		m_xButtonText.setPosition(p_xPos);
 
-		m_xButtonRect->setPosition(p_xPos);
-
-		sf::Vector2f xTextOffset;
-		xTextOffset.x = ceilf(abs(m_xButtonText.getLocalBounds().width - m_xButtonRect->getLocalBounds().width) / 2.0f);
-		xTextOffset.x -= 3;
-
-		xTextOffset.y = ceilf(abs(m_xButtonText.getLocalBounds().height - m_xButtonRect->getLocalBounds().height) / 2.0f);
-		xTextOffset.y -= 5;
-
-		m_xButtonText.setPosition(p_xPos + xTextOffset);
+		if (m_xButtonRect)
+			m_xButtonRect->setPosition(p_xPos);
 	}
 
 	void UIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		UIBase::draw(target, states);
-		if (!m_xButtonRect)
-			return;
+		if (m_xButtonRect)
+			target.draw(*m_xButtonRect.get(), states);
 
-		target.draw(*m_xButtonRect.get(), states);
 		target.draw(m_xButtonText, states);
 	}
 

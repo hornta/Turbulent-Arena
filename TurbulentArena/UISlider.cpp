@@ -69,7 +69,7 @@ namespace bjoernligan
 			if (m_xMouse->IsDownOnce(sf::Mouse::Button::Left) && m_axSprites[0]->getGlobalBounds().contains(sf::Vector2f(m_xMouse->m_xPos)))
 			{
 				m_eStatus = EStatus::Pressed;
-				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button2");
+				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button2");
 			}
 		}
 		if (m_eStatus == EStatus::Pressed)
@@ -78,7 +78,7 @@ namespace bjoernligan
 			{
 				m_eStatus = EStatus::Idle;
 
-				ServiceLocator<system::AudioManager>::GetService()->PlaySound("Button1");
+				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button1");
 
 				m_xFunction(GetValue());
 				return;

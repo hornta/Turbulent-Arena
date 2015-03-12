@@ -24,7 +24,6 @@ namespace bjoernligan
 			, m_xKeyboard(nullptr)
 			, m_xMouse(nullptr)
 			, m_xUtility(nullptr)
-			, m_xDebugWindow(nullptr)
 		{
 
 		}
@@ -44,7 +43,6 @@ namespace bjoernligan
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
 			m_xUIManager = UIManager::Create();
-			m_xDebugWindow = DebugWindow::Create(false);
 
 			ServiceLocator<GameStateManager>::SetService(m_xStateManager.get());
 			ServiceLocator<DrawManager>::SetService(m_xDrawManager.get());
@@ -54,13 +52,16 @@ namespace bjoernligan
 			ServiceLocator<input::Mouse>::SetService(m_xMouse.get());
 			ServiceLocator<Utility>::SetService(m_xUtility.get());
 			ServiceLocator<AudioManager>::SetService(m_xAudioManager.get());
-			ServiceLocator<DebugWindow>::SetService(m_xDebugWindow.get());
 
 			m_xSpriteManager->setTexturePath("../data/sprites/");
 
 			m_xAudioManager->CreateSoundBuffer("Button1", "button_click1.wav");
 			m_xAudioManager->CreateSoundBuffer("Button2", "button_click2.wav");
 			m_xAudioManager->CreateSoundBuffer("Button3", "button_click3.wav");
+			m_xAudioManager->CreateSoundBuffer("Death1", "clanmember_death1.wav");
+			m_xAudioManager->CreateSoundBuffer("Death2", "clanmember_death2.wav");
+			m_xAudioManager->CreateSoundBuffer("Death3", "clanmember_death3.wav");
+			m_xAudioManager->CreateSoundBuffer("Punch", "punch.wav");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
 			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
 
@@ -68,15 +69,14 @@ namespace bjoernligan
 				return false;
 			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
 
-			if (!m_xDebugWindow->Initialize())
+			if (!m_xUIManager->Initialize())
 				return false;
-			m_xDebugWindow->SetPos(16.0f, 16.0f);
+
+			m_xUIManager->setView(m_xDrawManager->getWindow()->getView());
 
 			if (!m_xStateManager->Initialize())
 				return false;
 			m_xStateManager->CreateState<PlayState>("PlayState");
-
-			m_xUIManager->setView(m_xDrawManager->getWindow()->getView());
 
 			return true;
 		}
@@ -92,7 +92,6 @@ namespace bjoernligan
 				UpdateDeltaTime();
 				m_xUIManager->Update(m_fDeltaTime);
 				m_xStateManager->UpdateStates(m_fDeltaTime);
-				m_xDebugWindow->Update(m_fDeltaTimeRaw);
 
 				//Draw
 				m_xDrawManager->ClearScr();
@@ -111,8 +110,6 @@ namespace bjoernligan
 		void Engine::UpdateDeltaTime()
 		{
 			m_fDeltaTimeRaw = m_fDeltaTime = m_xDeltaClock.getElapsedTime().asSeconds();
-			if (m_fDeltaTime > 0.02f)
-				m_fDeltaTime = 0.02f;
 			m_xDeltaClock.restart();
 		}
 

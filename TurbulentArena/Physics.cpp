@@ -5,11 +5,6 @@
 
 namespace bjoernligan
 {
-	Physics::Body::~Body()
-	{
-		m_world->DestroyBody(m_body);
-	}
-
 	void Physics::Body::setPosition(const sf::Vector2f& p_position)
 	{
 		if (m_body == nullptr)
@@ -88,8 +83,23 @@ namespace bjoernligan
 		m_bodies.emplace_back(std::make_unique<Body>());
 		Body* b = m_bodies.back().get();
 		b->m_body = body;
-		b->m_world = m_b2World.get();
 		return b;
+	}
+
+	void Physics::destroyBody(Body* p_xBody)
+	{
+		if (m_bodies.empty())
+			return;
+
+		for (uint32_t i = m_bodies.size() - 1; i >= 0; --i)
+		{
+			if (m_bodies[i].get() == p_xBody)
+			{
+				m_b2World->DestroyBody(m_bodies[i].get()->m_body);
+				m_bodies.erase(m_bodies.begin() + i);
+				return;
+			}
+		}
 	}
 
 	void Physics::construct(sf::RenderWindow* window)

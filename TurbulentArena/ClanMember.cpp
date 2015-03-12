@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ClanMember.hpp"
-#include "Agent.hpp"
 #include "Map.hpp"
 
 namespace bjoernligan
@@ -8,19 +7,16 @@ namespace bjoernligan
 	ClanMember::ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan)
 		: m_xHealthBar(sf::Vector2f(-16, -32), 32, p_xTeamColor)
 		, m_clan(p_xClan)
+		, m_xAgent(nullptr)
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
 		m_xHealthBar.SetCombatStats(&m_xCombatStats);
-		m_xAgent = new ai::Agent(this, sense);
+		m_xAgent = std::make_unique<ai::Agent>(this, sense);
 	}
 
 	ClanMember::~ClanMember()
 	{
-		if (m_xAgent)
-		{
-			delete m_xAgent;
-			m_xAgent = nullptr;
-		}
+		ServiceLocator<Physics>::GetService()->destroyBody(m_xPhysicsBody);
 	}
 
 	void ClanMember::update(float deltatime)
@@ -89,7 +85,7 @@ namespace bjoernligan
 
 	ai::Agent* ClanMember::getAgent() const
 	{
-		return m_xAgent;
+		return m_xAgent.get();
 	}
 
 	void ClanMember::drawPathfinder(bool value)

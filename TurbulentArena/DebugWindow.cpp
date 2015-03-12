@@ -70,6 +70,7 @@ namespace bjoernligan
 	void DebugWindow::SetPos(const sf::Vector2f &p_xPos)
 	{
 		m_xFps.setPosition(p_xPos);
-		m_xBgRect->setPosition(p_xPos);
+		if (m_xBgRect)
+			m_xBgRect->setPosition(p_xPos);
 	}
 }

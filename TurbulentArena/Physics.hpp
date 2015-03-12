@@ -9,13 +9,10 @@ namespace bjoernligan
 	public:
 		struct Body
 		{
-			~Body();
-
 			void setPosition(const sf::Vector2f& p_position);
 			void setPosition(float x, float y);
 
 			b2Body* m_body;
-			b2World* m_world;
 		};
 
 		enum EB2ShapeType
@@ -51,6 +48,7 @@ namespace bjoernligan
 
 		b2World* getWorld() const;
 		Body* createBody(const Params& params);
+		void destroyBody(Body* p_xBody);
 
 	private:
 		void construct(sf::RenderWindow* window);

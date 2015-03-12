@@ -173,7 +173,7 @@ namespace bjoernligan
 			return (int)m_fModifiedMusicVolume;
 		}
 
-		void AudioManager::PlaySound(std::string p_sSoundName, float p_fVolAdjPercent)
+		void AudioManager::PlaySoundClip(std::string p_sSoundName, float p_fVolAdjPercent)
 		{
 			auto xBufferIt = m_axSoundbuffers.find(p_sSoundName);
 			if (xBufferIt != m_axSoundbuffers.end())

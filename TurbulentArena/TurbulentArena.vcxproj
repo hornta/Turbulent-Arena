@@ -133,6 +133,7 @@
     <ClInclude Include="sfml_include.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="AudioRandomizer.hpp" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="tinyxml2.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Utility.hpp" />
     <ClInclude Include="Utils.hpp" />
     <ClInclude Include="Visibility.hpp" />
+    <ClInclude Include="WinMenu.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
@@ -195,6 +197,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="AudioRandomizer.cpp" />
     <ClCompile Include="tinyxml2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -206,6 +209,7 @@
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Visibility.cpp" />
+    <ClCompile Include="WinMenu.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

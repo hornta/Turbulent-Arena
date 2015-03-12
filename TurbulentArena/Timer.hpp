@@ -53,6 +53,11 @@ namespace bjoernligan
 			return m_fCurrent / m_fMax;
 		}
 
+		int32_t GetSecondsLeft()
+		{
+			return (int32_t)ceilf(m_fCurrent);
+		}
+
 	private:
 		float m_fCurrent, m_fMax;
 	};

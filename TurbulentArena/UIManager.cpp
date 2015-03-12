@@ -4,12 +4,14 @@
 #include "UIManager.hpp"
 #include "ServiceLocator.hpp"
 #include "SpriteManager.hpp"
+#include "DrawManager.hpp"
 #include "Settings.hpp"
 #include <sstream>
 
 namespace bjoernligan
 {
 	UIManager::UIManager()
+		: m_xDebugWindow(nullptr)
 	{
 		m_view.setSize(sf::Vector2f(Settings::m_xWindowSize));
 	}
@@ -17,6 +19,20 @@ namespace bjoernligan
 	UIManager::Ptr UIManager::Create()
 	{
 		return Ptr(new UIManager());
+	}
+
+	bool UIManager::Initialize()
+	{
+		m_xDebugWindow = DebugWindow::Create();
+
+		ServiceLocator<DebugWindow>::SetService(m_xDebugWindow.get());
+
+		if (!m_xDebugWindow->Initialize())
+			return false;
+
+		m_xDebugWindow->SetPos(16.0f, 16.0f);
+
+		return true;
 	}
 
 	void UIManager::Clear()
@@ -35,6 +51,8 @@ namespace bjoernligan
 
 	void UIManager::Update(const float &p_fDeltaTime)
 	{
+		m_xDebugWindow->Update(p_fDeltaTime);
+
 		if (m_axElements.empty())
 			return;
 
@@ -50,6 +68,29 @@ namespace bjoernligan
 		{
 			target.draw(*element, states);
 		}
+		for (auto& text : m_axTexts)
+		{
+			target.draw(text.second.m_xText, states);
+		}
+		if (m_xDebugWindow)
+			target.draw(*m_xDebugWindow.get(), states);
+	}
+	
+	void UIManager::AddText(const std::string &p_sTextName, const std::string &p_sTextString, const std::string &p_sLabel, const sf::Vector2f &p_xPos, const uint32_t &p_iTextSize)
+	{
+		m_axTexts.insert(std::pair<std::string, UIText>(p_sTextName, {
+			sf::Text(p_sTextString, *ServiceLocator<system::DrawManager>::GetService()->GetFont(), p_iTextSize),
+			p_sLabel }));
+		auto itr = m_axTexts.find(p_sTextName);
+		itr->second.m_xText.setOrigin(sf::Vector2f(itr->second.m_xText.getLocalBounds().width / 2, itr->second.m_xText.getLocalBounds().height / 2));
+		itr->second.m_xText.setPosition(p_xPos);
+	}
+
+	void UIManager::ChangeTextString(const std::string &p_sTextName, const std::string &p_sTextString)
+	{
+		auto itr = m_axTexts.find(p_sTextName);
+		if (itr != m_axTexts.end())
+			itr->second.m_xText.setString(p_sTextString);
 	}
 
 	UISlider* UIManager::AddSlider(const std::string &p_sLabel, const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth)
@@ -84,16 +125,31 @@ namespace bjoernligan
 
 	void UIManager::RemoveElementsByLabel(const std::string &p_sLabel)
 	{
-		auto itr = m_axElements.begin();
-		while (itr != m_axElements.end())
 		{
-			if ((*itr)->m_sLabel == p_sLabel)
+			auto itr = m_axElements.begin();
+			while (itr != m_axElements.end())
 			{
-				itr = m_axElements.erase(itr);
-				continue;
-			}
+				if ((*itr)->m_sLabel == p_sLabel)
+				{
+					itr = m_axElements.erase(itr);
+					continue;
+				}
 
-			++itr;
+				++itr;
+			}
+		}
+		{
+			auto itr = m_axTexts.begin();
+			while (itr != m_axTexts.end())
+			{
+				if ((*itr).second.m_sLabel == p_sLabel)
+				{
+					itr = m_axTexts.erase(itr);
+					continue;
+				}
+
+				++itr;
+			}
 		}
 	}
 

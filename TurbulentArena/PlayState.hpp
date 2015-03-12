@@ -5,6 +5,7 @@
 #include "Pathfinder.hpp"
 #include "Visibility.hpp"
 #include "GameOverChecker.hpp"
+#include "Timer.hpp"
 
 namespace bjoernligan
 {
@@ -42,6 +43,7 @@ namespace bjoernligan
 		void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 	private:
+		void GameOverCheck(const float &p_fDeltaTime);
 		void updateCamera(const float &p_fDeltaTime);
 		void SetDebugMode(const bool &p_bValue);
 		void ToggleDebugPathfinder(bool value);
@@ -71,5 +73,7 @@ namespace bjoernligan
 		bool m_debugPathfinder = false;
 
 		GameOverChecker m_xGameOverChecker;
+		Timer m_xGameOverTimer;
+		bool m_bGameOver;
 	};
 }

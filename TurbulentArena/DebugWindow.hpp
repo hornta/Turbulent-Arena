@@ -14,7 +14,7 @@ namespace bjoernligan
 
 	public:
 		typedef std::unique_ptr<DebugWindow> Ptr;
-		static Ptr Create(const bool &p_bActive);
+		static Ptr Create(const bool &p_bActive = false);
 
 		bool Initialize();
 

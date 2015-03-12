@@ -31,7 +31,7 @@ namespace bjoernligan
 			int GetSoundVolume();
 			int GetMusicVolume();
 
-			void PlaySound(std::string p_sSoundName, float p_fVolAdjPercent = 1.0);
+			void PlaySoundClip(std::string p_sSoundName, float p_fVolAdjPercent = 1.0);
 			void PlayMusic(std::string p_sMusicName);
 			sf::Music* GetMusic(const std::string &p_sMusicName);
 			void StopSoundsFromBuffer(const std::string &p_sSoundName);

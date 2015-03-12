@@ -29,7 +29,7 @@ namespace bjoernligan
 
 	bool CombatStats::Alive()
 	{
-		return m_iCurrentHealth <= 0;
+		return m_iCurrentHealth > 0;
 	}
 
 	float CombatStats::GetHealthPercentage()
