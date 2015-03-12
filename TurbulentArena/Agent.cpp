@@ -25,9 +25,10 @@ namespace bjoernligan
 			//, m_Pathfinder(nullptr)
 			, m_Utility(nullptr)
 		{
+			sense->addAgent(this);
 			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
-			m_senseData = std::make_unique<SenseData>(this, sense, 32.f);
+			m_senseData = std::make_unique<SenseData>(this, sense, 300.f);
 			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
 			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
 			m_map = ServiceLocator<Map>::GetService();
@@ -74,24 +75,10 @@ namespace bjoernligan
 
 		void Agent::Act()
 		{
-			// Trace current path
-			if (!m_CurrentPath.isDone())
-			{
-				// Get the position to the current node in our path
-				Vector2f target;
-				target.x = m_CurrentPath.getCurrentNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
-				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
-				m_Steering->Seek(sf::Vector2f(target.x, target.y));
-
-				// Check if we have reached our current node
-				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
-
-				if (target.dist(currentPosition) < 32)
-				{
-					++m_CurrentPath.currentNode;
-				}
-			}
-
+			MoveToTargetPos();
+			//Add other stuff here?, 
+			//evade target
+			//attack target/do damage?
 			m_Steering->Update();
 		}
 
@@ -118,7 +105,7 @@ namespace bjoernligan
 		void Agent::InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats)
 		{
 			m_Steering->Initialize();
-			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxVelocity(), p_MovementStats->GetSlowDownRadius());
+			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxVelocity());
 		}
 
 		//tomas BT-methods (bad solution)
@@ -149,10 +136,38 @@ namespace bjoernligan
 
 		void Agent::MoveToTargetPos()
 		{
-			//insert pathfinding here
-			//m_Pathfinder->findPath(m_CurrentPath, Pathfinder::Options());
+			// Trace current path
+			if (!m_CurrentPath.isDone())
+			{
+				// Get the position to the current node in our path
+				Vector2f target;
+				target.x = m_CurrentPath.getCurrentNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
+				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
 
-			//m_Steering->Seek(m_xMoveTarget); // <- temporary
+				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
+
+				if (target.dist(currentPosition) < 32)
+				{
+					++m_CurrentPath.currentNode;
+				}
+				//if (fTargetDist < 64 && m_CurrentPath.getNextNode())
+				//{
+				//	Vector2f nexttarget;
+				//	nexttarget.x = m_CurrentPath.getNextNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
+				//	nexttarget.y = m_CurrentPath.getNextNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
+				//	//m_Steering->Seek(sf::Vector2f(nexttarget.x, nexttarget.y));
+				//}
+				if (!m_CurrentPath.getNextNode())
+				{
+					m_Steering->Arrival(sf::Vector2f(target.x, target.y), 8.0f);
+				}
+				else
+				{
+					m_Steering->Seek(sf::Vector2f(target.x, target.y));
+				}
+			}
+			else
+				m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()));
 		}
 
 		bool Agent::AtMoveTarget()

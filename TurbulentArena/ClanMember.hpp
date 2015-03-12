@@ -3,6 +3,7 @@
 #include "Object.hpp"
 #include "CombatStats.hpp"
 #include "MovementStats.hpp"
+#include "UserData.hpp"
 #include "HealthBar.hpp"
 #include "Agent.hpp"
 
@@ -40,5 +41,6 @@ namespace bjoernligan
 		Clan* m_clan;
 		std::unique_ptr<sf::Sprite> m_sprite;
 		bool m_drawPathfinder;
+		std::unique_ptr<B2UserData> m_userData;
 	};
 }

@@ -168,6 +168,12 @@
     <ClInclude Include="ContactListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Clan.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Visibility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -240,6 +246,9 @@
     <ClInclude Include="HealthBar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UserData.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
     <ClInclude Include="Axeman.hpp">
       <Filter>Header Files\clans</Filter>
     </ClInclude>
@@ -262,6 +271,9 @@
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
     <ClInclude Include="AudioRandomizer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scout.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -332,7 +344,10 @@
     <ClCompile Include="ContactListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Visibility.cpp">
+    <ClCompile Include="Clan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Box2DWorldDraw.cpp">
@@ -429,6 +444,9 @@
       <Filter>Source Files\game_states</Filter>
     </ClCompile>
     <ClCompile Include="AudioRandomizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

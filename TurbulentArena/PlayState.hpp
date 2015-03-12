@@ -3,7 +3,6 @@
 #pragma once
 #include "GameState.hpp"
 #include "Pathfinder.hpp"
-#include "Visibility.hpp"
 #include "GameOverChecker.hpp"
 #include "Timer.hpp"
 
@@ -64,7 +63,6 @@ namespace bjoernligan
 		std::unique_ptr<ai::Sense> m_sense;
 		std::unique_ptr<Physics> m_physics;
 		std::unique_ptr<Pathfinder> m_pathFinder;
-		std::unique_ptr<Visibility> m_visibility;
 
 		float m_fScrollSpeed;
 		sf::View m_view;

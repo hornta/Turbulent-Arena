@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Visibility.hpp"
 #include "Pathfinder.hpp"
 
 namespace bjoernligan
@@ -14,7 +13,6 @@ namespace bjoernligan
 		{
 			float m_radius;
 			Sense* m_sense;
-			Visibility::Light* m_visibilityArea;
 			Agent* m_me;
 			std::vector<Agent*> m_visibleAgents;
 
@@ -30,16 +28,12 @@ namespace bjoernligan
 
 		class Sense
 		{
-			std::unique_ptr<Visibility> m_visiblity;
 			std::vector<Agent*> m_agents;
 
 		public:
 			Sense();
 			void addAgent(Agent* agent);
-
-			void update(float dt);
 			std::vector<Agent*>& getAgents();
-			Visibility* getVisibility() const;
 		};
 	}
 }

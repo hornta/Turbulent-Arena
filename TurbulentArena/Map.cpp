@@ -399,10 +399,10 @@ namespace bjoernligan
 
 		if (!xAvailableTiles.empty())
 		{
+
 			p_xTarget = xAvailableTiles[random::random(0, xAvailableTiles.size() - 1)]->getPosition();
 			return true;
 		}
-
 		return false;
 	}
 }

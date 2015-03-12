@@ -5,6 +5,37 @@
 
 namespace bjoernligan
 {
+	Physics::Raycast::Raycast()
+	{
+
+	}
+
+	void Physics::Raycast::cast(const b2Vec2& start, const b2Vec2& end)
+	{
+		float x_end = end.x - start.x;
+		float y_end = end.y - start.y;
+		float wanted_angle = atan2f(y_end, x_end);
+		float distance = distanceBetweenPoints(start.x, start.y, end.x, end.y);
+
+		cast(start, wanted_angle, distance);
+	}
+
+	void Physics::Raycast::cast(const b2Vec2& start, float direction, float distance)
+	{
+		float end_x = start.x + cosf(direction) * distance;
+		float end_y = start.y + sinf(direction) * distance;
+
+		
+		m_world->RayCast(this, start, b2Vec2(end_x, end_y));
+	}
+
+	float32 Physics::Raycast::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
+	{
+		m_result.bodies.push_back(fixture->GetBody());
+		normal;
+		point;
+		return fraction;
+	}
 	void Physics::Body::setPosition(const sf::Vector2f& p_position)
 	{
 		if (m_body == nullptr)
@@ -45,6 +76,20 @@ namespace bjoernligan
 		{
 			m_b2World->DrawDebugData();
 		}
+	}
+
+	Physics::RaycastResult Physics::raycast(const sf::Vector2f& start, const sf::Vector2f& end)
+	{
+		m_raycast.m_result.reset();
+		m_raycast.cast(vectorToB2D(start), vectorToB2D(end));
+		return m_raycast.m_result;
+	}
+
+	Physics::RaycastResult Physics::raycast(const sf::Vector2f& start, float direction, float distance)
+	{
+		m_raycast.m_result.reset();
+		m_raycast.cast(vectorToB2D(start), direction, floatToB2D(distance));
+		return m_raycast.m_result;
 	}
 
 	void Physics::setDebug(bool value)
@@ -110,5 +155,6 @@ namespace bjoernligan
 		m_debugDraw->SetFlags(b2Draw::e_jointBit | b2Draw::e_shapeBit);
 		m_b2World->SetDebugDraw(m_debugDraw.get());
 		m_b2World->SetContactListener(m_xContactListener.get());
+		m_raycast.m_world = m_b2World.get();
 	}
 }
