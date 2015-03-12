@@ -17,7 +17,7 @@ namespace bjoernligan
 	void Scout::initiate()
 	{
 		m_xCombatStats.Initiate(1, 5);
-		m_MovementStats.Initiate(sf::Vector2f(350.0f, 350.0f), 0.1f);
+		m_MovementStats.Initiate(sf::Vector2f(100.0f, 100.0f), sf::Vector2f(450.0f, 450.0f));
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 

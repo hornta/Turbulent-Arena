@@ -39,12 +39,12 @@ namespace bjoernligan
 			BehaviorTree* getBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
 
-			void InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats);
+			void InitializeSteering(b2Body* p_CurrentBody, MovementStats *p_MovementStats);
 
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
 			void ChooseWanderPos();
-			void MoveToTargetPos();
+			void MoveToTargetPos(bool p_Run);
 			bool AtMoveTarget();
 			bool canFindTarget();
 			bool getPathToVisibleTarget(Agent* agent);
