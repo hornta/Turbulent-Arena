@@ -1,24 +1,23 @@
 #include "stdafx.h"
-#include "BFindTargetNode.hpp"
+#include "EnemyWithinRadius.hpp"
 #include "Agent.hpp"
 
 namespace bjoernligan
 {
 	namespace ai
 	{
-		BFindTargetNode::BFindTargetNode()
+		EnemyWithinRadius::EnemyWithinRadius()
 		{
 
 		}
 
-		EBNodeStatus BFindTargetNode::Process()
+		EBNodeStatus EnemyWithinRadius::Process()
 		{
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			if (m_xAgent->canFindTarget())
+			if (m_xAgent->IsEnemyWithinAttackRange())
 			{
-				// Make agent run here
 				return EBNodeStatus::Success;
 			}
 			else

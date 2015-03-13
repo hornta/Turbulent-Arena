@@ -8102,82 +8102,82 @@
     <property name="team" value="0"/>
    </properties>
   </object>
-  <object id="57" x="3040" y="416">
+  <object id="57" x="469" y="535">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="58" x="3040" y="736">
+  <object id="58" x="469" y="855">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="59" x="3040" y="608">
+  <object id="59" x="469" y="727">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="60" x="3040" y="800">
+  <object id="60" x="469" y="919">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="61" x="3040" y="672">
+  <object id="61" x="469" y="791">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="62" x="3040" y="544">
+  <object id="62" x="469" y="663">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="63" x="3104" y="672">
+  <object id="63" x="533" y="791">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="64" x="3104" y="736">
+  <object id="64" x="533" y="855">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="65" x="3104" y="608">
+  <object id="65" x="533" y="727">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="66" x="3104" y="864">
+  <object id="66" x="533" y="983">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="67" x="3104" y="800">
+  <object id="67" x="533" y="919">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="68" x="3104" y="544">
+  <object id="68" x="533" y="663">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="69" x="3104" y="480">
+  <object id="69" x="533" y="599">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="70" x="3040" y="864">
+  <object id="70" x="469" y="983">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="71" x="3104" y="416">
+  <object id="71" x="533" y="535">
    <properties>
     <property name="team" value="1"/>
    </properties>
   </object>
-  <object id="72" x="3040" y="480">
+  <object id="72" x="469" y="599">
    <properties>
     <property name="team" value="1"/>
    </properties>

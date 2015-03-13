@@ -213,9 +213,6 @@
     <ClInclude Include="DebugWindow.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="BSetWanderTarget.hpp">
-      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
-    </ClInclude>
     <ClInclude Include="Sense.hpp">
       <Filter>Header Files\AI</Filter>
     </ClInclude>
@@ -270,11 +267,29 @@
     <ClInclude Include="WinMenu.hpp">
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
-    <ClInclude Include="AudioRandomizer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scout.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BSetWanderTarget.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BWalkToTarget.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BDamageTarget.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWithinRadius.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPathToEnemy.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackEnemy.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="CanSeeEnemies.h">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,11 +458,26 @@
     <ClCompile Include="WinMenu.cpp">
       <Filter>Source Files\game_states</Filter>
     </ClCompile>
-    <ClCompile Include="AudioRandomizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scout.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BWalkToTarget.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BDamageTarget.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyWithinRadius.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="GetPathToEnemy.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackEnemy.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="CanSeeEnemies.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

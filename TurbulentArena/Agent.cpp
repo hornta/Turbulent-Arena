@@ -10,7 +10,7 @@
 #include "Map.hpp"
 
 #define AGENT_SENSE_TIMER 0.3f
-#define AGENT_DECIDE_TIMER 1.0f
+#define AGENT_DECIDE_TIMER 0.3f
 
 namespace bjoernligan
 {
@@ -29,8 +29,8 @@ namespace bjoernligan
 			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
 			m_senseData = std::make_unique<SenseData>(this, sense, 300.f);
-			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
-			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
+			/*m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
+			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));*/
 			m_map = ServiceLocator<Map>::GetService();
 
 			//Pathfinding stuff
@@ -90,20 +90,6 @@ namespace bjoernligan
 						}
 					}
 				}
-				/*else if (m_FleeTargets.size() > m_senseData->getVisibleEnemies().size())
-				{
-					for (unsigned int i = 0; i < m_FleeTargets.size(); i++)
-					{
-						for (unsigned int j = 0; j < m_senseData->getVisibleEnemies().size(); j++)
-						{
-							if (m_FleeTargets[i] == m_senseData->getVisibleEnemies()[i])
-								continue;
-							else
-						}
-					}
-					if (m_FleeTargets)
-						RemoveFleeTarget(m_senseData->getVisibleEnemies()[i]);
-				}*/
 			}
 
 			if (!m_FleeTargets.empty())
@@ -154,7 +140,6 @@ namespace bjoernligan
 			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxWalkVelocity(), p_MovementStats->GetMaxRunVelocity());
 		}
 
-		//tomas BT-methods (bad solution)
 		int32_t Agent::SensedEnemyCount()
 		{
 			return 0;
@@ -189,9 +174,6 @@ namespace bjoernligan
 				target.x = m_CurrentPath.getCurrentNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
 				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
 				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
-				//if (!m_CurrentPath.getNextNode())
-				//	m_Steering->Arrival(sf::Vector2f(target.x, target.y), p_Run, 2.0f);
-				//else
 				m_Steering->Seek(sf::Vector2f(target.x, target.y), p_Run);
 
 				if (target.dist(currentPosition) < 24)
@@ -272,6 +254,39 @@ namespace bjoernligan
 			std::vector<Agent*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
+		}
+
+		bool Agent::IsEnemyWithinAttackRange()
+		{
+			// TWEAK ATTACK RANGE SO IT BECOMES GOOD!!!!!!!!!!!!!!!!!!!!!
+			std::vector<Agent*> enemies = m_senseData->getVisibleEnemies();
+			for (Agent* agent : enemies)
+			{
+				sf::Vector2f p0 = m_xOwner->getSprite()->getPosition();
+				sf::Vector2f p1 = agent->getOwner()->getSprite()->getPosition();
+
+				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
+				if (distance <= 64.f)
+				{
+					m_CurrentPath.setDone();
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		bool Agent::CanAttack() const
+		{
+			// Make the attack timer range a little bit random
+			sf::Clock* attackTimer = m_xOwner->GetCombat()->getAttackTimer();
+			if (attackTimer->getElapsedTime().asSeconds() >= m_xOwner->GetCombat()->GetAttackCooldown())
+			{
+				m_xOwner->GetCombat()->SetAttackCooldown(random::random(1.f - 0.05f, 1.f + 0.05f));
+				attackTimer->restart();
+				return true;
+			}
+			return false;
 		}
 	}
 }

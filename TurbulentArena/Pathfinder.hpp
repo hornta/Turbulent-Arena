@@ -37,6 +37,7 @@ namespace bjoernligan
 			Path();
 
 			bool isDone() const;
+			void setDone();
 			PathNode* getCurrentNode();
 			PathNode* getNextNode();
 			PathNode* getPreviousNode();

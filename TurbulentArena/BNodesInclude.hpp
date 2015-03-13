@@ -7,3 +7,7 @@
 #include "BInverterNode.hpp"
 #include "BSucceederNode.hpp"
 #include "BSetWanderTarget.hpp"
+#include "GetPathToEnemy.hpp"
+#include "EnemyWithinRadius.hpp"
+#include "AttackEnemy.hpp"
+#include "CanSeeEnemies.h"

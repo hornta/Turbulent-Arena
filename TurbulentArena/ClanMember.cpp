@@ -17,6 +17,7 @@ namespace bjoernligan
 
 	ClanMember::~ClanMember()
 	{
+		ServiceLocator<ai::Sense>::GetService()->removeAgent(m_xAgent.get());
 		ServiceLocator<Physics>::GetService()->destroyBody(m_xPhysicsBody);
 	}
 
@@ -106,5 +107,10 @@ namespace bjoernligan
 	MovementStats* ClanMember::GetMovementStats()
 	{
 		return &m_MovementStats;
+	}
+
+	CombatStats* ClanMember::GetCombat()
+	{
+		return &m_xCombatStats;
 	}
 }

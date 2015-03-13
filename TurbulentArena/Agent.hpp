@@ -56,6 +56,10 @@ namespace bjoernligan
 			void AddFleeTarget(Agent* p_Agent);
 			void RemoveFleeTarget(Agent* p_Agent);
 
+
+			bool IsEnemyWithinAttackRange();
+			bool CanAttack() const;
+
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;
 			std::unique_ptr<SteeringManager> m_Steering;
