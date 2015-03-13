@@ -148,14 +148,14 @@ namespace bjoernligan
 				else
 					m_Steering->Seek(sf::Vector2f(target.x, target.y), p_Run);
 	
-				if (target.dist(currentPosition) < 8)
+				if (target.dist(currentPosition) < 24)
 					++m_CurrentPath.currentNode;
 			}
 			else
 				//hard stop
-				m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
+				//m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
 				//soft stop
-				//m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()));
+				m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()),p_Run);
 		}
 		bool Agent::AtMoveTarget()
 		{
