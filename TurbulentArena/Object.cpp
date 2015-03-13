@@ -36,4 +36,8 @@ namespace bjoernligan
 		return m_xPhysicsBody;
 	}
 
+	const sf::Vector2f &Object::GetPos() const
+	{
+		return m_xPos;
+	}
 }

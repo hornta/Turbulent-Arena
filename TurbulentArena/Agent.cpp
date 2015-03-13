@@ -75,7 +75,7 @@ namespace bjoernligan
 
 		void Agent::Act()
 		{
-			MoveToTargetPos(false);
+			MoveToTargetPos(true);
 			//Add other stuff here?, 
 			//evade target
 			//attack target/do damage?
@@ -108,7 +108,6 @@ namespace bjoernligan
 			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxWalkVelocity(), p_MovementStats->GetMaxRunVelocity());
 		}
 
-		//tomas BT-methods (bad solution)
 		int32_t Agent::SensedEnemyCount()
 		{
 			return 0;

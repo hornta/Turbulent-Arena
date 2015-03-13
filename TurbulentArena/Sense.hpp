@@ -33,6 +33,7 @@ namespace bjoernligan
 		public:
 			Sense();
 			void addAgent(Agent* agent);
+			void removeAgent(Agent* agent);
 			std::vector<Agent*>& getAgents();
 		};
 	}

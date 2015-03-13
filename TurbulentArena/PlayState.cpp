@@ -68,6 +68,7 @@ namespace bjoernligan
 		ServiceLocator<Map>::SetService(m_map.get());
 		ServiceLocator<ClanManager>::SetService(m_clanManager.get());
 		ServiceLocator<Physics>::SetService(m_physics.get());
+		ServiceLocator<ai::Sense>::SetService(m_sense.get());
 
 		m_view = m_xDrawManager->getWindow()->getView();
 
