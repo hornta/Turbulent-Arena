@@ -29,7 +29,7 @@ namespace bjoernligan
 		
 		struct SliderDef
 		{
-			std::string m_sLabel;
+			std::string m_sTextString;
 			std::function<void(float)> m_xFunction;
 			float m_fCurrent, m_fWidth, m_fMin, m_fMax;
 			bool m_bContinous;
@@ -45,8 +45,8 @@ namespace bjoernligan
 	private:
 		float UISlider::GetAllowedX(float p_fX);
 
-		sf::Text m_xLabelText;
-		std::string m_sLabel;
+		sf::Text m_xText;
+		std::string m_sTextString;
 		input::Mouse* m_xMouse;
 		std::function<void(float)> m_xFunction;
 

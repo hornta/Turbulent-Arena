@@ -96,6 +96,7 @@
     <ClInclude Include="GameOverChecker.hpp" />
     <ClInclude Include="GetPathToEnemy.hpp" />
     <ClInclude Include="HealthBar.hpp" />
+    <ClInclude Include="SelectionRect.hpp" />
     <ClInclude Include="Sense.hpp" />
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="GameStateManager.hpp" />
@@ -139,7 +140,6 @@
     <ClInclude Include="sfml_include.hpp" />
     <ClInclude Include="SpriteManager.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="AudioRandomizer.hpp" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="tinyxml2.h" />
@@ -168,6 +168,7 @@
     <ClCompile Include="GameOverChecker.cpp" />
     <ClCompile Include="GetPathToEnemy.cpp" />
     <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="SelectionRect.cpp" />
     <ClCompile Include="Sense.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
@@ -210,7 +211,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="AudioRandomizer.cpp" />
     <ClCompile Include="tinyxml2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

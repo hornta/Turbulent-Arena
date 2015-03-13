@@ -25,7 +25,7 @@ namespace bjoernligan
 				agent->getOwner()->GetCombat()->TakeDamage(1);
 
 				// Play attack sound
-				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Punch");
+				ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Battle");
 			}
 
 			return EBNodeStatus::Success;

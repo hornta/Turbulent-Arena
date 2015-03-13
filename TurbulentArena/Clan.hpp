@@ -1,7 +1,5 @@
 #pragma once
 
-#include "AudioRandomizer.hpp"
-
 namespace bjoernligan
 {
 	class ClanMember;
@@ -39,8 +37,6 @@ namespace bjoernligan
 		std::string m_name;
 		
 		std::vector<std::unique_ptr<ClanMember>> m_clanMembers;
-
-		AudioRandomizer m_xRandomDeathSound;
 	};
 
 	template <typename T>

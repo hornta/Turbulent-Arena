@@ -38,7 +38,7 @@ namespace bjoernligan
 			m_xStateManager = GameStateManager::Create();
 			m_xDrawManager = DrawManager::Create();
 			m_xSpriteManager = SpriteManager::Create();
-			m_xAudioManager = AudioManager::Create();
+			m_xAudioManager = AudioManager::Create(0.5, 100, 50);
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
@@ -58,12 +58,18 @@ namespace bjoernligan
 			m_xAudioManager->CreateSoundBuffer("Button1", "button_click1.wav");
 			m_xAudioManager->CreateSoundBuffer("Button2", "button_click2.wav");
 			m_xAudioManager->CreateSoundBuffer("Button3", "button_click3.wav");
-			m_xAudioManager->CreateSoundBuffer("Death1", "clanmember_death1.wav");
-			m_xAudioManager->CreateSoundBuffer("Death2", "clanmember_death2.wav");
-			m_xAudioManager->CreateSoundBuffer("Death3", "clanmember_death3.wav");
+			m_xAudioManager->CreateSoundBuffer("Death1", "clanmember_death1.wav", "Death");
+			m_xAudioManager->CreateSoundBuffer("Death2", "clanmember_death2.wav", "Death");
+			m_xAudioManager->CreateSoundBuffer("Death3", "clanmember_death3.wav", "Death");
+			m_xAudioManager->CreateSoundBuffer("Battle1", "battle_chop_meat.wav", "Battle");
+			m_xAudioManager->CreateSoundBuffer("Battle2", "battle_chop_meat2.wav", "Battle");
+			m_xAudioManager->CreateSoundBuffer("Battle3", "battle_knife_flesh.wav", "Battle");
+			m_xAudioManager->CreateSoundBuffer("Battle4", "battle_sword_clang.wav", "Battle");
+			m_xAudioManager->CreateSoundBuffer("Battle5", "battle_sword_clang2.wav", "Battle");
 			m_xAudioManager->CreateSoundBuffer("Punch", "punch.wav");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
 			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
+			m_xAudioManager->CreateMusic("Victory", "mtw_vikings_victory.ogg");
 
 			if (!m_xDrawManager->Initialize())
 				return false;

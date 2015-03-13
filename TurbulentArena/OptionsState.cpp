@@ -47,7 +47,7 @@ namespace bjoernligan
 		};
 		
 		UISlider::SliderDef xDef;
-		xDef.m_sLabel = "Master volume";
+		xDef.m_sTextString = "Master volume";
 		xDef.m_xFunction = std::bind(&bjoernligan::system::AudioManager::ChangeMasterVolume, m_xAudioManager, std::placeholders::_1);
 		xDef.m_fWidth = 240.0f;
 		xDef.m_fMin = 0.0f;
@@ -57,7 +57,7 @@ namespace bjoernligan
 
 		m_xUIManager->AddSlider("OptionsState", xDef, sf::Vector2f(((float)Settings::m_xWindowSize.x / 2.0f) - 240.0f / 2.0f, (float)xButtonSpacing.iStart), 1.0f);
 
-		xDef.m_sLabel = "Music volume";
+		xDef.m_sTextString = "Music volume";
 		xDef.m_xFunction = std::bind(&bjoernligan::system::AudioManager::ChangeMusicVolume, m_xAudioManager, std::placeholders::_1);
 		xDef.m_fWidth = 240.0f;
 		xDef.m_fMin = 0.0f;
@@ -66,7 +66,7 @@ namespace bjoernligan
 
 		m_xUIManager->AddSlider("OptionsState", xDef, sf::Vector2f(((float)Settings::m_xWindowSize.x / 2.0f) - 240.0f / 2.0f, (float)xButtonSpacing.iStart + 100), 1.0f);
 
-		xDef.m_sLabel = "Sound effects volume";
+		xDef.m_sTextString = "Sound effects volume";
 		xDef.m_xFunction = std::bind(&bjoernligan::system::AudioManager::ChangeSoundVolume, m_xAudioManager, std::placeholders::_1);
 		xDef.m_fWidth = 240.0f;
 		xDef.m_fMin = 0.0f;
