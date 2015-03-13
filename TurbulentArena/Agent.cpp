@@ -9,8 +9,8 @@
 #include "Sense.hpp"
 #include "Map.hpp"
 
-#define AGENT_SENSE_TIMER 0.3f
-#define AGENT_DECIDE_TIMER 1.0f
+#define AGENT_SENSE_TIMER 0.1f
+#define AGENT_DECIDE_TIMER 0.1f
 
 namespace bjoernligan
 {
@@ -29,8 +29,8 @@ namespace bjoernligan
 			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
 			m_senseData = std::make_unique<SenseData>(this, sense, 300.f);
-			m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
-			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));
+			/*m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
+			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));*/
 			m_map = ServiceLocator<Map>::GetService();
 
 			//Pathfinding stuff
