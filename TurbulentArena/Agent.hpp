@@ -49,7 +49,7 @@ namespace bjoernligan
 			bool canFindTarget();
 			bool getPathToVisibleTarget(Agent* agent);
 			bool getPathToRandomVisibleTarget();
-			bool IsEnemyWithinAttackRange() const;
+			bool IsEnemyWithinAttackRange();
 			bool CanAttack() const;
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;

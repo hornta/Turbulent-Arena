@@ -196,7 +196,7 @@ namespace bjoernligan
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
 		}
 
-		bool Agent::IsEnemyWithinAttackRange() const
+		bool Agent::IsEnemyWithinAttackRange()
 		{
 			// TWEAK ATTACK RANGE SO IT BECOMES GOOD!!!!!!!!!!!!!!!!!!!!!
 			std::vector<Agent*> enemies = m_senseData->getVisibleEnemies();
@@ -206,8 +206,9 @@ namespace bjoernligan
 				sf::Vector2f p1 = agent->getOwner()->getSprite()->getPosition();
 
 				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
-				if (distance <= 50.f)
+				if (distance <= 64.f)
 				{
+					m_CurrentPath.setDone();
 					return true;
 				}
 			}
