@@ -9,6 +9,11 @@ namespace bjoernligan
 	int32_t m_iMaxHealth;
 	int32_t m_iCurrentHealth;
 
+	sf::Clock* CombatStats::getAttackTimer()
+	{
+		return &m_attackTimer;
+	}
+
 	void CombatStats::Initiate(const int32_t &p_iDamage, const int32_t &p_iHealth)
 	{
 		m_iDamage = p_iDamage;

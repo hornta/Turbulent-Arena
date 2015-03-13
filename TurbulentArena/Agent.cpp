@@ -147,14 +147,14 @@ namespace bjoernligan
 				else
 					m_Steering->Seek(sf::Vector2f(target.x, target.y), p_Run);
 	
-				if (target.dist(currentPosition) < 8)
+				if (target.dist(currentPosition) < 24)
 					++m_CurrentPath.currentNode;
 			}
 			else
 				//hard stop
-				m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
+				//m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
 				//soft stop
-				//m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()));
+				m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()),p_Run);
 		}
 		bool Agent::AtMoveTarget()
 		{
@@ -163,7 +163,7 @@ namespace bjoernligan
 
 		bool Agent::canFindTarget()
 		{
-			if (m_senseData->getVisibleAgents().size() > 0)
+			if (m_senseData->getVisibleEnemies().size() > 0)
 			{
 				return true;
 			}
@@ -191,9 +191,38 @@ namespace bjoernligan
 
 		bool Agent::getPathToRandomVisibleTarget()
 		{
-			std::vector<Agent*> visibleAgents = m_senseData->getVisibleAgents();
+			std::vector<Agent*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
+		}
+
+		bool Agent::IsEnemyWithinAttackRange() const
+		{
+			std::vector<Agent*> enemies = m_senseData->getVisibleEnemies();
+			for (Agent* agent : enemies)
+			{
+				sf::Vector2f p0 = m_xOwner->getSprite()->getPosition();
+				sf::Vector2f p1 = agent->getOwner()->getSprite()->getPosition();
+
+				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
+				if (distance <= 33.f)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		bool Agent::CanAttack() const
+		{
+			sf::Clock* attackTimer = m_xOwner->GetCombat()->getAttackTimer();
+			if (attackTimer->getElapsedTime().asSeconds() >= 1.f)
+			{
+				attackTimer->restart();
+				return true;
+			}
+			return false;
 		}
 	}
 }

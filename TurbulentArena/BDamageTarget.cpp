@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "BFindTargetNode.hpp"
+#include "BDamageTarget.hpp"
 #include "Agent.hpp"
 
 namespace bjoernligan
 {
 	namespace ai
 	{
-		BFindTargetNode::BFindTargetNode()
+		BDamageTarget::BDamageTarget()
 		{
 
 		}
 
-		EBNodeStatus BFindTargetNode::Process()
+		EBNodeStatus BDamageTarget::Process()
 		{
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;

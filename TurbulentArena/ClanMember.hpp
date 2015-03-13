@@ -33,6 +33,7 @@ namespace bjoernligan
 		bool IsFriend(ClanMember* p_xMember);
 		Clan* GetClan();
 		MovementStats* GetMovementStats();
+		CombatStats* GetCombat();
 
 	protected:
 		std::unique_ptr<ai::Agent> m_xAgent;

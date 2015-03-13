@@ -4,10 +4,32 @@
 #include "ClanMember.hpp"
 #include "Map.hpp"
 
+struct sortAgentsByDistance 
+{
+	bjoernligan::ai::Agent* relative;
+	sortAgentsByDistance(bjoernligan::ai::Agent* relative) :
+		relative(relative)
+	{
+
+	}
+
+	bool operator()(bjoernligan::ai::Agent* a, bjoernligan::ai::Agent* b) 
+	{
+		sf::Vector2f p0 = relative->getOwner()->getSprite()->getPosition();
+		sf::Vector2f p1 = a->getOwner()->getSprite()->getPosition();
+		sf::Vector2f p2 = b->getOwner()->getSprite()->getPosition();
+
+		float d0 = bjoernligan::Vector2f::dist(bjoernligan::Vector2f(p0), bjoernligan::Vector2f(p1));
+		float d1 = bjoernligan::Vector2f::dist(bjoernligan::Vector2f(p0), bjoernligan::Vector2f(p2));
+		return d0 < d1;
+	}
+};
+
 namespace bjoernligan
 {
 	namespace ai
 	{
+
 		float sign(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::Vector2f& p3)
 		{
 			return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
@@ -24,11 +46,6 @@ namespace bjoernligan
 			return ((b1 == b2) && (b2 == b3));
 		}
 
-		std::vector<Agent*> SenseData::getVisibleAgents() const
-		{
-			return m_visibleAgents;
-		}
-
 		SenseData::SenseData(Agent* me, Sense* sense, float radius) :
 			m_me(me),
 			m_sense(sense),
@@ -38,7 +55,8 @@ namespace bjoernligan
 
 		void SenseData::update()
 		{
-			m_visibleAgents.clear();
+			m_visibleEnemies.clear();
+			m_visibleFriends.clear();
 
 			Physics* physics = ServiceLocator<Physics>::GetService();
 
@@ -69,7 +87,11 @@ namespace bjoernligan
 								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
 								if (!m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
 								{
-									m_visibleAgents.push_back(clanMemberUD->clanMember->getAgent());
+									m_visibleEnemies.push_back(clanMemberUD->clanMember->getAgent());
+								}
+								else
+								{
+									m_visibleFriends.push_back(clanMemberUD->clanMember->getAgent());
 								}
 							}
 						}
@@ -77,7 +99,8 @@ namespace bjoernligan
 				}
 			}
 
-			LOG(INFO) << "Enemies detected: " << m_visibleAgents.size();
+			std::sort(m_visibleEnemies.begin(), m_visibleEnemies.end(), sortAgentsByDistance(m_me));
+			std::sort(m_visibleFriends.begin(), m_visibleFriends.end(), sortAgentsByDistance(m_me));
 		}
 
 		void SenseData::setRadius(float radius)
@@ -88,6 +111,16 @@ namespace bjoernligan
 		float SenseData::getRadius() const
 		{
 			return m_radius;
+		}
+
+		std::vector<Agent*> SenseData::getVisibleEnemies() const
+		{
+			return m_visibleEnemies;
+		}
+
+		std::vector<Agent*> SenseData::getVisibleFriends() const
+		{
+			return m_visibleFriends;
 		}
 
 		Sense::Sense()

@@ -14,7 +14,8 @@ namespace bjoernligan
 			float m_radius;
 			Sense* m_sense;
 			Agent* m_me;
-			std::vector<Agent*> m_visibleAgents;
+			std::vector<Agent*> m_visibleEnemies;
+			std::vector<Agent*> m_visibleFriends;
 
 		public:
 			SenseData(Agent* me, Sense* sense, float radius);
@@ -22,8 +23,8 @@ namespace bjoernligan
 			void update();
 			void setRadius(float radius);
 			float getRadius() const;
-			bool isVisible(Agent* agent, bool findPath, Pathfinder::Path& path, Pathfinder::Options pathfinderOptions = Pathfinder::Options()) const;
-			std::vector<Agent*> getVisibleAgents() const;
+			std::vector<Agent*> getVisibleEnemies() const;
+			std::vector<Agent*> getVisibleFriends() const;
 		};
 
 		class Sense
