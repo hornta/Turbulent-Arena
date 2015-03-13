@@ -24,11 +24,6 @@ namespace bjoernligan
 			return ((b1 == b2) && (b2 == b3));
 		}
 
-		std::vector<Agent*> SenseData::getVisibleAgents() const
-		{
-			return m_visibleAgents;
-		}
-
 		SenseData::SenseData(Agent* me, Sense* sense, float radius) :
 			m_me(me),
 			m_sense(sense),
@@ -38,7 +33,8 @@ namespace bjoernligan
 
 		void SenseData::update()
 		{
-			m_visibleAgents.clear();
+			m_visibleEnemies.clear();
+			m_visibleFriends.clear();
 
 			Physics* physics = ServiceLocator<Physics>::GetService();
 
@@ -69,15 +65,17 @@ namespace bjoernligan
 								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
 								if (!m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
 								{
-									m_visibleAgents.push_back(clanMemberUD->clanMember->getAgent());
+									m_visibleEnemies.push_back(clanMemberUD->clanMember->getAgent());
+								}
+								else
+								{
+									m_visibleFriends.push_back(clanMemberUD->clanMember->getAgent());
 								}
 							}
 						}
 					}
 				}
 			}
-
-			LOG(INFO) << "Enemies detected: " << m_visibleAgents.size();
 		}
 
 		void SenseData::setRadius(float radius)
@@ -88,6 +86,16 @@ namespace bjoernligan
 		float SenseData::getRadius() const
 		{
 			return m_radius;
+		}
+
+		std::vector<Agent*> SenseData::getVisibleEnemies() const
+		{
+			return m_visibleEnemies;
+		}
+
+		std::vector<Agent*> SenseData::getVisibleFriends() const
+		{
+			return m_visibleFriends;
 		}
 
 		Sense::Sense()

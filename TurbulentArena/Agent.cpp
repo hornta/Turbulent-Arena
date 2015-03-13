@@ -164,7 +164,7 @@ namespace bjoernligan
 
 		bool Agent::canFindTarget()
 		{
-			if (m_senseData->getVisibleAgents().size() > 0)
+			if (m_senseData->getVisibleEnemies().size() > 0)
 			{
 				return true;
 			}
@@ -192,7 +192,7 @@ namespace bjoernligan
 
 		bool Agent::getPathToRandomVisibleTarget()
 		{
-			std::vector<Agent*> visibleAgents = m_senseData->getVisibleAgents();
+			std::vector<Agent*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
 		}
