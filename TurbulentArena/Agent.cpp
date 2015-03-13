@@ -108,7 +108,6 @@ namespace bjoernligan
 			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxWalkVelocity(), p_MovementStats->GetMaxRunVelocity());
 		}
 
-		//tomas BT-methods (bad solution)
 		int32_t Agent::SensedEnemyCount()
 		{
 			return 0;

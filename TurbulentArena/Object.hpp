@@ -24,6 +24,7 @@ namespace bjoernligan
 		virtual void update(float deltatime);
 		virtual void setBody(Physics::Body* body);
 		Physics::Body* getBody() const;
+		const sf::Vector2f &GetPos() const;
 
 	protected:
 		sf::Vector2f m_xPos;

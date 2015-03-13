@@ -17,17 +17,17 @@ namespace bjoernligan
 
 	void Clan::Update(const float &p_fDeltaTime)
 	{
-		for (int32_t i = (int32_t)m_clanMembers.size() - 1; i >= 0; --i)
+		auto itr = m_clanMembers.begin();
+		while (itr != m_clanMembers.end())
 		{
-			m_clanMembers[i]->update(p_fDeltaTime);
-
-			//dead-check
-			if (!m_clanMembers[i]->m_xCombatStats.Alive())
+			if (!(*itr)->m_xCombatStats.Alive())
 			{
-				m_clanMembers.erase(m_clanMembers.begin() + i);
-
+				itr = m_clanMembers.erase(itr);
 				m_xRandomDeathSound.PlayRandomSound();
+				continue;
 			}
+			(*itr)->update(p_fDeltaTime);
+			++itr;
 		}
 	}
 

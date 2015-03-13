@@ -71,7 +71,7 @@ namespace bjoernligan
 				sf::Vector2f agentPosition = agent->getOwner()->getSprite()->getPosition();
 				sf::Vector2f myPosition = m_me->getOwner()->getSprite()->getPosition();
 				float distance = Vector2f::dist(Vector2f(agentPosition), Vector2f(myPosition));
-				
+
 				// Is the agent in our sense range?
 				if (distance <= m_radius)
 				{
@@ -130,6 +130,18 @@ namespace bjoernligan
 		void Sense::addAgent(Agent* agent)
 		{
 			m_agents.push_back(agent);
+		}
+
+		void Sense::removeAgent(Agent* agent)
+		{
+			auto itr = m_agents.begin();
+			while (itr != m_agents.end())
+			{
+				if ((*itr) == agent)
+					itr = m_agents.erase(itr);
+				else
+					++itr;
+			}
 		}
 
 		std::vector<Agent*>& Sense::getAgents()
