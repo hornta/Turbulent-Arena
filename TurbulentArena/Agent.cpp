@@ -196,8 +196,9 @@ namespace bjoernligan
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
 		}
 
-		bool Agent::IsEnemyWithinAttackRange() const
+		bool Agent::IsEnemyWithinAttackRange()
 		{
+			// TWEAK ATTACK RANGE SO IT BECOMES GOOD!!!!!!!!!!!!!!!!!!!!!
 			std::vector<Agent*> enemies = m_senseData->getVisibleEnemies();
 			for (Agent* agent : enemies)
 			{
@@ -205,8 +206,9 @@ namespace bjoernligan
 				sf::Vector2f p1 = agent->getOwner()->getSprite()->getPosition();
 
 				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
-				if (distance <= 33.f)
+				if (distance <= 64.f)
 				{
+					m_CurrentPath.setDone();
 					return true;
 				}
 			}
@@ -216,9 +218,11 @@ namespace bjoernligan
 
 		bool Agent::CanAttack() const
 		{
+			// Make the attack timer range a little bit random
 			sf::Clock* attackTimer = m_xOwner->GetCombat()->getAttackTimer();
-			if (attackTimer->getElapsedTime().asSeconds() >= 1.f)
+			if (attackTimer->getElapsedTime().asSeconds() >= m_xOwner->GetCombat()->GetAttackCooldown())
 			{
+				m_xOwner->GetCombat()->SetAttackCooldown(random::random(1.f - 0.05f, 1.f + 0.05f));
 				attackTimer->restart();
 				return true;
 			}

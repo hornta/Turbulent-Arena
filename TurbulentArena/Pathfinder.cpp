@@ -15,6 +15,11 @@ namespace bjoernligan
 		return currentNode >= length;
 	}
 
+	void Pathfinder::Path::setDone()
+	{
+		currentNode = length;
+	}
+
 	Pathfinder::PathNode* Pathfinder::Path::getCurrentNode()
 	{
 		if (currentNode >= 0 && currentNode < length)
