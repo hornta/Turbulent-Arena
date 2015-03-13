@@ -60,7 +60,7 @@ namespace bjoernligan
 			}
 		}
 
-		void AudioManager::CreateSoundBuffer(std::string p_sName, std::string p_sFilename)
+		void AudioManager::CreateSoundBuffer(std::string p_sName, std::string p_sFilename, const std::string &p_sGroup)
 		{
 			auto xIt = m_axSounds.find(p_sName);
 			if (xIt == m_axSounds.end())
@@ -68,8 +68,8 @@ namespace bjoernligan
 				std::pair<std::string, sf::SoundBuffer*> xPair(p_sName, new sf::SoundBuffer);
 				if (xPair.second->loadFromFile("../data/audio/sounds/" + p_sFilename))
 				{
-					if (m_axSoundbuffers.insert(xPair).second == true) {
-					}
+					if (m_axSoundbuffers.insert(xPair).second && p_sGroup != "")
+						AddSoundToGroup(p_sName, p_sGroup);
 				}
 				else
 				{
@@ -259,6 +259,25 @@ namespace bjoernligan
 					xIt++;
 				}
 			}
+		}
+
+		void AudioManager::AddSoundToGroup(const std::string &p_sSoundName, const std::string &p_sSoundGroup)
+		{
+			if (m_axSoundbuffers.find(p_sSoundName) == m_axSoundbuffers.end())
+				return;
+
+			auto itr = m_axSoundGroups.find(p_sSoundGroup);
+			if (itr != m_axSoundGroups.end())
+				(*itr).second.push_back(p_sSoundName);
+			else
+				m_axSoundGroups.insert(std::pair<std::string, std::vector<std::string> >(p_sSoundGroup, { p_sSoundName }));
+		}
+
+		void AudioManager::PlaySoundFromGroup(const std::string &p_sSoundGroup)
+		{
+			auto itr = m_axSoundGroups.find(p_sSoundGroup);
+			if (itr != m_axSoundGroups.end() || !(*itr).second.empty())
+				PlaySoundClip((*itr).second[random::random(0, (*itr).second.size() - 1)]);
 		}
 	}
 }

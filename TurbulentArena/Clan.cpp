@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Clan.hpp"
+#include "AudioManager.hpp"
 
 #include "Scout.hpp"
 #include "Axeman.hpp"
@@ -10,9 +11,6 @@ namespace bjoernligan
 		: m_name(name)
 		, m_color(p_xTeamColor)
 	{
-		m_xRandomDeathSound.AddSoundName("Death1");
-		m_xRandomDeathSound.AddSoundName("Death2");
-		m_xRandomDeathSound.AddSoundName("Death3");
 	}
 
 	void Clan::Update(const float &p_fDeltaTime)
@@ -23,7 +21,7 @@ namespace bjoernligan
 			if (!(*itr)->m_xCombatStats.Alive())
 			{
 				itr = m_clanMembers.erase(itr);
-				m_xRandomDeathSound.PlayRandomSound();
+				ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death");
 				continue;
 			}
 			(*itr)->update(p_fDeltaTime);

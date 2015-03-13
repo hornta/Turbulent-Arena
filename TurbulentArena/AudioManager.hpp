@@ -19,7 +19,7 @@ namespace bjoernligan
 
 			~AudioManager();
 
-			void CreateSoundBuffer(std::string p_sName, std::string p_sFilename);
+			void CreateSoundBuffer(std::string p_sName, std::string p_sFilename, const std::string &p_sSoundGroup = "");
 			void CreateMusic(std::string p_sName, std::string p_sFilename);
 
 			void ChangeMasterVolume(float p_fMasterVolume);
@@ -39,6 +39,10 @@ namespace bjoernligan
 
 			void SoundsCleanUp();
 
+			//sound-groups
+			void AddSoundToGroup(const std::string &p_sSoundName, const std::string &p_sSoundGroup);
+			void PlaySoundFromGroup(const std::string &p_sSoundGroup);
+
 		private:
 			float m_fMasterVolume;
 			int m_iSoundVolume;
@@ -51,6 +55,7 @@ namespace bjoernligan
 			std::map<std::string, sf::SoundBuffer*> m_axSoundbuffers;
 			std::map<std::string, sf::Sound*> m_axSounds;
 			std::map<std::string, sf::Music*> m_axMusics;
+			std::map<std::string, std::vector<std::string> > m_axSoundGroups;
 		};
 	}
 }

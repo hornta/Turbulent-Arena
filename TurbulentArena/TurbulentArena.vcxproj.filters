@@ -267,9 +267,6 @@
     <ClInclude Include="WinMenu.hpp">
       <Filter>Header Files\game_states</Filter>
     </ClInclude>
-    <ClInclude Include="AudioRandomizer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scout.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -460,9 +457,6 @@
     </ClCompile>
     <ClCompile Include="WinMenu.cpp">
       <Filter>Source Files\game_states</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioRandomizer.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scout.cpp">
       <Filter>Source Files</Filter>

@@ -9,8 +9,8 @@
 #include "Sense.hpp"
 #include "Map.hpp"
 
-#define AGENT_SENSE_TIMER 0.1f
-#define AGENT_DECIDE_TIMER 0.1f
+#define AGENT_SENSE_TIMER 0.3f
+#define AGENT_DECIDE_TIMER 0.3f
 
 namespace bjoernligan
 {
