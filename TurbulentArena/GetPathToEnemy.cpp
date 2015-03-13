@@ -17,7 +17,7 @@ namespace bjoernligan
 				return EBNodeStatus::Invalid;
 
 			std::vector<Agent*> visibleEnemies = m_xAgent->getSense()->getVisibleEnemies();
-			if (!visibleEnemies.empty())
+			if (visibleEnemies.empty())
 			{
 				return EBNodeStatus::Fail;
 			}

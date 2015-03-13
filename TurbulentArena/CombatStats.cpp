@@ -14,6 +14,16 @@ namespace bjoernligan
 		return &m_attackTimer;
 	}
 
+	float CombatStats::GetAttackCooldown() const
+	{
+		return m_attackCooldown;
+	}
+
+	void CombatStats::SetAttackCooldown(float cooldown)
+	{
+		m_attackCooldown = cooldown;
+	}
+
 	void CombatStats::Initiate(const int32_t &p_iDamage, const int32_t &p_iHealth)
 	{
 		m_iDamage = p_iDamage;
