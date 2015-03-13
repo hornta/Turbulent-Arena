@@ -49,7 +49,8 @@ namespace bjoernligan
 			bool canFindTarget();
 			bool getPathToVisibleTarget(Agent* agent);
 			bool getPathToRandomVisibleTarget();
-
+			bool IsEnemyWithinAttackRange() const;
+			bool CanAttack() const;
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;
 			std::unique_ptr<SteeringManager> m_Steering;

@@ -107,4 +107,9 @@ namespace bjoernligan
 	{
 		return &m_MovementStats;
 	}
+
+	CombatStats* ClanMember::GetCombat()
+	{
+		return &m_xCombatStats;
+	}
 }

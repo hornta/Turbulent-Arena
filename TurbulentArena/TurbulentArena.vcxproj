@@ -86,9 +86,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackEnemy.hpp" />
     <ClInclude Include="AudioManager.hpp" />
+    <ClInclude Include="BDamageTarget.hpp" />
     <ClInclude Include="BFindTargetNode.hpp" />
+    <ClInclude Include="BWalkToTarget.hpp" />
+    <ClInclude Include="CanSeeEnemies.h" />
+    <ClInclude Include="EnemyWithinRadius.hpp" />
     <ClInclude Include="GameOverChecker.hpp" />
+    <ClInclude Include="GetPathToEnemy.hpp" />
     <ClInclude Include="HealthBar.hpp" />
     <ClInclude Include="Sense.hpp" />
     <ClInclude Include="GameState.hpp" />
@@ -148,13 +154,19 @@
     <ClInclude Include="WinMenu.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AttackEnemy.cpp" />
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BDamageTarget.cpp" />
     <ClCompile Include="BFindTargetNode.cpp" />
+    <ClCompile Include="BWalkToTarget.cpp" />
+    <ClCompile Include="CanSeeEnemies.cpp" />
     <ClCompile Include="easylogging++.h">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="EnemyWithinRadius.cpp" />
     <ClCompile Include="GameOverChecker.cpp" />
+    <ClCompile Include="GetPathToEnemy.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="Sense.cpp" />
     <ClCompile Include="GameState.cpp" />

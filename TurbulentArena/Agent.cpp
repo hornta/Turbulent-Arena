@@ -75,7 +75,7 @@ namespace bjoernligan
 
 		void Agent::Act()
 		{
-			MoveToTargetPos(false);
+			MoveToTargetPos(true);
 			//Add other stuff here?, 
 			//evade target
 			//attack target/do damage?
@@ -195,6 +195,35 @@ namespace bjoernligan
 			std::vector<Agent*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
+		}
+
+		bool Agent::IsEnemyWithinAttackRange() const
+		{
+			std::vector<Agent*> enemies = m_senseData->getVisibleEnemies();
+			for (Agent* agent : enemies)
+			{
+				sf::Vector2f p0 = m_xOwner->getSprite()->getPosition();
+				sf::Vector2f p1 = agent->getOwner()->getSprite()->getPosition();
+
+				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
+				if (distance <= 33.f)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		bool Agent::CanAttack() const
+		{
+			sf::Clock* attackTimer = m_xOwner->GetCombat()->getAttackTimer();
+			if (attackTimer->getElapsedTime().asSeconds() >= 1.f)
+			{
+				attackTimer->restart();
+				return true;
+			}
+			return false;
 		}
 	}
 }
