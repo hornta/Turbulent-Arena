@@ -53,7 +53,7 @@ namespace bjoernligan
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
 			m_Steering = GetDesiredVelocity(Position, p_TargetPos, p_Run, false) - Velocity;
 		}
-		void SteeringManager::Flee(const sf::Vector2f& p_TargetPos)
+		void SteeringManager::Flee(const sf::Vector2f& p_TargetPos, bool p_Run)
 		{
 			if (!m_CurrentBody)
 				return;
@@ -61,15 +61,15 @@ namespace bjoernligan
 			sf::Vector2f Velocity = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetLinearVelocity());
 			sf::Vector2f Position = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
 			//send in positions in switched order compared to Seek() to get the negative.(the opposite side)
-			m_Steering = GetDesiredVelocity(p_TargetPos, Position, true , false) - Velocity;
+			m_Steering = GetDesiredVelocity(p_TargetPos, Position, p_Run, false) - Velocity;
 		}
-		void SteeringManager::Pursuit(b2Body* p_TargetBody)
+		void SteeringManager::Pursuit(b2Body* p_TargetBody, bool p_Run)
 		{
-			Seek(GetPredictedPosition(p_TargetBody), true);
+			Seek(GetPredictedPosition(p_TargetBody), p_Run);
 		}
-		void SteeringManager::Evade(b2Body* p_TargetBody)
+		void SteeringManager::Evade(b2Body* p_TargetBody, bool p_Run)
 		{
-			Flee(GetPredictedPosition(p_TargetBody));
+			Flee(GetPredictedPosition(p_TargetBody), p_Run);
 		}
 		void SteeringManager::Arrival(const sf::Vector2f& p_TargetPos, bool p_Run, const float& p_SlowDownRadius)
 		{

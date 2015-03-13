@@ -19,9 +19,9 @@ namespace bjoernligan
 			void SetCurrentBody(b2Body* p_CurrentBody, const sf::Vector2f& p_MaxWalkVelocity, const sf::Vector2f& p_MaxRunVelocity);
 			void Wander();
 			void Seek(const sf::Vector2f& p_TargetPos, bool p_Run);
-			void Flee(const sf::Vector2f& p_TargetPos);
-			void Pursuit(b2Body* p_TargetBody);
-			void Evade(b2Body* p_TargetBody);
+			void Flee(const sf::Vector2f& p_TargetPos, bool p_Run);
+			void Pursuit(b2Body* p_TargetBody, bool p_Run);
+			void Evade(b2Body* p_TargetBody, bool p_Run);
 			void Arrival(const sf::Vector2f& p_TargetPos, bool p_Run, const float& p_SlowDownRadius);
 
 			void Update();
