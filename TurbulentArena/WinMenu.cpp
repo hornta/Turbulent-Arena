@@ -33,6 +33,8 @@ namespace bjoernligan
 		m_xKeyboard = ServiceLocator<input::Keyboard>::GetService();
 		m_xAudioManager = ServiceLocator<system::AudioManager>::GetService();
 
+		m_xAudioManager->PlayMusic("Victory");
+
 		struct ButtonSpacing
 		{
 			int32_t iStart;

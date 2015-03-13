@@ -32,6 +32,7 @@ namespace bjoernligan
 		, m_fScrollSpeed(5.0f)
 		, m_xGameOverTimer(6)
 		, m_bGameOver(false)
+		, m_xPlayerClan(nullptr)
 	{
 
 	}
@@ -131,13 +132,12 @@ namespace bjoernligan
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
 
 		{
-			Clan* clan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
-			ServiceLocator<Clan>::SetService(clan); //<- temporary
-			m_xGameOverChecker.AddClan(clan);
+			m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
+			m_xGameOverChecker.AddClan(m_xPlayerClan);
 
 			for (int32_t i = 0; i < 8; ++i)
 			{
-				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
+				ClanMember* member = m_xPlayerClan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
 				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
 				member->setBody(m_physics->createBody(clanMemberBodyDef));
@@ -168,18 +168,7 @@ namespace bjoernligan
 				members[k]->getBody()->setPosition(team_spawns[i][k]);
 			}
 		}
-
-		UISlider::SliderDef xDef;
-		xDef.m_sLabel = "Scrollspeed";
-		xDef.m_xFunction = std::bind(&bjoernligan::PlayState::SetScrollSpeed, this, std::placeholders::_1);
-		xDef.m_fWidth = 240.0f;
-		xDef.m_fMin = 1.0f;
-		xDef.m_fMax = 20.0f;
-		xDef.m_fCurrent = 5.0f;
-		xDef.m_bContinous = true;
-
-		m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
-
+		
 		UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32),
 			std::bind(&bjoernligan::PlayState::SetDebugMode, this, std::placeholders::_1));
@@ -191,6 +180,57 @@ namespace bjoernligan
 		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: Pathfinder", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 170, 140, 32),
 			std::bind(&bjoernligan::PlayState::ToggleDebugPathfinder, this, std::placeholders::_1));
+
+		float fSliderSpacing = 80.0f;
+
+		{
+			UISlider::SliderDef xDefs;
+			xDefs.m_bContinous = true;
+			xDefs.m_fCurrent = 50;
+			xDefs.m_fMax = 100;
+			xDefs.m_fMin = 0;
+			xDefs.m_fWidth = 240;
+			xDefs.m_sTextString = "Brave";
+			xDefs.m_xFunction = std::bind(&bjoernligan::Clan::SetBrave, m_xPlayerClan, std::placeholders::_1);
+			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing), 1.0f);
+		}
+
+		{
+			UISlider::SliderDef xDefs;
+			xDefs.m_bContinous = true;
+			xDefs.m_fCurrent = 50;
+			xDefs.m_fMax = 100;
+			xDefs.m_fMin = 0;
+			xDefs.m_fWidth = 240;
+			xDefs.m_sTextString = "Social";
+			xDefs.m_xFunction = std::bind(&bjoernligan::Clan::SetSocial, m_xPlayerClan, std::placeholders::_1);
+			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing * 2), 1.0f);
+		}
+
+		{
+			UISlider::SliderDef xDefs;
+			xDefs.m_bContinous = true;
+			xDefs.m_fCurrent = 50;
+			xDefs.m_fMax = 100;
+			xDefs.m_fMin = 0;
+			xDefs.m_fWidth = 240;
+			xDefs.m_sTextString = "Agressive";
+			xDefs.m_xFunction = std::bind(&bjoernligan::Clan::SetAgression, m_xPlayerClan, std::placeholders::_1);
+			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing * 3), 1.0f);
+		}
+
+		{
+			UISlider::SliderDef xDef;
+			xDef.m_fCurrent = 5.0f;
+			xDef.m_fMin = 1.0f;
+			xDef.m_fMax = 20.0f;
+			xDef.m_fWidth = 240.0f;
+			xDef.m_sTextString = "Scrollspeed";
+			xDef.m_xFunction = std::bind(&bjoernligan::PlayState::SetScrollSpeed, this, std::placeholders::_1);
+			xDef.m_bContinous = true;
+
+			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
+		}
 	}
 
 	void PlayState::Exit()
@@ -215,8 +255,11 @@ namespace bjoernligan
 		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Y))
 		{
 			m_xAudioManager->PlaySoundClip("Punch");
-			ServiceLocator<Clan>::GetService()->DamageRandomMember(1);
+			m_xPlayerClan->DamageRandomMember(1);
 		}
+
+		m_xSelectionRect.SetOffset(sf::Vector2f(m_xDrawManager->getWindow()->getView().getViewport().left * 2, m_xDrawManager->getWindow()->getView().getViewport().top * 2));
+		m_xSelectionRect.Update();
 
 		GameOverCheck(p_fDeltaTime);
 
@@ -230,6 +273,7 @@ namespace bjoernligan
 		target.draw(*m_map.get(), states);
 		target.draw(*m_clanManager.get(), states);
 		m_physics->draw();
+		target.draw(m_xSelectionRect, states);
 	}
 
 	void PlayState::SetDebugMode(const bool &p_bValue)
@@ -254,6 +298,8 @@ namespace bjoernligan
 	{
 		if (m_bGameOver != m_xGameOverChecker.GameOver())
 		{
+			m_xUIManager->RemoveElementsByLabel("PlayState");
+			m_xAudioManager->StopAllMusic();
 			m_xStateMngr->CreateState<WinMenu>("WinMenu")->SetWinningTeam(m_xGameOverChecker.GetWinningTeam());
 			m_bGameOver = !m_bGameOver;
 		}

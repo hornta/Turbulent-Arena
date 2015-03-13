@@ -69,6 +69,7 @@ namespace bjoernligan
 			m_xAudioManager->CreateSoundBuffer("Punch", "punch.wav");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
 			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
+			m_xAudioManager->CreateMusic("Victory", "mtw_vikings_victory.ogg");
 
 			if (!m_xDrawManager->Initialize())
 				return false;
