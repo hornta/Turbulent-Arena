@@ -36,7 +36,7 @@ namespace bjoernligan
 		};
 
 		void Initialize(const SliderDef &p_xDefinition);
-		void Update(const float &p_fDeltaTime);
+		bool Update(const float &p_fDeltaTime);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		void SetPos(const sf::Vector2f &p_xPos);
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Mood.hpp"
+
 namespace bjoernligan
 {
 	class ClanMember;
@@ -26,8 +28,11 @@ namespace bjoernligan
 		void SetSocial(const float &p_fNewValue);
 		void SetBrave(const float &p_fNewValue);
 		void SetAgression(const float &p_fNewValue);
+		void SetMoodValues(const ai::Mood::EMoodType &p_eMoodType, const float &p_fNewValue);
 
 		const std::string &GetName() const;
+
+		void SelectAgentsInRect(const sf::FloatRect &p_xShape);
 
 		//temporary
 		void DamageRandomMember(const int32_t &p_iAmount);
@@ -37,6 +42,7 @@ namespace bjoernligan
 		std::string m_name;
 		
 		std::vector<std::unique_ptr<ClanMember>> m_clanMembers;
+		std::vector<ClanMember*> m_selectedAgents;
 	};
 
 	template <typename T>

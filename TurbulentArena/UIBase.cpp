@@ -17,9 +17,10 @@ namespace bjoernligan
 		return Ptr(new UIBase(p_sLabel, p_fDepth));
 	}
 
-	void UIBase::Update(const float &p_fDeltaTime)
+	bool UIBase::Update(const float &p_fDeltaTime)
 	{
 		p_fDeltaTime;
+		return false;
 	}
 
 	void UIBase::draw(sf::RenderTarget& target, sf::RenderStates states) const

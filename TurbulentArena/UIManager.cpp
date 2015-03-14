@@ -52,13 +52,15 @@ namespace bjoernligan
 	void UIManager::Update(const float &p_fDeltaTime)
 	{
 		m_xDebugWindow->Update(p_fDeltaTime);
+		m_bUsedThisUpdate = false;
 
 		if (m_axElements.empty())
 			return;
 
 		for (uint32_t i = 0; i < m_axElements.size(); ++i)
 		{
-			m_axElements[i]->Update(p_fDeltaTime);
+			if (m_axElements[i]->Update(p_fDeltaTime))
+				m_bUsedThisUpdate = true;
 		}
 	}
 
@@ -75,7 +77,7 @@ namespace bjoernligan
 		if (m_xDebugWindow)
 			target.draw(*m_xDebugWindow.get(), states);
 	}
-	
+
 	void UIManager::AddText(const std::string &p_sTextName, const std::string &p_sTextString, const std::string &p_sLabel, const sf::Vector2f &p_xPos, const uint32_t &p_iTextSize)
 	{
 		m_axTexts.insert(std::pair<std::string, UIText>(p_sTextName, {
@@ -161,5 +163,10 @@ namespace bjoernligan
 	sf::View UIManager::getView() const
 	{
 		return m_view;
+	}
+
+	const bool &UIManager::GetUsedThisUpdate()
+	{
+		return m_bUsedThisUpdate;
 	}
 }

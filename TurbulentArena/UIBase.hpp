@@ -16,7 +16,8 @@ namespace bjoernligan
 	public:
 		typedef std::unique_ptr<UIBase> Ptr;
 		static Ptr Create(const std::string &p_sLabel, const float &p_fDepth);
-		virtual void Update(const float &p_fDeltaTime);
+		//* returns if used
+		virtual bool Update(const float &p_fDeltaTime);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		virtual void SetPos(const sf::Vector2f &p_xPos);
 		void AddSprite(sf::Sprite* p_xSprite);

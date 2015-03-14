@@ -13,6 +13,14 @@ namespace bjoernligan
 		m_xHealthBar.SetCombatStats(&m_xCombatStats);
 		m_xAgent = std::make_unique<ai::Agent>(this, sense);
 		m_userData = std::make_unique<ClanMemberUD>(this);
+
+		m_xMood = { { 0.5f, 0.5f, 0.5f } };
+
+		m_xSelectionRect.setSize(sf::Vector2f(32,32));
+		m_xSelectionRect.setOrigin(m_xSelectionRect.getSize() / 2.0f);
+		m_xSelectionRect.setFillColor(sf::Color(0,0,0,0));
+		m_xSelectionRect.setOutlineColor(sf::Color(0, 255, 0, 0));
+		m_xSelectionRect.setOutlineThickness(3);
 	}
 
 	ClanMember::~ClanMember()
@@ -30,6 +38,8 @@ namespace bjoernligan
 			m_sprite->setPosition(m_xPos);
 		if (m_xAgent)
 			m_xAgent->Update(deltatime);
+
+		m_xSelectionRect.setPosition(m_xPos);
 	}
 	
 	void ClanMember::setBody(Physics::Body* body)
@@ -77,6 +87,7 @@ namespace bjoernligan
 			}
 		}
 
+		target.draw(m_xSelectionRect, states);
 		target.draw(m_xHealthBar, states);
 	}
 
@@ -112,5 +123,31 @@ namespace bjoernligan
 	CombatStats* ClanMember::GetCombat()
 	{
 		return &m_xCombatStats;
+	}
+
+	void ClanMember::SetMoodValue(const ai::Mood::EMoodType &p_eMoodType, const float &p_fValue)
+	{
+		m_xMood.SetMood(p_eMoodType, p_fValue);
+	}
+
+	ai::Mood* ClanMember::GetMood()
+	{
+		return &m_xMood;
+	}
+
+	void ClanMember::SetSelection(const bool &p_bValue)
+	{
+		if (p_bValue)
+			m_xSelectionRect.setOutlineColor(sf::Color(
+			m_xSelectionRect.getOutlineColor().r,
+			m_xSelectionRect.getOutlineColor().g,
+			m_xSelectionRect.getOutlineColor().b,
+			175));
+		else
+			m_xSelectionRect.setOutlineColor(sf::Color(
+			m_xSelectionRect.getOutlineColor().r,
+			m_xSelectionRect.getOutlineColor().g,
+			m_xSelectionRect.getOutlineColor().b,
+			0));
 	}
 }

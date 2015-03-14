@@ -168,12 +168,6 @@
     <ClInclude Include="ContactListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Clan.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClanManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Visibility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -294,6 +288,15 @@
     <ClInclude Include="SelectionRect.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Clan.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanManager.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="Mood.hpp">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -360,12 +363,6 @@
       <Filter>Source Files\AI</Filter>
     </ClCompile>
     <ClCompile Include="ContactListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Clan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ClanManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Box2DWorldDraw.cpp">
@@ -484,6 +481,15 @@
     </ClCompile>
     <ClCompile Include="SelectionRect.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Clan.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanManager.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="Mood.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
