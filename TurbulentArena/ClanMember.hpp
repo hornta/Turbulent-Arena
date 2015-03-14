@@ -33,7 +33,7 @@ namespace bjoernligan
 		void drawPathfinder(bool value);
 		bool IsFriend(ClanMember* p_xMember);
 		Clan* GetClan();
-		MovementStats* GetMovementStats();
+		MovementStats& GetMovementStats();
 		CombatStats* GetCombat();
 
 		void SetMoodValue(const ai::Mood::EMoodType &p_eMoodType, const float &p_fValue);

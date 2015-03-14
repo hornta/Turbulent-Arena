@@ -5,26 +5,18 @@
 
 namespace bjoernligan
 {
-	void MovementStats::Initiate(const sf::Vector2f &p_MaxWalkVelocity, const sf::Vector2f &p_MaxRunVelocity)
+	void MovementStats::Initiate(const sf::Vector2f p_MaxVelocity)
 	{
-		m_MaxWalkVelocity = p_MaxWalkVelocity;
-		m_MaxRunVelocity = p_MaxRunVelocity;
+		m_MaxVelocity = p_MaxVelocity;
 		//m_Acceleration = p_Acceleration;
 	}
-	const sf::Vector2f& MovementStats::GetMaxWalkVelocity()
+	const sf::Vector2f& MovementStats::GetMaxVelocity()
 	{
-		return m_MaxWalkVelocity;
+		return m_MaxVelocity;
 	}
-	const sf::Vector2f& MovementStats::GetMaxRunVelocity()
+
+	void MovementStats::SetMaxVelocity(const sf::Vector2f p_NewMaxVelocity)
 	{
-		return m_MaxRunVelocity;
+		m_MaxVelocity = p_NewMaxVelocity;
 	}
-	/*const float& MovementStats::GetAcceleration()
-	{
-		return m_Acceleration;
-	}
-	const float& MovementStats::GetSlowDownRadius()
-	{
-		return m_SlowDownRadius;
-	}*/
 }

@@ -39,23 +39,34 @@ namespace bjoernligan
 			BehaviorTree* getBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
 
-			void InitializeSteering(b2Body* p_CurrentBody, MovementStats *p_MovementStats);
+			void InitializeSteering(b2Body* p_CurrentBody,MovementStats &p_MovementStats);
 
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
 			void ChooseWanderPos();
-			void MoveToTargetPos(bool p_Run);
 			bool AtMoveTarget();
 			bool canFindTarget();
 			bool getPathToVisibleTarget(Agent* agent);
 			bool getPathToRandomVisibleTarget();
+
+			//Steering stuff
+			void MoveToTargetPos();
+			void FleeFromVisibleEnemies();
+			bool IsFleeTargetInVector(Agent* p_Agent);
+			void AddFleeTarget(Agent* p_Agent);
+			void RemoveFleeTarget(Agent* p_Agent);
+
+
 			bool IsEnemyWithinAttackRange();
 			bool CanAttack() const;
+
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;
 			std::unique_ptr<SteeringManager> m_Steering;
 			std::unique_ptr<SenseData> m_senseData;
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
+
+			std::vector<Agent*> m_FleeTargets;
 
 			Pathfinder::Path m_CurrentPath;
 			sf::Vector2i m_xCurrentMapPos;
