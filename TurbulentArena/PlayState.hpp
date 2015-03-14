@@ -5,6 +5,7 @@
 #include "Pathfinder.hpp"
 #include "GameOverChecker.hpp"
 #include "Timer.hpp"
+#include "SelectionRect.hpp"
 
 namespace bjoernligan
 {
@@ -56,6 +57,7 @@ namespace bjoernligan
 		input::Keyboard* m_xKeyboard;
 		Utility* m_xUtility;
 		DebugWindow* m_xDebugWindow;
+		SelectionRect m_xSelectionRect;
 
 		//play state specific
 		std::unique_ptr<Map> m_map;
@@ -63,6 +65,7 @@ namespace bjoernligan
 		std::unique_ptr<Physics> m_physics;
 		std::unique_ptr<Pathfinder> m_pathFinder;
 		std::unique_ptr<ClanManager> m_clanManager;
+		Clan* m_xPlayerClan;
 
 		float m_fScrollSpeed;
 		sf::View m_view;

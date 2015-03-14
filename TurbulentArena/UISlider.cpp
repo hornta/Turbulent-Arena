@@ -20,8 +20,8 @@ namespace bjoernligan
 		, m_fMin(0.0f)
 		, m_fMax(0.0f)
 	{
-		m_xLabelText.setFont(*ServiceLocator<system::DrawManager>::GetService()->GetFont());
-		m_xLabelText.setCharacterSize(18);
+		m_xText.setFont(*ServiceLocator<system::DrawManager>::GetService()->GetFont());
+		m_xText.setCharacterSize(18);
 
 		m_xMouse = ServiceLocator<input::Mouse>::GetService();
 	}
@@ -33,7 +33,7 @@ namespace bjoernligan
 
 	void UISlider::Initialize(const SliderDef &p_xDefinition)
 	{
-		m_sLabel = p_xDefinition.m_sLabel;
+		m_sTextString = p_xDefinition.m_sTextString;
 		m_xFunction = std::move(p_xDefinition.m_xFunction);
 		m_fWidth = p_xDefinition.m_fWidth;
 		m_fMin = p_xDefinition.m_fMin;
@@ -42,8 +42,8 @@ namespace bjoernligan
 		m_bContinous = p_xDefinition.m_bContinous;
 
 		std::stringstream xStream;
-		xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue();
-		m_xLabelText.setString(xStream.str());
+		xStream << m_sTextString << ": " << std::fixed << std::setprecision(1) << GetValue();
+		m_xText.setString(xStream.str());
 
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
 		{
@@ -54,7 +54,7 @@ namespace bjoernligan
 	void UISlider::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		UIBase::draw(target, states);
-		target.draw(m_xLabelText, states);
+		target.draw(m_xText, states);
 	}
 
 	void UISlider::Update(const float &p_fDeltaTime)
@@ -91,8 +91,8 @@ namespace bjoernligan
 				m_xFunction(GetValue());
 
 			std::stringstream xStream;
-			xStream << m_sLabel << ": " << std::fixed << std::setprecision(1) << GetValue();
-			m_xLabelText.setString(xStream.str());
+			xStream << m_sTextString << ": " << std::fixed << std::setprecision(1) << GetValue();
+			m_xText.setString(xStream.str());
 		}
 	}
 
@@ -110,7 +110,7 @@ namespace bjoernligan
 			if (m_axSprites[3])
 				m_axSprites[3]->setPosition(sf::Vector2f(p_xPos.x + m_fCurrent * m_fWidth, p_xPos.y));
 
-			m_xLabelText.setPosition(sf::Vector2f(p_xPos.x - Settings::m_xSliderSize.x, p_xPos.y - Settings::m_xSliderSize.y * 1.5f));
+			m_xText.setPosition(sf::Vector2f(p_xPos.x - Settings::m_xSliderSize.x, p_xPos.y - Settings::m_xSliderSize.y * 1.5f));
 		}
 	}
 

@@ -102,19 +102,19 @@ namespace bjoernligan
 		system::SpriteManager* xSpriteManager = ServiceLocator<system::SpriteManager>::GetService();
 
 		std::stringstream xStream;
-		xStream << "slider_" << p_xDefinition.m_sLabel << "_bar_" << m_iSliderCount;
+		xStream << "slider_" << p_xDefinition.m_sTextString << "_bar_" << m_iSliderCount;
 		xSlider->AddSprite(xSpriteManager->LoadSprite("slider/slider_bar.png", xStream.str(), 0, 0, Settings::m_xSliderSize.x, Settings::m_xSliderSize.y));
 
 		xStream.str("");
-		xStream << "slider_" << p_xDefinition.m_sLabel << "_left_" << m_iSliderCount;
+		xStream << "slider_" << p_xDefinition.m_sTextString << "_left_" << m_iSliderCount;
 		xSlider->AddSprite(xSpriteManager->LoadSprite("slider/slider_left.png", xStream.str(), 0, 0, Settings::m_xSliderSize.x, Settings::m_xSliderSize.y));
 
 		xStream.str("");
-		xStream << "slider_" << p_xDefinition.m_sLabel << "_right_" << m_iSliderCount;
+		xStream << "slider_" << p_xDefinition.m_sTextString << "_right_" << m_iSliderCount;
 		xSlider->AddSprite(xSpriteManager->LoadSprite("slider/slider_right.png", xStream.str(), 0, 0, Settings::m_xSliderSize.x, Settings::m_xSliderSize.y));
 
 		xStream.str("");
-		xStream << "slider_" << p_xDefinition.m_sLabel << "_button_" << m_iSliderCount;
+		xStream << "slider_" << p_xDefinition.m_sTextString << "_button_" << m_iSliderCount;
 		xSlider->AddSprite(xSpriteManager->LoadSprite("slider/slider.png", xStream.str(), 0, 0, Settings::m_xSliderSize.x, Settings::m_xSliderSize.y));
 
 		xSlider->Initialize(p_xDefinition);
