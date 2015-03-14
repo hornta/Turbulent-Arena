@@ -43,7 +43,7 @@ namespace bjoernligan
 		if (m_xAgent)
 		{
 			//Init Steering, with Body and Movementstats
-			m_xAgent->InitializeSteering(m_xPhysicsBody->m_body, &m_MovementStats);
+			m_xAgent->InitializeSteering(m_xPhysicsBody->m_body, m_MovementStats);
 		}
 	}
 	void ClanMember::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -104,9 +104,9 @@ namespace bjoernligan
 	{
 		return m_clan;
 	}
-	MovementStats* ClanMember::GetMovementStats()
+	MovementStats& ClanMember::GetMovementStats()
 	{
-		return &m_MovementStats;
+		return m_MovementStats;
 	}
 
 	CombatStats* ClanMember::GetCombat()

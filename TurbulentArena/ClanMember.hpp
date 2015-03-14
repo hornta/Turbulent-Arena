@@ -32,7 +32,7 @@ namespace bjoernligan
 		void drawPathfinder(bool value);
 		bool IsFriend(ClanMember* p_xMember);
 		Clan* GetClan();
-		MovementStats* GetMovementStats();
+		MovementStats& GetMovementStats();
 		CombatStats* GetCombat();
 
 	protected:
