@@ -22,8 +22,6 @@ namespace bjoernligan
 			, m_xOwner(p_xOwner)
 			, m_xBT(nullptr)
 			, m_Steering(nullptr)
-			//, m_Pathfinder(nullptr)
-			, m_Utility(nullptr)
 		{
 			sense->addAgent(this);
 			m_Steering = std::make_unique<SteeringManager>();
@@ -32,12 +30,6 @@ namespace bjoernligan
 			/*m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
 			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));*/
 			m_map = ServiceLocator<Map>::GetService();
-
-			//Pathfinding stuff
-			m_Utility = ServiceLocator<Utility>::GetService();
-			//m_Pathfinder = ServiceLocator<Pathfinder>::GetService();
-			//m_Pathfinder->getGrid();
-
 		}
 
 		void Agent::Update(const float &p_fDeltaTime)
@@ -75,44 +67,18 @@ namespace bjoernligan
 		void Agent::Act()
 		{
 			//Test code,
-
-			/*m_senseData->setRadius(200.f);
-			Sense();
-			FleeFromVisibleEnemies();
-
-			if (!m_senseData->getVisibleFriends().empty())
-			{
-				if (!m_senseData->getVisibleFriends().empty())
-				{
-					for (unsigned int i = 0; i < m_senseData->getVisibleFriends().size(); i++)
-					{
-						m_Steering->Evade(m_senseData->getVisibleFriends()[i]->getOwner()->getBody()->m_body, false);
-					}
-				}
-			}*/
-		
-			/*if (!m_senseData->getVisibleEnemies().empty())
-			{
-				if (!m_senseData->getVisibleEnemies().empty())
-				{
-					for (unsigned int i = 0; i < m_senseData->getVisibleEnemies().size(); i++)
-					{
-						m_Steering->Pursuit(m_senseData->getVisibleEnemies()[i]->getOwner()->getBody()->m_body, true);
-					}
-				}
-			}*/
-			m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(500.f, 500.f));
+			//m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(50.f, 50.f));
 			MoveToTargetPos();
-			//Add other stuff here?, 
-			//evade target
-			//attack target/do damage?
-
 			m_Steering->Update();
 		}
 
 		void Agent::OnNotify(/*add parameters*/)
 		{
 
+		}
+		SteeringManager* Agent::GetSteering() const
+		{
+			return m_Steering.get();
 		}
 
 		SenseData* Agent::getSense() const
@@ -181,7 +147,7 @@ namespace bjoernligan
 				//soft stop
 				m_Steering->Arrival(sf::Vector2f(m_xOwner->getSprite()->getPosition()), 8.0f);
 		}
-		void Agent::FleeFromVisibleEnemies()
+	/*	void Agent::FleeFromVisibleEnemies()
 		{
 			if (!m_senseData->getVisibleEnemies().empty())
 			{
@@ -190,7 +156,7 @@ namespace bjoernligan
 					m_Steering->Flee(m_senseData->getVisibleEnemies()[i]->getOwner()->getSprite()->getPosition());
 				}
 			}
-		}
+		}*/
 		bool Agent::AtMoveTarget()
 		{
 			return false;

@@ -31,6 +31,7 @@ namespace bjoernligan
 			void Sense();
 			void Decide();
 			void Act();
+			SteeringManager* GetSteering() const;
 			SenseData* getSense() const;
 			ClanMember* getOwner() const;
 
@@ -49,13 +50,7 @@ namespace bjoernligan
 			bool getPathToVisibleTarget(Agent* agent);
 			bool getPathToRandomVisibleTarget();
 
-			//Steering stuff
 			void MoveToTargetPos();
-			void FleeFromVisibleEnemies();
-			bool IsFleeTargetInVector(Agent* p_Agent);
-			void AddFleeTarget(Agent* p_Agent);
-			void RemoveFleeTarget(Agent* p_Agent);
-
 
 			bool IsEnemyWithinAttackRange();
 			bool CanAttack() const;
@@ -66,11 +61,9 @@ namespace bjoernligan
 			std::unique_ptr<SenseData> m_senseData;
 			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
 
-			std::vector<Agent*> m_FleeTargets;
 
 			Pathfinder::Path m_CurrentPath;
 			sf::Vector2i m_xCurrentMapPos;
-			Utility* m_Utility;
 			Map* m_map;
 
 			ClanMember* m_xOwner;

@@ -37,9 +37,7 @@ namespace bjoernligan
 			
 		private:
 			sf::Vector2f m_Steering;
-			//sf::Vector2f m_MaxForce;*/
 			const sf::Vector2f* m_MaxVelocity;
-
 			
 			float m_Distance;
 			float m_SlowDownRadius;

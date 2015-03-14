@@ -294,6 +294,21 @@
     <ClInclude Include="SelectionRect.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BFleeFromEnemies.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BIsAllyTooClose.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BAvoidAlly.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BIsScared.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BPursueEnemy.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -484,6 +499,21 @@
     </ClCompile>
     <ClCompile Include="SelectionRect.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BFleeFromEnemies.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BIsAllyTooClose.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BAvoidAlly.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BIsScared.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BPursueEnemy.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

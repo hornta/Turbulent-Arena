@@ -15,7 +15,7 @@ namespace bjoernligan
 		SteeringManager::SteeringManager()
 		{
 			m_Steering = sf::Vector2f(0, 0);
-		/*	m_MaxVelocity = sf::Vector2f(0, 0);*/
+			m_MaxVelocity = nullptr;
 			m_Distance = 0.0f;
 			m_CurrentBody = nullptr;
 			m_Utility = nullptr;
@@ -95,7 +95,6 @@ namespace bjoernligan
 		void SteeringManager::Reset()
 		{
 			m_Steering = sf::Vector2f(0, 0);
-			//m_MaxVelocity = sf::Vector2f(0, 0);
 			m_MaxVelocity = nullptr;
 			m_SlowDownRadius = 0.0f;
 			m_Distance = 0.0f;
