@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "SelectionRect.hpp"
 #include "Mouse.hpp"
+#include "Clan.hpp"
 
 namespace bjoernligan
 {
@@ -34,7 +35,12 @@ namespace bjoernligan
 			m_xShape.setPosition(m_xStartPos + m_xOffset);
 			m_xShape.setSize(m_xOffset + sf::Vector2f(m_xMouse->m_xPos) - m_xShape.getPosition());
 			if (!m_xMouse->IsDown(sf::Mouse::Left))
+			{
+				//selection happens here
+				if (m_xTargetClan)
+					m_xTargetClan->SelectAgentsInRect(sf::FloatRect(m_xShape.getPosition().x, m_xShape.getPosition().y, m_xShape.getSize().x, m_xShape.getSize().y));
 				m_eState = EState::Idle;
+			}
 		}
 	}
 
@@ -46,16 +52,6 @@ namespace bjoernligan
 	void SelectionRect::SetOffset(const sf::Vector2f &p_xOffset)
 	{
 		m_xOffset = p_xOffset;
-	}
-
-	void SelectionRect::SetAgentIndexes(const std::vector<int32_t> &p_xIntVector)
-	{
-		m_aiSelectedAgentIndexes = p_xIntVector;
-	}
-
-	const std::vector<int32_t> &SelectionRect::GetSelectedAgentIndexes() const
-	{
-		return m_aiSelectedAgentIndexes;
 	}
 
 	void SelectionRect::draw(sf::RenderTarget &target, sf::RenderStates states) const

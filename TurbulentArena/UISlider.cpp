@@ -57,12 +57,12 @@ namespace bjoernligan
 		target.draw(m_xText, states);
 	}
 
-	void UISlider::Update(const float &p_fDeltaTime)
+	bool UISlider::Update(const float &p_fDeltaTime)
 	{
 		UIBase::Update(p_fDeltaTime);
 
 		if (!m_xMouse || m_axSprites.size() != 4U || !m_axSprites[3] || !m_axSprites[0])
-			return;
+			return false;
 
 		if (m_eStatus == EStatus::Idle)
 		{
@@ -70,6 +70,7 @@ namespace bjoernligan
 			{
 				m_eStatus = EStatus::Pressed;
 				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button2");
+				return true;
 			}
 		}
 		if (m_eStatus == EStatus::Pressed)
@@ -81,7 +82,7 @@ namespace bjoernligan
 				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button1");
 
 				m_xFunction(GetValue());
-				return;
+				return true;
 			}
 
 			m_axSprites[3]->setPosition(sf::Vector2f(GetAllowedX((float)m_xMouse->m_xPos.x), m_xPos.y));
@@ -93,7 +94,10 @@ namespace bjoernligan
 			std::stringstream xStream;
 			xStream << m_sTextString << ": " << std::fixed << std::setprecision(1) << GetValue();
 			m_xText.setString(xStream.str());
+
+			return true;
 		}
+		return false;
 	}
 
 	void UISlider::SetPos(const sf::Vector2f &p_xPos)

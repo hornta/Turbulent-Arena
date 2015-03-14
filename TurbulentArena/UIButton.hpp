@@ -40,7 +40,7 @@ namespace bjoernligan
 			const sf::Color &p_xHoverColor = m_xDefaultHoverColor,
 			const sf::Color &p_xPressedColor = m_xDefaultPressedColor);
 
-		void Update(const float &p_fDeltaTime);
+		bool Update(const float &p_fDeltaTime);
 		void SetPos(const sf::Vector2f &p_xPos);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

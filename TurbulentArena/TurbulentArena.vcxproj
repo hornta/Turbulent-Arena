@@ -101,6 +101,7 @@
     <ClInclude Include="GameOverChecker.hpp" />
     <ClInclude Include="GetPathToEnemy.hpp" />
     <ClInclude Include="HealthBar.hpp" />
+    <ClInclude Include="Mood.hpp" />
     <ClInclude Include="SelectionRect.hpp" />
     <ClInclude Include="Sense.hpp" />
     <ClInclude Include="GameState.hpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="GameOverChecker.cpp" />
     <ClCompile Include="GetPathToEnemy.cpp" />
     <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="Mood.cpp" />
     <ClCompile Include="SelectionRect.cpp" />
     <ClCompile Include="Sense.cpp" />
     <ClCompile Include="GameState.cpp" />
