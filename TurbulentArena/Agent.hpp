@@ -47,7 +47,7 @@ namespace bjoernligan
 			void MoveToTargetPos(bool p_Run);
 			bool AtMoveTarget();
 			bool canFindTarget();
-			bool getPathToVisibleTarget(Agent* agent);
+			bool getPathToVisibleTarget(SenseAgentData* senseAgentData);
 			bool getPathToRandomVisibleTarget();
 			bool IsEnemyWithinAttackRange();
 			bool CanAttack() const;
@@ -55,7 +55,7 @@ namespace bjoernligan
 			std::unique_ptr<BehaviorTree> m_xBT;
 			std::unique_ptr<SteeringManager> m_Steering;
 			std::unique_ptr<SenseData> m_senseData;
-			bjoernligan::Timer m_xSenseTimer, m_xDecideTimer;
+			sf::Clock m_senseDecideTimer;
 
 			Pathfinder::Path m_CurrentPath;
 			sf::Vector2i m_xCurrentMapPos;

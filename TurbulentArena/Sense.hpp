@@ -9,13 +9,20 @@ namespace bjoernligan
 		class Sense;
 		class Agent;
 
+		struct SenseAgentData
+		{
+			SenseAgentData(Agent* agent);
+			sf::Vector2f m_lastSeenPosition;
+			Agent* m_agent;
+		};
+
 		class SenseData
 		{
 			float m_radius;
 			Sense* m_sense;
 			Agent* m_me;
-			std::vector<Agent*> m_visibleEnemies;
-			std::vector<Agent*> m_visibleFriends;
+			std::vector<std::unique_ptr<SenseAgentData>> m_visibleEnemies;
+			std::vector<std::unique_ptr<SenseAgentData>> m_visibleFriends;
 
 		public:
 			SenseData(Agent* me, Sense* sense, float radius);
@@ -23,8 +30,8 @@ namespace bjoernligan
 			void update();
 			void setRadius(float radius);
 			float getRadius() const;
-			std::vector<Agent*> getVisibleEnemies() const;
-			std::vector<Agent*> getVisibleFriends() const;
+			std::vector<SenseAgentData*> getVisibleEnemies() const;
+			std::vector<SenseAgentData*> getVisibleFriends() const;
 		};
 
 		class Sense

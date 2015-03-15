@@ -59,30 +59,24 @@ namespace bjoernligan
 
 	void Clan::SetSocial(const float &p_fNewValue)
 	{
-		p_fNewValue; // <-- for compile
-
 		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
 		{
-			//m_members[k]->SetSocial(p_fNewValue);
+			m_clanMembers[k]->GetCombat()->setSocial(p_fNewValue);
 		}
 	}
 
 	void Clan::SetBrave(const float &p_fNewValue)
 	{
-		p_fNewValue; // <-- for compile
-
 		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
 		{
-			//m_members[k]->SetSocial(p_fNewValue);
+			m_clanMembers[k]->GetCombat()->setBrave(p_fNewValue);
 		}
 	}
 	void Clan::SetAgression(const float &p_fNewValue)
 	{
-		p_fNewValue; // <-- for compile
-
 		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
 		{
-			//m_members[k]->SetSocial(p_fNewValue);
+			m_clanMembers[k]->GetCombat()->setAgression(p_fNewValue);
 		}
 	}
 	const std::string &Clan::GetName() const

@@ -28,6 +28,7 @@ namespace bjoernligan
 	{
 		m_iDamage = p_iDamage;
 		m_iMaxHealth = m_iCurrentHealth = p_iHealth;
+		m_social = m_brave = m_agression = .5f;
 	}
 
 	void CombatStats::TakeDamage(const int32_t &p_iValue)
@@ -50,5 +51,35 @@ namespace bjoernligan
 	float CombatStats::GetHealthPercentage()
 	{
 		return (float)m_iCurrentHealth / m_iMaxHealth;
+	}
+
+	void CombatStats::setSocial(float val)
+	{
+		m_social = val;
+	}
+
+	void CombatStats::setBrave(float val)
+	{
+		m_brave = val;
+	}
+
+	void CombatStats::setAgression(float val)
+	{
+		m_agression = val;
+	}
+
+	float CombatStats::getSocial() const
+	{
+		return m_social;
+	}
+
+	float CombatStats::getBrave() const
+	{
+		return m_brave;
+	}
+
+	float CombatStats::getAgression() const
+	{
+		return m_agression;
 	}
 }
