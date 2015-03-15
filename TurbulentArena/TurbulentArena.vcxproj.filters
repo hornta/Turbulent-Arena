@@ -309,6 +309,18 @@
     <ClInclude Include="HelpFriend.h">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
+    <ClInclude Include="ReportToFriends.h">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="DetectEnemies.h">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="HasSomethingToReport.h">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="Explore.h">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -513,6 +525,18 @@
       <Filter>Source Files\AI</Filter>
     </ClCompile>
     <ClCompile Include="HelpFriend.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportToFriends.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="DetectEnemies.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="HasSomethingToReport.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="Explore.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
   </ItemGroup>

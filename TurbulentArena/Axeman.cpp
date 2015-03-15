@@ -42,7 +42,7 @@ namespace bjoernligan
 		ai::BSequenceNode* FleeSeq = FightOrFlightSel->AddChild<ai::BSequenceNode>();
 		ai::BSelectorNode* FightSel = FightOrFlightSel->AddChild<ai::BSelectorNode>();
 		
-		//level 5
+		// level 5
 		FleeSeq->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
 		FleeSeq->AddChild<ai::BFleeFromEnemies>()->AttachAgent(m_xAgent.get());
 		ai::BSequenceNode* FightSeq = FightSel->AddChild<ai::BSequenceNode>();
