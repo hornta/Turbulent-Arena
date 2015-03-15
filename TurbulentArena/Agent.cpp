@@ -32,24 +32,6 @@ namespace bjoernligan
 
 		void Agent::Update(const float &p_fDeltaTime)
 		{
-			//m_xSenseTimer.Update(p_fDeltaTime);
-			//m_xDecideTimer.Update(p_fDeltaTime);
-
-			
-			//SENSE
-			//if (m_xSenseTimer.Done())
-			//{
-			//	m_xSenseTimer.Reset();
-			//	Sense();
-			//}
-			////DECIDE
-			//if (m_xDecideTimer.Done())
-			//{
-			//	m_xDecideTimer.Reset();
-			//	Decide();
-			//}
-			//ACT
-			//Act();
 			p_fDeltaTime;
 			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
 			{
@@ -121,6 +103,7 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos()
 		{
+			m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(150, 150));
 			if (m_CurrentPath.isDone())
 			{
 				m_stuckTimer.restart();
