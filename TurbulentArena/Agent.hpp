@@ -61,7 +61,7 @@ namespace bjoernligan
 			std::unique_ptr<SteeringManager> m_Steering;
 			std::unique_ptr<SenseData> m_senseData;
 			sf::Clock m_senseDecideTimer;
-
+			sf::Clock m_stuckTimer;
 
 			Pathfinder::Path m_CurrentPath;
 			sf::Vector2i m_xCurrentMapPos;

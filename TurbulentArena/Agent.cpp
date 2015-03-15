@@ -11,7 +11,8 @@
 
 #define AGENT_SENSE_DECIDE_TIMER 0.01f
 #define AGENT_SENSE_RADIUS_DEFAULT 300.f
-#define AGENT_SOCIAL_WANDER_TARGET 40.f
+#define AGENT_SOCIAL_WANDER_TARGET 20.f
+#define AGENT_STUCK_COOLDOWN 3.f
 
 namespace bjoernligan
 {
@@ -123,6 +124,7 @@ namespace bjoernligan
 		{
 			if (m_CurrentPath.isDone())
 			{
+				m_stuckTimer.restart();
 				sf::Vector2i originPos;
 				sf::Vector2i target;
 				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
@@ -133,8 +135,8 @@ namespace bjoernligan
 				if (!friends.empty())
 				{
 					originPos = m_map->getTilePosition(friends[0]->m_agent->getOwner()->getSprite()->getPosition());
-					searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
-					searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
+					searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 3.f, AGENT_SOCIAL_WANDER_TARGET);
+					searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 3.f, AGENT_SOCIAL_WANDER_TARGET);
 				}
 				else
 				{
@@ -142,7 +144,6 @@ namespace bjoernligan
 					searchArea.x = AGENT_SOCIAL_WANDER_TARGET;
 					searchArea.y = AGENT_SOCIAL_WANDER_TARGET;
 				}
-
 
 				//xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
 				if (m_map->GetRandomTopmostWalkableTile(originPos, target, sf::Vector2i(searchArea)))
@@ -170,13 +171,28 @@ namespace bjoernligan
 				m_Steering->Seek(sf::Vector2f(target.x, target.y));
 
 				if (target.dist(currentPosition) < 24)
+				{
 					++m_CurrentPath.currentNode;
+					m_stuckTimer.restart();
+				}
 			}
 			else
 				//hard stop
 				//m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
 				//soft stop
 				m_Steering->Arrival(sf::Vector2f(m_xOwner->getSprite()->getPosition()), 8.0f);
+
+			// Check if they are stuck
+			if (!m_CurrentPath.isDone())
+			{
+				// Has the agent been stuck for more than AGENT_STUCK_COOLDOWN seconds
+				if (m_stuckTimer.getElapsedTime().asSeconds() >= AGENT_STUCK_COOLDOWN)
+				{
+					// Find new path for the poor agent
+					m_CurrentPath.setDone();
+					ChooseWanderPos();
+				}
+			}
 		}
 	/*	void Agent::FleeFromVisibleEnemies()
 		{
