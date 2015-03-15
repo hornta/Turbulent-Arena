@@ -36,19 +36,18 @@ namespace bjoernligan
 
 		// level 4
 		sel0->AddChild<ai::CanSeeEnemies>()->AttachAgent(m_xAgent.get());
-		//ai::BInverterNode* FleeInvert = seq0->AddChild<ai::BInverterNode>();
 		ai::BSequenceNode* FleeSeq = FightOrFlightSel->AddChild<ai::BSequenceNode>();
-		ai::BSelectorNode* sel1 = FightOrFlightSel->AddChild<ai::BSelectorNode>();
+		ai::BSelectorNode* FightSel = FightOrFlightSel->AddChild<ai::BSelectorNode>();
 		
 		//level 5
 		FleeSeq->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
 		FleeSeq->AddChild<ai::BFleeFromEnemies>()->AttachAgent(m_xAgent.get());
-		ai::BSequenceNode* seq1 = sel1->AddChild<ai::BSequenceNode>();
-		sel1->AddChild<ai::GetPathToEnemy>()->AttachAgent(m_xAgent.get());
+		ai::BSequenceNode* FightSeq = FightSel->AddChild<ai::BSequenceNode>();
+		FightSel->AddChild<ai::GetPathToEnemy>()->AttachAgent(m_xAgent.get());
 
 		// level 6
-		seq1->AddChild<ai::EnemyWithinRadius>()->AttachAgent(m_xAgent.get());
-		seq1->AddChild<ai::AttackEnemy>()->AttachAgent(m_xAgent.get());
+		FightSeq->AddChild<ai::EnemyWithinRadius>()->AttachAgent(m_xAgent.get());
+		FightSeq->AddChild<ai::AttackEnemy>()->AttachAgent(m_xAgent.get());
 	}
 
 	void Axeman::update(float deltatime)
