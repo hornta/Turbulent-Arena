@@ -25,20 +25,18 @@ namespace bjoernligan
 		xRootSelector;
 
 		// level 2
-		ai::BSequenceNode* seq0 = xRootSelector->AddChild<ai::BSequenceNode>();
-		seq0->AttachAgent(m_xAgent.get());
+		ai::BSequenceNode* combatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		ai::BSequenceNode* friendHelpSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		xRootSelector->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent.get());
 
 		// level 3
-		ai::BSelectorNode* sel0 = seq0->AddChild<ai::BSelectorNode>();
-		seq0->AttachAgent(m_xAgent.get());
-		ai::BSelectorNode* sel1 = seq0->AddChild<ai::BSelectorNode>();
-		sel1->AttachAgent(m_xAgent.get());
+		ai::BSelectorNode* sel0 = combatSequence->AddChild<ai::BSelectorNode>();
+		ai::BSelectorNode* sel1 = combatSequence->AddChild<ai::BSelectorNode>();
+		friendHelpSequence->AddChild<ai::HelpFriend>()->AttachAgent(m_xAgent.get());
 
 		// level 4
 		sel0->AddChild<ai::CanSeeEnemies>()->AttachAgent(m_xAgent.get());
 		ai::BSequenceNode* seq1 = sel1->AddChild<ai::BSequenceNode>();
-		seq1->AttachAgent(m_xAgent.get());
 		sel1->AddChild<ai::GetPathToEnemy>()->AttachAgent(m_xAgent.get());
 
 		// level 5

@@ -11,3 +11,4 @@
 #include "EnemyWithinRadius.hpp"
 #include "AttackEnemy.hpp"
 #include "CanSeeEnemies.h"
+#include "HelpFriend.h"

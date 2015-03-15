@@ -104,20 +104,22 @@ namespace bjoernligan
 				sf::Vector2i target;
 				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
+				sf::Vector2f searchArea;
 				// Get nearest friend
 				std::vector<SenseAgentData*> friends = m_senseData->getVisibleFriends();
 				if (!friends.empty())
 				{
 					originPos = m_map->getTilePosition(friends[0]->m_agent->getOwner()->getSprite()->getPosition());
+					searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
+					searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
 				}
 				else
 				{
 					originPos = m_map->getTilePosition(m_xOwner->getSprite()->getPosition());
+					searchArea.x = AGENT_SOCIAL_WANDER_TARGET;
+					searchArea.y = AGENT_SOCIAL_WANDER_TARGET;
 				}
 
-				sf::Vector2f searchArea;
-				searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
-				searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
 
 				//xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
 				if (m_map->GetRandomTopmostWalkableTile(originPos, target, sf::Vector2i(searchArea)))
@@ -182,9 +184,15 @@ namespace bjoernligan
 		{
 			Map* map = ServiceLocator<Map>::GetService();
 			Pathfinder* pathfinder = ServiceLocator<Pathfinder>::GetService();
+			
+			sf::Vector2i goalPosition;
+			if (!m_CurrentPath.isDone())
+			{
+				Pathfinder::PathNode* node = &m_CurrentPath.nodes.back();
+				goalPosition.x = node->x;
+				goalPosition.y = node->y;
+			}
 
-			Pathfinder::PathNode* node = &m_CurrentPath.nodes.back();
-			sf::Vector2i goalPosition(node->x, node->y);
 			sf::Vector2i newGoalPosition = map->getTilePosition(senseAgentData->m_lastSeenPosition);
 
 			if (goalPosition != newGoalPosition)

@@ -128,7 +128,7 @@ namespace bjoernligan
 		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
 		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
 		clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
-		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 16.f;
+		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 15.f;
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
 
 		{
