@@ -96,6 +96,9 @@
     <ClInclude Include="BDamageTarget.hpp" />
     <ClInclude Include="BFindTargetNode.hpp" />
     <ClInclude Include="BWalkToTarget.hpp" />
+    <ClInclude Include="DetectEnemies.h" />
+    <ClInclude Include="Explore.h" />
+    <ClInclude Include="HasSomethingToReport.h" />
     <ClInclude Include="HelpFriend.h" />
     <ClInclude Include="CanSeeEnemies.h" />
     <ClInclude Include="EnemyWithinRadius.hpp" />
@@ -103,6 +106,7 @@
     <ClInclude Include="GetPathToEnemy.hpp" />
     <ClInclude Include="HealthBar.hpp" />
     <ClInclude Include="Mood.hpp" />
+    <ClInclude Include="ReportToFriends.h" />
     <ClInclude Include="SelectionRect.hpp" />
     <ClInclude Include="Sense.hpp" />
     <ClInclude Include="GameState.hpp" />
@@ -171,6 +175,9 @@
     <ClCompile Include="BDamageTarget.cpp" />
     <ClCompile Include="BFindTargetNode.cpp" />
     <ClCompile Include="BWalkToTarget.cpp" />
+    <ClCompile Include="DetectEnemies.cpp" />
+    <ClCompile Include="Explore.cpp" />
+    <ClCompile Include="HasSomethingToReport.cpp" />
     <ClCompile Include="HelpFriend.cpp" />
     <ClCompile Include="CanSeeEnemies.cpp" />
     <ClCompile Include="easylogging++.h">
@@ -182,6 +189,7 @@
     <ClCompile Include="GetPathToEnemy.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="Mood.cpp" />
+    <ClCompile Include="ReportToFriends.cpp" />
     <ClCompile Include="SelectionRect.cpp" />
     <ClCompile Include="Sense.cpp" />
     <ClCompile Include="GameState.cpp" />
