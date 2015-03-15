@@ -37,18 +37,20 @@ namespace bjoernligan
 			m_xSenseTimer.Update(p_fDeltaTime);
 			m_xDecideTimer.Update(p_fDeltaTime);
 
+			Sense();
+			Decide();
 			//SENSE
-			if (m_xSenseTimer.Done())
-			{
-				m_xSenseTimer.Reset();
-				Sense();
-			}
-			//DECIDE
-			if (m_xDecideTimer.Done())
-			{
-				m_xDecideTimer.Reset();
-				Decide();
-			}
+			//if (m_xSenseTimer.Done())
+			//{
+			//	m_xSenseTimer.Reset();
+			//	Sense();
+			//}
+			////DECIDE
+			//if (m_xDecideTimer.Done())
+			//{
+			//	m_xDecideTimer.Reset();
+			//	Decide();
+			//}
 			//ACT
 			Act();
 
@@ -56,6 +58,7 @@ namespace bjoernligan
 
 		void Agent::Sense()
 		{
+			m_senseData->setRadius(500.f);
 			m_senseData->update();
 		}
 
@@ -79,6 +82,10 @@ namespace bjoernligan
 		SteeringManager* Agent::GetSteering() const
 		{
 			return m_Steering.get();
+		}
+		Pathfinder::Path * Agent::GetPath()
+		{
+			return &m_CurrentPath;
 		}
 
 		SenseData* Agent::getSense() const

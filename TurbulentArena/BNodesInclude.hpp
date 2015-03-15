@@ -11,3 +11,6 @@
 #include "EnemyWithinRadius.hpp"
 #include "AttackEnemy.hpp"
 #include "CanSeeEnemies.h"
+#include "BIsScared.hpp"
+#include "BFleeFromEnemies.hpp"
+#include "BPursueEnemy.hpp"

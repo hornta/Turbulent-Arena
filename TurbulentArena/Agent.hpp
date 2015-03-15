@@ -32,6 +32,7 @@ namespace bjoernligan
 			void Decide();
 			void Act();
 			SteeringManager* GetSteering() const;
+			Pathfinder::Path * GetPath();
 			SenseData* getSense() const;
 			ClanMember* getOwner() const;
 
