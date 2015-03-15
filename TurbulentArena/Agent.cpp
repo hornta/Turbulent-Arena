@@ -103,7 +103,7 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos()
 		{
-			m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(150, 150));
+			m_xOwner->GetMovementStats().SetMaxVelocity(150.f);
 			if (m_CurrentPath.isDone())
 			{
 				m_stuckTimer.restart();
