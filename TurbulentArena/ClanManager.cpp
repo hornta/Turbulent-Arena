@@ -37,6 +37,10 @@ namespace bjoernligan
 		{
 			target.draw(*m_clans[i].get(), states);
 		}
+		for (std::size_t i = 0; i < m_clans.size(); ++i)
+		{
+			m_clans[i]->drawHpBars(target, states);
+		}
 	}
 
 	std::vector<Clan*> ClanManager::getClans() const

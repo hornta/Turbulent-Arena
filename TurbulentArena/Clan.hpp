@@ -21,6 +21,7 @@ namespace bjoernligan
 
 		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		void drawHpBars(sf::RenderTarget& target, sf::RenderStates states) const;
 		sf::Color getColor() const;
 		std::vector<ClanMember*> getMembers() const;
 		bool IsAlive();
@@ -35,7 +36,7 @@ namespace bjoernligan
 		void SelectAgentsInRect(const sf::FloatRect &p_xShape);
 
 		//temporary
-		void DamageRandomMember(const int32_t &p_iAmount);
+		void DamageRandomMember(const float &p_iAmount);
 
 	private:
 		sf::Color m_color;

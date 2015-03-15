@@ -16,6 +16,8 @@ namespace bjoernligan
 
 	void Scout::initiate()
 	{
+		m_eClass = EClass::Scout;
+
 		m_xCombatStats.Initiate(1, 5);
 		m_MovementStats.Initiate(sf::Vector2f(500.0f, 500.0f));
 
