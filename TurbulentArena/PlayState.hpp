@@ -49,6 +49,8 @@ namespace bjoernligan
 		void ToggleDebugPathfinder(bool value);
 		void SetScrollSpeed(const float &p_fNewSpeed);
 
+		void ToggleGamePaused();
+
 		//from engine
 		system::SpriteManager* m_xSpriteManager;
 		system::AudioManager* m_xAudioManager;
@@ -76,5 +78,7 @@ namespace bjoernligan
 		GameOverChecker m_xGameOverChecker;
 		Timer m_xGameOverTimer;
 		bool m_bGameOver;
+
+		bool m_bGamePaused;
 	};
 }

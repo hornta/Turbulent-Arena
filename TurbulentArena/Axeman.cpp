@@ -16,7 +16,7 @@ namespace bjoernligan
 
 	void Axeman::initiate()
 	{
-		m_xCombatStats.Initiate(3, 4);
+		m_xCombatStats.Initiate(1, 10);
 		m_MovementStats.Initiate(sf::Vector2f(300, 300.0f));
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();

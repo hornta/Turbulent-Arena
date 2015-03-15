@@ -95,6 +95,26 @@ namespace bjoernligan
 			itr->second.m_xText.setString(p_sTextString);
 	}
 
+	void UIManager::SetTextVilibility(const std::string &p_sTextName, const bool &p_bVilible)
+	{
+		auto itr = m_axTexts.find(p_sTextName);
+		if (itr != m_axTexts.end())
+		{
+			if (p_bVilible)
+				itr->second.m_xText.setColor(sf::Color(
+				itr->second.m_xText.getColor().r,
+				itr->second.m_xText.getColor().g,
+				itr->second.m_xText.getColor().b,
+				255));
+			else
+				itr->second.m_xText.setColor(sf::Color(
+				itr->second.m_xText.getColor().r,
+				itr->second.m_xText.getColor().g,
+				itr->second.m_xText.getColor().b,
+				0));
+		}
+	}
+
 	UISlider* UIManager::AddSlider(const std::string &p_sLabel, const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth)
 	{
 		++m_iSliderCount;

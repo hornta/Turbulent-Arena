@@ -55,6 +55,7 @@ namespace bjoernligan
 
 		void AddText(const std::string &p_sTextName, const std::string &p_sTextString, const std::string &p_sLabel, const sf::Vector2f &p_xPos, const uint32_t &p_iTextSize = 30U);
 		void ChangeTextString(const std::string &p_sTextName, const std::string &p_sTextString);
+		void SetTextVilibility(const std::string &p_sTextName, const bool &p_bVilible);
 
 		UISlider* AddSlider(const std::string &p_sLabel, const UISlider::SliderDef &p_xDefinition, const sf::Vector2f &p_xPos, const float &p_fDepth);
 		void RemoveElementsByLabel(const std::string &p_sLabel);
