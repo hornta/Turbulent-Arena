@@ -30,6 +30,8 @@ namespace bjoernligan
 			void update();
 			void setRadius(float radius);
 			float getRadius() const;
+			std::vector<std::unique_ptr<SenseAgentData>> getVisibleFriendsInRadius(float radius) const;
+			std::vector<std::unique_ptr<SenseAgentData>> getVisibleEnemiesInRadius(float radius) const;
 			std::vector<SenseAgentData*> getVisibleEnemies() const;
 			std::vector<SenseAgentData*> getVisibleFriends() const;
 		};

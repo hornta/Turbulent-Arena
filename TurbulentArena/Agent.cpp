@@ -11,7 +11,8 @@
 
 #define AGENT_SENSE_DECIDE_TIMER 0.01f
 #define AGENT_SENSE_RADIUS_DEFAULT 300.f
-#define AGENT_SOCIAL_WANDER_TARGET 40.f
+#define AGENT_SOCIAL_WANDER_TARGET 20.f
+#define AGENT_STUCK_COOLDOWN 3.f
 
 namespace bjoernligan
 {
@@ -31,6 +32,24 @@ namespace bjoernligan
 
 		void Agent::Update(const float &p_fDeltaTime)
 		{
+			//m_xSenseTimer.Update(p_fDeltaTime);
+			//m_xDecideTimer.Update(p_fDeltaTime);
+
+			
+			//SENSE
+			//if (m_xSenseTimer.Done())
+			//{
+			//	m_xSenseTimer.Reset();
+			//	Sense();
+			//}
+			////DECIDE
+			//if (m_xDecideTimer.Done())
+			//{
+			//	m_xDecideTimer.Reset();
+			//	Decide();
+			//}
+			//ACT
+			//Act();
 			p_fDeltaTime;
 			if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
 			{
@@ -44,6 +63,7 @@ namespace bjoernligan
 
 		void Agent::Sense()
 		{
+
 			m_xCurrentMapPos = m_map->getTilePosition(getOwner()->getSprite()->getPosition());
 			m_senseData->update();
 		}
@@ -68,6 +88,10 @@ namespace bjoernligan
 		SteeringManager* Agent::GetSteering() const
 		{
 			return m_Steering.get();
+		}
+		Pathfinder::Path * Agent::GetPath()
+		{
+			return &m_CurrentPath;
 		}
 
 		SenseData* Agent::getSense() const
@@ -100,24 +124,26 @@ namespace bjoernligan
 		{
 			if (m_CurrentPath.isDone())
 			{
+				m_stuckTimer.restart();
 				sf::Vector2i originPos;
 				sf::Vector2i target;
 				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
+				sf::Vector2f searchArea;
 				// Get nearest friend
 				std::vector<SenseAgentData*> friends = m_senseData->getVisibleFriends();
 				if (!friends.empty())
 				{
 					originPos = m_map->getTilePosition(friends[0]->m_agent->getOwner()->getSprite()->getPosition());
+					searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 3.f, AGENT_SOCIAL_WANDER_TARGET);
+					searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 3.f, AGENT_SOCIAL_WANDER_TARGET);
 				}
 				else
 				{
 					originPos = m_map->getTilePosition(m_xOwner->getSprite()->getPosition());
+					searchArea.x = AGENT_SOCIAL_WANDER_TARGET;
+					searchArea.y = AGENT_SOCIAL_WANDER_TARGET;
 				}
-
-				sf::Vector2f searchArea;
-				searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
-				searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
 
 				//xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
 				if (m_map->GetRandomTopmostWalkableTile(originPos, target, sf::Vector2i(searchArea)))
@@ -145,13 +171,28 @@ namespace bjoernligan
 				m_Steering->Seek(sf::Vector2f(target.x, target.y));
 
 				if (target.dist(currentPosition) < 24)
+				{
 					++m_CurrentPath.currentNode;
+					m_stuckTimer.restart();
+				}
 			}
 			else
 				//hard stop
 				//m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
 				//soft stop
 				m_Steering->Arrival(sf::Vector2f(m_xOwner->getSprite()->getPosition()), 8.0f);
+
+			// Check if they are stuck
+			if (!m_CurrentPath.isDone())
+			{
+				// Has the agent been stuck for more than AGENT_STUCK_COOLDOWN seconds
+				if (m_stuckTimer.getElapsedTime().asSeconds() >= AGENT_STUCK_COOLDOWN)
+				{
+					// Find new path for the poor agent
+					m_CurrentPath.setDone();
+					ChooseWanderPos();
+				}
+			}
 		}
 	/*	void Agent::FleeFromVisibleEnemies()
 		{
@@ -182,9 +223,15 @@ namespace bjoernligan
 		{
 			Map* map = ServiceLocator<Map>::GetService();
 			Pathfinder* pathfinder = ServiceLocator<Pathfinder>::GetService();
+			
+			sf::Vector2i goalPosition;
+			if (!m_CurrentPath.isDone())
+			{
+				Pathfinder::PathNode* node = &m_CurrentPath.nodes.back();
+				goalPosition.x = node->x;
+				goalPosition.y = node->y;
+			}
 
-			Pathfinder::PathNode* node = &m_CurrentPath.nodes.back();
-			sf::Vector2i goalPosition(node->x, node->y);
 			sf::Vector2i newGoalPosition = map->getTilePosition(senseAgentData->m_lastSeenPosition);
 
 			if (goalPosition != newGoalPosition)

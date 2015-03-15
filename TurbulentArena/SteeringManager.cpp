@@ -137,6 +137,7 @@ namespace bjoernligan
 			sf::Vector2f CurrentBodyPos = m_Utility->ConvertVector_B2toSF(m_CurrentBody->GetPosition());
 
 			//distance / speed, (this is basicly a prediction number on where target will be in T number of iterations) 
+			//float PredictionCycle = 10.f;
 			int PredictionCycle = static_cast<int>(round
 				(GetEuclideanDistance(CurrentBodyPos, TargetPosition) / GetEuclideanDistance(CurrentBodyPos, *m_MaxVelocity)));
 
