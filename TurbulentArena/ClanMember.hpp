@@ -6,6 +6,7 @@
 #include "UserData.hpp"
 #include "HealthBar.hpp"
 #include "Agent.hpp"
+#include "Mood.hpp"
 
 namespace bjoernligan
 {
@@ -17,7 +18,7 @@ namespace bjoernligan
 	class ClanMember : public Object, public sf::Drawable
 	{
 		friend class Clan;
-	public:
+	public:		
 		ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);
 		~ClanMember();
 
@@ -32,8 +33,13 @@ namespace bjoernligan
 		void drawPathfinder(bool value);
 		bool IsFriend(ClanMember* p_xMember);
 		Clan* GetClan();
-		MovementStats* GetMovementStats();
+		MovementStats& GetMovementStats();
 		CombatStats* GetCombat();
+
+		void SetMoodValue(const ai::Mood::EMoodType &p_eMoodType, const float &p_fValue);
+		ai::Mood* GetMood();
+
+		void SetSelection(const bool &p_bValue);
 
 	protected:
 		std::unique_ptr<ai::Agent> m_xAgent;
@@ -44,5 +50,7 @@ namespace bjoernligan
 		std::unique_ptr<sf::Sprite> m_sprite;
 		bool m_drawPathfinder;
 		std::unique_ptr<B2UserData> m_userData;
+		ai::Mood m_xMood;
+		sf::RectangleShape m_xSelectionRect;
 	};
 }

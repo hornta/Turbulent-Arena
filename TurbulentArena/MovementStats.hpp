@@ -8,17 +8,13 @@ namespace bjoernligan
 	struct MovementStats
 	{
 	private:
-		sf::Vector2f m_MaxWalkVelocity;
-		sf::Vector2f m_MaxRunVelocity;
+		sf::Vector2f m_MaxVelocity;
 		//float m_Acceleration;
-		//float m_SlowDownRadius;
 
 	public:
-		void Initiate(const sf::Vector2f &p_MaxWalkVelocity, const sf::Vector2f &p_MaxRunVelocity);
+		void Initiate(const sf::Vector2f p_MaxVelocity);
 	
-		const sf::Vector2f& GetMaxWalkVelocity();
-		const sf::Vector2f& GetMaxRunVelocity();
-		//const float& GetAcceleration();
-		//const float& GetSlowDownRadius();
+		const sf::Vector2f& GetMaxVelocity();
+		void SetMaxVelocity(const sf::Vector2f p_NewMaxVelocity);
 	};
 }

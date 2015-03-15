@@ -168,12 +168,6 @@
     <ClInclude Include="ContactListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Clan.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClanManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Visibility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -255,12 +249,6 @@
     <ClInclude Include="Scout.hpp">
       <Filter>Header Files\clans</Filter>
     </ClInclude>
-    <ClInclude Include="ClanManager.hpp">
-      <Filter>Header Files\clans</Filter>
-    </ClInclude>
-    <ClInclude Include="Clan.hpp">
-      <Filter>Header Files\clans</Filter>
-    </ClInclude>
     <ClInclude Include="GameOverChecker.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -293,6 +281,30 @@
     </ClInclude>
     <ClInclude Include="SelectionRect.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BFleeFromEnemies.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BIsAllyTooClose.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BAvoidAlly.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BIsScared.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
+    <ClInclude Include="BPursueEnemy.hpp">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+	</ClInclude>
+    <ClInclude Include="Clan.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="ClanManager.hpp">
+      <Filter>Header Files\clans</Filter>
+    </ClInclude>
+    <ClInclude Include="Mood.hpp">
+      <Filter>Header Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -360,12 +372,6 @@
       <Filter>Source Files\AI</Filter>
     </ClCompile>
     <ClCompile Include="ContactListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Clan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ClanManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Box2DWorldDraw.cpp">
@@ -449,12 +455,6 @@
     <ClCompile Include="Scout.cpp">
       <Filter>Source Files\clans</Filter>
     </ClCompile>
-    <ClCompile Include="ClanManager.cpp">
-      <Filter>Source Files\clans</Filter>
-    </ClCompile>
-    <ClCompile Include="Clan.cpp">
-      <Filter>Source Files\clans</Filter>
-    </ClCompile>
     <ClCompile Include="GameOverChecker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -484,6 +484,30 @@
     </ClCompile>
     <ClCompile Include="SelectionRect.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BFleeFromEnemies.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BIsAllyTooClose.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BAvoidAlly.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BIsScared.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="BPursueEnemy.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+	</ClCompile>  
+    <ClCompile Include="Clan.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="ClanManager.cpp">
+      <Filter>Source Files\clans</Filter>
+    </ClCompile>
+    <ClCompile Include="Mood.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

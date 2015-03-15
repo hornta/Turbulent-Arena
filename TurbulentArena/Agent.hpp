@@ -31,6 +31,7 @@ namespace bjoernligan
 			void Sense();
 			void Decide();
 			void Act();
+			SteeringManager* GetSteering() const;
 			SenseData* getSense() const;
 			ClanMember* getOwner() const;
 
@@ -39,27 +40,30 @@ namespace bjoernligan
 			BehaviorTree* getBehaviorTree();
 			void setSenseRadius(float p_senseRadius);
 
-			void InitializeSteering(b2Body* p_CurrentBody, MovementStats *p_MovementStats);
+			void InitializeSteering(b2Body* p_CurrentBody,MovementStats &p_MovementStats);
 
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
 			void ChooseWanderPos();
-			void MoveToTargetPos(bool p_Run);
 			bool AtMoveTarget();
 			bool canFindTarget();
 			bool getPathToVisibleTarget(SenseAgentData* senseAgentData);
 			bool getPathToRandomVisibleTarget();
+
+			void MoveToTargetPos();
+
 			bool IsEnemyWithinAttackRange();
 			bool CanAttack() const;
+
 		protected:
 			std::unique_ptr<BehaviorTree> m_xBT;
 			std::unique_ptr<SteeringManager> m_Steering;
 			std::unique_ptr<SenseData> m_senseData;
 			sf::Clock m_senseDecideTimer;
 
+
 			Pathfinder::Path m_CurrentPath;
 			sf::Vector2i m_xCurrentMapPos;
-			Utility* m_Utility;
 			Map* m_map;
 
 			ClanMember* m_xOwner;

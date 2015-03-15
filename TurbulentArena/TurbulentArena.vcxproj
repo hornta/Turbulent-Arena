@@ -86,6 +86,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BIsScared.hpp" />
+    <ClInclude Include="BPursueEnemy.hpp" />
+    <ClInclude Include="BAvoidAlly.hpp" />
+    <ClInclude Include="BIsAllyTooClose.hpp" />
+    <ClInclude Include="BFleeFromEnemies.hpp" />
     <ClInclude Include="AttackEnemy.hpp" />
     <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="BDamageTarget.hpp" />
@@ -96,6 +101,7 @@
     <ClInclude Include="GameOverChecker.hpp" />
     <ClInclude Include="GetPathToEnemy.hpp" />
     <ClInclude Include="HealthBar.hpp" />
+    <ClInclude Include="Mood.hpp" />
     <ClInclude Include="SelectionRect.hpp" />
     <ClInclude Include="Sense.hpp" />
     <ClInclude Include="GameState.hpp" />
@@ -154,6 +160,11 @@
     <ClInclude Include="WinMenu.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BIsScared.cpp" />
+    <ClCompile Include="BPursueEnemy.cpp" />
+    <ClCompile Include="BAvoidAlly.cpp" />
+    <ClCompile Include="BIsAllyTooClose.cpp" />
+    <ClCompile Include="BFleeFromEnemies.cpp" />
     <ClCompile Include="AttackEnemy.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BDamageTarget.cpp" />
@@ -168,6 +179,7 @@
     <ClCompile Include="GameOverChecker.cpp" />
     <ClCompile Include="GetPathToEnemy.cpp" />
     <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="Mood.cpp" />
     <ClCompile Include="SelectionRect.cpp" />
     <ClCompile Include="Sense.cpp" />
     <ClCompile Include="GameState.cpp" />

@@ -61,11 +61,15 @@ namespace bjoernligan
 
 		void setView(const sf::View& view);
 		sf::View getView() const;
+
+		const bool &GetUsedThisUpdate();
+
 	private:
 		sf::View m_view;
 		std::vector<UIBase::Ptr> m_axElements;
 		std::map< std::string, UIText > m_axTexts;
 		uint32_t m_iSliderCount;
+		bool m_bUsedThisUpdate;
 
 		DebugWindow::Ptr m_xDebugWindow;
 	};

@@ -169,6 +169,8 @@ namespace bjoernligan
 			}
 		}
 		
+		m_xSelectionRect.SetTargetClan(m_xPlayerClan);
+
 		UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32),
 			std::bind(&bjoernligan::PlayState::SetDebugMode, this, std::placeholders::_1));
@@ -243,6 +245,9 @@ namespace bjoernligan
 		m_physics->update(p_fDeltaTime);
 		m_clanManager->Update(p_fDeltaTime);
 		updateCamera(p_fDeltaTime);
+		m_xSelectionRect.SetOffset(sf::Vector2f(m_view.getCenter() - sf::Vector2f(Settings::m_xWindowSize / 2)));
+		if(!m_xUIManager->GetUsedThisUpdate())
+			m_xSelectionRect.Update();
 
 		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Escape))
 		{
@@ -257,9 +262,6 @@ namespace bjoernligan
 			m_xAudioManager->PlaySoundClip("Punch");
 			m_xPlayerClan->DamageRandomMember(1);
 		}
-
-		m_xSelectionRect.SetOffset(sf::Vector2f(m_xDrawManager->getWindow()->getView().getViewport().left * 2, m_xDrawManager->getWindow()->getView().getViewport().top * 2));
-		m_xSelectionRect.Update();
 
 		GameOverCheck(p_fDeltaTime);
 

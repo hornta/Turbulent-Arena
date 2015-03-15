@@ -21,16 +21,12 @@ namespace bjoernligan
 			: m_xOwner(p_xOwner)
 			, m_xBT(nullptr)
 			, m_Steering(nullptr)
-			, m_Utility(nullptr)
 		{
 			sense->addAgent(this);
 			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
 			m_senseData = std::make_unique<SenseData>(this, sense, 300.f);
 			m_map = ServiceLocator<Map>::GetService();
-
-			m_Utility = ServiceLocator<Utility>::GetService();
-
 		}
 
 		void Agent::Update(const float &p_fDeltaTime)
@@ -59,16 +55,19 @@ namespace bjoernligan
 
 		void Agent::Act()
 		{
-			MoveToTargetPos(true);
-			//Add other stuff here?, 
-			//evade target
-			//attack target/do damage?
+			//Test code,
+			//m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(50.f, 50.f));
+			MoveToTargetPos();
 			m_Steering->Update();
 		}
 
 		void Agent::OnNotify(/*add parameters*/)
 		{
 
+		}
+		SteeringManager* Agent::GetSteering() const
+		{
+			return m_Steering.get();
 		}
 
 		SenseData* Agent::getSense() const
@@ -86,10 +85,10 @@ namespace bjoernligan
 			return m_xBT.get();
 		}
 
-		void Agent::InitializeSteering(b2Body* p_CurrentBody, MovementStats* p_MovementStats)
+		void Agent::InitializeSteering(b2Body* p_CurrentBody, MovementStats &p_MovementStats)
 		{
 			m_Steering->Initialize();
-			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats->GetMaxWalkVelocity(), p_MovementStats->GetMaxRunVelocity());
+			m_Steering->SetCurrentBody(p_CurrentBody, p_MovementStats);
 		}
 
 		int32_t Agent::SensedEnemyCount()
@@ -134,7 +133,7 @@ namespace bjoernligan
 			}
 		}
 
-		void Agent::MoveToTargetPos(bool p_Run)
+		void Agent::MoveToTargetPos()
 		{
 			if (!m_CurrentPath.isDone())
 			{
@@ -143,11 +142,8 @@ namespace bjoernligan
 				target.x = m_CurrentPath.getCurrentNode()->x * m_map->getTileSize().x + m_map->getTileSize().x / 2;
 				target.y = m_CurrentPath.getCurrentNode()->y * m_map->getTileSize().y + m_map->getTileSize().y / 2;
 				Vector2f currentPosition = Vector2f(m_xOwner->getSprite()->getPosition());
-				if (!m_CurrentPath.getNextNode())
-					m_Steering->Arrival(sf::Vector2f(target.x, target.y), p_Run, 2.0f);
-				else
-					m_Steering->Seek(sf::Vector2f(target.x, target.y), p_Run);
-	
+				m_Steering->Seek(sf::Vector2f(target.x, target.y));
+
 				if (target.dist(currentPosition) < 24)
 					++m_CurrentPath.currentNode;
 			}
@@ -155,8 +151,18 @@ namespace bjoernligan
 				//hard stop
 				//m_xOwner->getBody()->m_body->SetLinearVelocity(b2Vec2(0, 0));
 				//soft stop
-				m_Steering->Seek(sf::Vector2f(m_xOwner->getSprite()->getPosition()),p_Run);
+				m_Steering->Arrival(sf::Vector2f(m_xOwner->getSprite()->getPosition()), 8.0f);
 		}
+	/*	void Agent::FleeFromVisibleEnemies()
+		{
+			if (!m_senseData->getVisibleEnemies().empty())
+			{
+				for (unsigned int i = 0; i < m_senseData->getVisibleEnemies().size(); i++)
+				{
+					m_Steering->Flee(m_senseData->getVisibleEnemies()[i]->getOwner()->getSprite()->getPosition());
+				}
+			}
+		}*/
 		bool Agent::AtMoveTarget()
 		{
 			return false;

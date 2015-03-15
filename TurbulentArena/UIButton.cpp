@@ -59,12 +59,12 @@ namespace bjoernligan
 		SetPos(sf::Vector2f((float)p_xSize.left + p_xSize.width / 2, (float)p_xSize.top + p_xSize.height / 2));
 	}
 
-	void UIButton::Update(const float &p_fDeltaTime)
+	bool UIButton::Update(const float &p_fDeltaTime)
 	{
 		UIBase::Update(p_fDeltaTime);
 
 		if (!m_xMouse || !m_xButtonRect)
-			return;
+			return false;
 
 		if (m_xButtonRect->getGlobalBounds().contains((sf::Vector2f)m_xMouse->m_xPos))
 		{
@@ -77,7 +77,7 @@ namespace bjoernligan
 				if (m_xFunction)
 					m_xFunction(m_bActive);
 
-				return;
+				return true;
 			}
 
 			if (m_eState != EButtonState::Pressed)
@@ -97,9 +97,11 @@ namespace bjoernligan
 					m_xButtonRect->setFillColor(m_xPressedColor);
 					ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button1");
 				}
+
+				return true;
 			}
 
-			return;
+			return false;
 		}
 		else
 		{
@@ -121,6 +123,7 @@ namespace bjoernligan
 			}
 		}
 
+		return false;
 	}
 
 	void UIButton::SetPos(const sf::Vector2f &p_xPos)
