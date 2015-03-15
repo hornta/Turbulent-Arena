@@ -22,7 +22,7 @@ namespace bjoernligan
 			{
 				// Get closest enemy
 				Agent* agent = m_xAgent->getSense()->getVisibleEnemies().front()->m_agent;
-				agent->getOwner()->GetCombat()->TakeDamage(1);
+				agent->getOwner()->GetCombat()->TakeDamage(m_xAgent->getOwner()->GetCombat()->GetDamage());
 
 				// Play attack sound
 				ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Battle");

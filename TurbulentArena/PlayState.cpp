@@ -33,6 +33,7 @@ namespace bjoernligan
 		, m_xGameOverTimer(6)
 		, m_bGameOver(false)
 		, m_xPlayerClan(nullptr)
+		, m_bGamePaused(false)
 	{
 
 	}
@@ -168,7 +169,7 @@ namespace bjoernligan
 				members[k]->getBody()->setPosition(team_spawns[i][k]);
 			}
 		}
-		
+
 		m_xSelectionRect.SetTargetClan(m_xPlayerClan);
 
 		UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
@@ -233,6 +234,9 @@ namespace bjoernligan
 
 			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
 		}
+
+		m_xUIManager->AddText("PauseInfo", "Game paused.", "PlayState", sf::Vector2f((float)Settings::m_xWindowSize.x / 2, ((float)Settings::m_xWindowSize.y / 2) - 64));
+		m_xUIManager->SetTextVilibility("PauseInfo", m_bGamePaused);
 	}
 
 	void PlayState::Exit()
@@ -242,11 +246,14 @@ namespace bjoernligan
 
 	bool PlayState::Update(const float &p_fDeltaTime)
 	{
-		m_physics->update(p_fDeltaTime);
-		m_clanManager->Update(p_fDeltaTime);
+		if (!m_bGamePaused)
+		{
+			m_physics->update(p_fDeltaTime);
+			m_clanManager->Update(p_fDeltaTime);
+		}
 		updateCamera(p_fDeltaTime);
 		m_xSelectionRect.SetOffset(sf::Vector2f(m_view.getCenter() - sf::Vector2f(Settings::m_xWindowSize / 2)));
-		if(!m_xUIManager->GetUsedThisUpdate())
+		if (!m_xUIManager->GetUsedThisUpdate())
 			m_xSelectionRect.Update();
 
 		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Escape))
@@ -255,6 +262,8 @@ namespace bjoernligan
 			m_xStateMngr->CreateState<MainMenuState>("MainMenu");
 			m_bDeleteMe = true;
 		}
+		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Space))
+			ToggleGamePaused();
 
 		//temporary for testing
 		if (m_xKeyboard->IsDownOnce(sf::Keyboard::Y))
@@ -321,6 +330,17 @@ namespace bjoernligan
 	void PlayState::SetScrollSpeed(const float &p_fNewSpeed)
 	{
 		m_fScrollSpeed = p_fNewSpeed;
+	}
+
+	void PlayState::ToggleGamePaused()
+	{
+		if (m_bGameOver)
+			m_bGamePaused = false;
+		else
+		{
+			m_bGamePaused = !m_bGamePaused;
+			m_xUIManager->SetTextVilibility("PauseInfo", m_bGamePaused);
+		}
 	}
 
 	void PlayState::updateCamera(const float &p_fDeltaTime)
