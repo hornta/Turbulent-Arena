@@ -32,6 +32,7 @@ namespace bjoernligan
 		// level 3
 		ai::BSelectorNode* sel0 = combatSequence->AddChild<ai::BSelectorNode>();
 		ai::BSelectorNode* FightOrFlightSel = combatSequence->AddChild<ai::BSelectorNode>();
+		friendHelpSequence->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
 		friendHelpSequence->AddChild<ai::HelpFriend>()->AttachAgent(m_xAgent.get());
 
 		// level 4

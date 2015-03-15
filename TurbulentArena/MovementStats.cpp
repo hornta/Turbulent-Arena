@@ -15,8 +15,8 @@ namespace bjoernligan
 		return m_MaxVelocity;
 	}
 
-	void MovementStats::SetMaxVelocity(const sf::Vector2f p_NewMaxVelocity)
+	void MovementStats::SetMaxVelocity(const float &p_NewMaxVelocity)
 	{
-		m_MaxVelocity = p_NewMaxVelocity;
+		m_MaxVelocity = sf::Vector2f(p_NewMaxVelocity, p_NewMaxVelocity);
 	}
 }

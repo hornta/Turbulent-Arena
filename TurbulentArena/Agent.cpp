@@ -32,26 +32,8 @@ namespace bjoernligan
 
 		void Agent::Update(const float &p_fDeltaTime)
 		{
-			//m_xSenseTimer.Update(p_fDeltaTime);
-			//m_xDecideTimer.Update(p_fDeltaTime);
-
-			
-			//SENSE
-			//if (m_xSenseTimer.Done())
-			//{
-			//	m_xSenseTimer.Reset();
-			//	Sense();
-			//}
-			////DECIDE
-			//if (m_xDecideTimer.Done())
-			//{
-			//	m_xDecideTimer.Reset();
-			//	Decide();
-			//}
-			//ACT
-			//Act();
 			p_fDeltaTime;
-			if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
+			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
 			{
 				m_senseDecideTimer.restart();
 				Sense();
@@ -63,7 +45,6 @@ namespace bjoernligan
 
 		void Agent::Sense()
 		{
-
 			m_xCurrentMapPos = m_map->getTilePosition(getOwner()->getSprite()->getPosition());
 			m_senseData->update();
 		}

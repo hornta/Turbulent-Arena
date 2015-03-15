@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GetPathToEnemy.hpp"
 #include "Agent.hpp"
+#include "ClanMember.hpp"
 
 namespace bjoernligan
 {
@@ -21,6 +22,7 @@ namespace bjoernligan
 			{
 				return EBNodeStatus::Fail;
 			}
+			m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(300.f);
 			m_xAgent->getPathToVisibleTarget(visibleEnemies.front());
 			return EBNodeStatus::Success;
 		}
