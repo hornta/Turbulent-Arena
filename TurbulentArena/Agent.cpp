@@ -101,7 +101,7 @@ namespace bjoernligan
 			return 0;
 		}
 
-		void Agent::ChooseWanderPos()
+		void Agent::ChooseWanderPos(bool originByFriend, int maxAreaSize)
 		{
 			m_xOwner->GetMovementStats().SetMaxVelocity(150.f);
 			if (m_CurrentPath.isDone())
@@ -111,24 +111,24 @@ namespace bjoernligan
 				sf::Vector2i target;
 				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
-				sf::Vector2f searchArea;
+				sf::Vector2i searchArea;
 				// Get nearest friend
 				std::vector<SenseAgentData*> friends = m_senseData->getVisibleFriends();
-				if (!friends.empty())
+				if (!friends.empty() && originByFriend)
 				{
 					originPos = m_map->getTilePosition(friends[0]->m_agent->getOwner()->getSprite()->getPosition());
-					searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 3.f, AGENT_SOCIAL_WANDER_TARGET);
-					searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 3.f, AGENT_SOCIAL_WANDER_TARGET);
+					searchArea.x = (int)clamp((1.f - getOwner()->GetCombat()->getSocial()) * static_cast<float>(maxAreaSize), 3.f, static_cast<float>(maxAreaSize));
+					searchArea.y = (int)clamp((1.f - getOwner()->GetCombat()->getSocial()) * static_cast<float>(maxAreaSize), 3.f, static_cast<float>(maxAreaSize));
 				}
 				else
 				{
 					originPos = m_map->getTilePosition(m_xOwner->getSprite()->getPosition());
-					searchArea.x = AGENT_SOCIAL_WANDER_TARGET;
-					searchArea.y = AGENT_SOCIAL_WANDER_TARGET;
+					searchArea.x = maxAreaSize;
+					searchArea.y = maxAreaSize;
 				}
 
 				//xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-				if (m_map->GetRandomTopmostWalkableTile(originPos, target, sf::Vector2i(searchArea)))
+				if (m_map->GetRandomTopmostWalkableTile(originPos, target, searchArea))
 				{
 					Pathfinder::Options options;
 					options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
@@ -172,7 +172,7 @@ namespace bjoernligan
 				{
 					// Find new path for the poor agent
 					m_CurrentPath.setDone();
-					ChooseWanderPos();
+					ChooseWanderPos(true, (int)AGENT_SOCIAL_WANDER_TARGET);
 				}
 			}
 		}
@@ -236,6 +236,7 @@ namespace bjoernligan
 
 		bool Agent::getPathToRandomVisibleTarget()
 		{
+			m_xOwner->GetMovementStats().SetMaxVelocity(250.f);
 			std::vector<SenseAgentData*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);

@@ -15,3 +15,7 @@
 #include "BFleeFromEnemies.hpp"
 #include "BPursueEnemy.hpp"
 #include "HelpFriend.h"
+#include "DetectEnemies.h"
+#include "ReportToFriends.h"
+#include "HasSomethingToReport.h"
+#include "Explore.h"

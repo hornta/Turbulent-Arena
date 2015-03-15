@@ -37,6 +37,14 @@ namespace bjoernligan
 		}
 	}
 
+	void Clan::drawHpBars(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
+		{
+			m_clanMembers[i]->drawHpBar(target, states);
+		}
+	}
+
 	sf::Color Clan::getColor() const
 	{
 		return m_color;
@@ -152,7 +160,7 @@ namespace bjoernligan
 		}
 	}
 	
-	void Clan::DamageRandomMember(const int32_t &p_iAmount)
+	void Clan::DamageRandomMember(const float &p_iAmount)
 	{
 		if (m_clanMembers.empty())
 			return;

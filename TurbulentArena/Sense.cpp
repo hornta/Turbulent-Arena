@@ -44,6 +44,7 @@ namespace bjoernligan
 
 		void SenseData::update()
 		{
+			m_friends = getVisibleFriendsInRadius(100000);
 			m_visibleFriends = getVisibleFriendsInRadius(m_radius);
 			m_visibleEnemies = getVisibleEnemiesInRadius(m_radius);
 
@@ -96,6 +97,7 @@ namespace bjoernligan
 					}
 				}
 			}
+			std::sort(visibles.begin(), visibles.end(), sortAgentsByDistance(m_me));
 
 			return visibles;
 		}
@@ -135,6 +137,7 @@ namespace bjoernligan
 					}
 				}
 			}
+			std::sort(visibles.begin(), visibles.end(), sortAgentsByDistance(m_me));
 
 			return visibles;
 		}

@@ -21,6 +21,7 @@ namespace bjoernligan
 			float m_radius;
 			Sense* m_sense;
 			Agent* m_me;
+			std::vector<std::unique_ptr<SenseAgentData>> m_friends;
 			std::vector<std::unique_ptr<SenseAgentData>> m_visibleEnemies;
 			std::vector<std::unique_ptr<SenseAgentData>> m_visibleFriends;
 

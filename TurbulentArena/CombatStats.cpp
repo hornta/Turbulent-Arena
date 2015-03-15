@@ -5,10 +5,6 @@
 
 namespace bjoernligan
 {
-	int32_t m_iDamage;
-	int32_t m_iMaxHealth;
-	int32_t m_iCurrentHealth;
-
 	sf::Clock* CombatStats::getAttackTimer()
 	{
 		return &m_attackTimer;
@@ -19,66 +15,71 @@ namespace bjoernligan
 		return m_attackCooldown;
 	}
 
-	void CombatStats::SetAttackCooldown(float cooldown)
+	void CombatStats::SetAttackCooldown(const float &cooldown)
 	{
 		m_attackCooldown = cooldown;
 	}
 
 	void CombatStats::Initiate(const int32_t &p_iDamage, const int32_t &p_iHealth)
 	{
-		m_iDamage = p_iDamage;
-		m_iMaxHealth = m_iCurrentHealth = p_iHealth;
+		Initiate(ceilf((float)p_iDamage), ceilf((float)p_iHealth));
+	}
+
+	void CombatStats::Initiate(const float &p_fDamage, const float &p_fHealth)
+	{
+		m_fDamage = p_fDamage;
+		m_fMaxHealth = m_fCurrentHealth = p_fHealth;
 		m_social = m_brave = m_agression = .5f;
 	}
 
-	void CombatStats::TakeDamage(const int32_t &p_iValue)
+	void CombatStats::TakeDamage(const float &p_iValue)
 	{
-		m_iCurrentHealth -= p_iValue;
-		if (m_iCurrentHealth < 0)
-			m_iCurrentHealth = 0;
+		m_fCurrentHealth -= p_iValue;
+		if (m_fCurrentHealth < 0)
+			m_fCurrentHealth = 0;
 	}
 
-	int32_t CombatStats::GetDamage()
+	float CombatStats::GetDamage()
 	{
-		return m_iDamage;
+		return m_fDamage;
 	}
 
 	bool CombatStats::Alive()
 	{
-		return m_iCurrentHealth > 0;
+		return m_fCurrentHealth > 0;
 	}
 
 	float CombatStats::GetHealthPercentage()
 	{
-		return (float)m_iCurrentHealth / m_iMaxHealth;
+		return (float)m_fCurrentHealth / m_fMaxHealth;
 	}
 
-	void CombatStats::setSocial(float val)
+	void CombatStats::setSocial(const float &val)
 	{
 		m_social = val;
 	}
 
-	void CombatStats::setBrave(float val)
+	void CombatStats::setBrave(const float &val)
 	{
 		m_brave = val;
 	}
 
-	void CombatStats::setAgression(float val)
+	void CombatStats::setAgression(const float & val)
 	{
 		m_agression = val;
 	}
 
-	float CombatStats::getSocial() const
+	const float &CombatStats::getSocial() const
 	{
 		return m_social;
 	}
 
-	float CombatStats::getBrave() const
+	const float &CombatStats::getBrave() const
 	{
 		return m_brave;
 	}
 
-	float CombatStats::getAgression() const
+	const float &CombatStats::getAgression() const
 	{
 		return m_agression;
 	}
