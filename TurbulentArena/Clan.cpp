@@ -59,27 +59,57 @@ namespace bjoernligan
 
 	void Clan::SetSocial(const float &p_fNewValue)
 	{
-		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		if (!m_selectedAgents.empty())
 		{
-			m_clanMembers[k]->GetCombat()->setSocial(p_fNewValue);
+			for (uint32_t k = 0; k < m_selectedAgents.size(); ++k)
+			{
+				m_selectedAgents[k]->GetCombat()->setSocial(p_fNewValue);
+			}
+		}
+		else
+		{
+			for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+			{
+				m_clanMembers[k]->GetCombat()->setSocial(p_fNewValue);
+			}
 		}
 		//SetMoodValues(ai::Mood::EMoodType::Social, p_fNewValue);
 	}
 
 	void Clan::SetBrave(const float &p_fNewValue)
 	{
-		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		if (!m_selectedAgents.empty())
 		{
-			m_clanMembers[k]->GetCombat()->setBrave(p_fNewValue);
+			for (uint32_t k = 0; k < m_selectedAgents.size(); ++k)
+			{
+				m_selectedAgents[k]->GetCombat()->setBrave(p_fNewValue);
+			}
+		}
+		else
+		{
+			for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+			{
+				m_clanMembers[k]->GetCombat()->setBrave(p_fNewValue);
+			}
 		}
 		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}
 	
 	void Clan::SetAgression(const float &p_fNewValue)
 	{
-		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		if (!m_selectedAgents.empty())
 		{
-			m_clanMembers[k]->GetCombat()->setAgression(p_fNewValue);
+			for (uint32_t k = 0; k < m_selectedAgents.size(); ++k)
+			{
+				m_selectedAgents[k]->GetCombat()->setAgression(p_fNewValue);
+			}
+		}
+		else
+		{
+			for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+			{
+				m_clanMembers[k]->GetCombat()->setAgression(p_fNewValue);
+			}
 		}
 		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}

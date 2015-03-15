@@ -9,7 +9,7 @@
 #include "Sense.hpp"
 #include "Map.hpp"
 
-#define AGENT_SENSE_DECIDE_TIMER 0.01f
+//#define AGENT_SENSE_DECIDE_TIMER 0.01f
 #define AGENT_SENSE_RADIUS_DEFAULT 300.f
 #define AGENT_SOCIAL_WANDER_TARGET 20.f
 #define AGENT_STUCK_COOLDOWN 3.f
@@ -103,6 +103,7 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos()
 		{
+			m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(150, 150));
 			if (m_CurrentPath.isDone())
 			{
 				m_stuckTimer.restart();

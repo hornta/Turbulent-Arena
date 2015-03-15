@@ -17,7 +17,6 @@ namespace bjoernligan
 		{
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
-
 			m_xAgent->ChooseWanderPos();
 
 			return EBNodeStatus::Success;
