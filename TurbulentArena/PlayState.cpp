@@ -128,14 +128,14 @@ namespace bjoernligan
 		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
 		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
 		clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
-		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 16.f;
+		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 15.f;
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
 
 		{
 			m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
 			m_xGameOverChecker.AddClan(m_xPlayerClan);
 
-			for (int32_t i = 0; i < 8; ++i)
+			for (int32_t i = 0; i < 16; ++i)
 			{
 				ClanMember* member = m_xPlayerClan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
@@ -148,7 +148,7 @@ namespace bjoernligan
 			Clan* clan = m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70));
 			m_xGameOverChecker.AddClan(clan);
 
-			for (int32_t i = 0; i < 8; ++i)
+			for (int32_t i = 0; i < 16; ++i)
 			{
 				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
@@ -187,9 +187,9 @@ namespace bjoernligan
 
 		{
 			UISlider::SliderDef xDefs;
-			xDefs.m_bContinous = true;
-			xDefs.m_fCurrent = 50;
-			xDefs.m_fMax = 100;
+			xDefs.m_bContinous = false;
+			xDefs.m_fCurrent = .5f;
+			xDefs.m_fMax = 1;
 			xDefs.m_fMin = 0;
 			xDefs.m_fWidth = 240;
 			xDefs.m_sTextString = "Brave";
@@ -199,9 +199,9 @@ namespace bjoernligan
 
 		{
 			UISlider::SliderDef xDefs;
-			xDefs.m_bContinous = true;
-			xDefs.m_fCurrent = 50;
-			xDefs.m_fMax = 100;
+			xDefs.m_bContinous = false;
+			xDefs.m_fCurrent = .5f;
+			xDefs.m_fMax = 1;
 			xDefs.m_fMin = 0;
 			xDefs.m_fWidth = 240;
 			xDefs.m_sTextString = "Social";
@@ -211,9 +211,9 @@ namespace bjoernligan
 
 		{
 			UISlider::SliderDef xDefs;
-			xDefs.m_bContinous = true;
-			xDefs.m_fCurrent = 50;
-			xDefs.m_fMax = 100;
+			xDefs.m_bContinous = false;
+			xDefs.m_fCurrent = .5f;
+			xDefs.m_fMax = 1;
 			xDefs.m_fMin = 0;
 			xDefs.m_fWidth = 240;
 			xDefs.m_sTextString = "Agressive";

@@ -9,17 +9,16 @@
 #include "Sense.hpp"
 #include "Map.hpp"
 
-#define AGENT_SENSE_TIMER 0.3f
-#define AGENT_DECIDE_TIMER 0.3f
+#define AGENT_SENSE_DECIDE_TIMER 0.01f
+#define AGENT_SENSE_RADIUS_DEFAULT 300.f
+#define AGENT_SOCIAL_WANDER_TARGET 40.f
 
 namespace bjoernligan
 {
 	namespace ai
 	{
 		Agent::Agent(ClanMember* p_xOwner, ai::Sense* sense)
-			: m_xSenseTimer(AGENT_SENSE_TIMER)
-			, m_xDecideTimer(AGENT_DECIDE_TIMER)
-			, m_xOwner(p_xOwner)
+			: m_xOwner(p_xOwner)
 			, m_xBT(nullptr)
 			, m_Steering(nullptr)
 		{
@@ -27,18 +26,15 @@ namespace bjoernligan
 			m_Steering = std::make_unique<SteeringManager>();
 			m_xBT = std::make_unique<BehaviorTree>();
 			m_senseData = std::make_unique<SenseData>(this, sense, 300.f);
-			/*m_xSenseTimer.SetOneTimeMax(random::random(0.0f, AGENT_SENSE_TIMER));
-			m_xDecideTimer.SetOneTimeMax(random::random(0.0f, AGENT_DECIDE_TIMER));*/
 			m_map = ServiceLocator<Map>::GetService();
 		}
 
 		void Agent::Update(const float &p_fDeltaTime)
 		{
-			m_xSenseTimer.Update(p_fDeltaTime);
-			m_xDecideTimer.Update(p_fDeltaTime);
+			//m_xSenseTimer.Update(p_fDeltaTime);
+			//m_xDecideTimer.Update(p_fDeltaTime);
 
-			Sense();
-			Decide();
+			
 			//SENSE
 			//if (m_xSenseTimer.Done())
 			//{
@@ -52,13 +48,22 @@ namespace bjoernligan
 			//	Decide();
 			//}
 			//ACT
-			Act();
+			//Act();
+			p_fDeltaTime;
+			if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
+			{
+				m_senseDecideTimer.restart();
+				Sense();
+				Decide();
+			}
 
+			Act();
 		}
 
 		void Agent::Sense()
 		{
-			m_senseData->setRadius(500.f);
+
+			m_xCurrentMapPos = m_map->getTilePosition(getOwner()->getSprite()->getPosition());
 			m_senseData->update();
 		}
 
@@ -118,18 +123,37 @@ namespace bjoernligan
 		{
 			if (m_CurrentPath.isDone())
 			{
-				sf::Vector2i xTargetPos;
-				Map* xMap = ServiceLocator<Map>::GetService();
+				sf::Vector2i originPos;
+				sf::Vector2i target;
 				Pathfinder* xPathFinder = ServiceLocator<Pathfinder>::GetService();
 
-				m_xCurrentMapPos = xMap->getTilePosition(m_xOwner->getSprite()->getPosition());
-
-				xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
-				if (xMap->GetRandomTopmostWalkableTile(m_xCurrentMapPos, xTargetPos, sf::Vector2i(20, 20)))
+				sf::Vector2f searchArea;
+				// Get nearest friend
+				std::vector<SenseAgentData*> friends = m_senseData->getVisibleFriends();
+				if (!friends.empty())
 				{
+					originPos = m_map->getTilePosition(friends[0]->m_agent->getOwner()->getSprite()->getPosition());
+					searchArea.x = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
+					searchArea.y = clamp((1.f - getOwner()->GetCombat()->getSocial()) * AGENT_SOCIAL_WANDER_TARGET, 2.f, AGENT_SOCIAL_WANDER_TARGET);
+				}
+				else
+				{
+					originPos = m_map->getTilePosition(m_xOwner->getSprite()->getPosition());
+					searchArea.x = AGENT_SOCIAL_WANDER_TARGET;
+					searchArea.y = AGENT_SOCIAL_WANDER_TARGET;
+				}
+
+
+				//xTargetPos = sf::Vector2i(random::random(0, xMap->getSize().x), random::random(0, xMap->getSize().y));
+				if (m_map->GetRandomTopmostWalkableTile(originPos, target, sf::Vector2i(searchArea)))
+				{
+					Pathfinder::Options options;
+					options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+					options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
+					options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
 					xPathFinder->setStart(m_xCurrentMapPos);
-					xPathFinder->setGoal(xTargetPos);
-					xPathFinder->findPath(m_CurrentPath);
+					xPathFinder->setGoal(target);
+					xPathFinder->findPath(m_CurrentPath, options);
 				}
 			}
 		}
@@ -179,39 +203,53 @@ namespace bjoernligan
 				return false;
 		}
 
-		bool Agent::getPathToVisibleTarget(Agent* agent)
+		bool Agent::getPathToVisibleTarget(SenseAgentData* senseAgentData)
 		{
 			Map* map = ServiceLocator<Map>::GetService();
 			Pathfinder* pathfinder = ServiceLocator<Pathfinder>::GetService();
-			pathfinder->setStart(map->getTilePosition(m_xOwner->getSprite()->getPosition()));
-			pathfinder->setGoal(map->getTilePosition(agent->getOwner()->getSprite()->getPosition()));
+			
+			sf::Vector2i goalPosition;
+			if (!m_CurrentPath.isDone())
+			{
+				Pathfinder::PathNode* node = &m_CurrentPath.nodes.back();
+				goalPosition.x = node->x;
+				goalPosition.y = node->y;
+			}
 
-			Pathfinder::Options options;
-			options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
-			options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
-			options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
+			sf::Vector2i newGoalPosition = map->getTilePosition(senseAgentData->m_lastSeenPosition);
 
-			PathfinderInfo::PathResult result = pathfinder->findPath(m_CurrentPath, options);
-			if (result == PathfinderInfo::PATHRESULT_SUCCEEDED)
-				return true;
+			if (goalPosition != newGoalPosition)
+			{
+				pathfinder->setStart(map->getTilePosition(m_xOwner->getSprite()->getPosition()));
+				pathfinder->setGoal(newGoalPosition);
+
+				Pathfinder::Options options;
+				options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
+				options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
+
+				PathfinderInfo::PathResult result = pathfinder->findPath(m_CurrentPath, options);
+				if (result == PathfinderInfo::PATHRESULT_SUCCEEDED)
+					return true;
+				return false;
+			}
 			return false;
 		}
 
 		bool Agent::getPathToRandomVisibleTarget()
 		{
-			std::vector<Agent*> visibleAgents = m_senseData->getVisibleEnemies();
+			std::vector<SenseAgentData*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
 		}
 
 		bool Agent::IsEnemyWithinAttackRange()
 		{
-			// TWEAK ATTACK RANGE SO IT BECOMES GOOD!!!!!!!!!!!!!!!!!!!!!
-			std::vector<Agent*> enemies = m_senseData->getVisibleEnemies();
-			for (Agent* agent : enemies)
+			std::vector<SenseAgentData*> enemies = m_senseData->getVisibleEnemies();
+			for (SenseAgentData* agentData : enemies)
 			{
 				sf::Vector2f p0 = m_xOwner->getSprite()->getPosition();
-				sf::Vector2f p1 = agent->getOwner()->getSprite()->getPosition();
+				sf::Vector2f p1 = agentData->m_agent->getOwner()->getSprite()->getPosition();
 
 				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
 				if (distance <= 64.f)

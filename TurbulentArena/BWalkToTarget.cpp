@@ -18,7 +18,7 @@ namespace bjoernligan
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			std::vector<Agent*> enemies = m_xAgent->getSense()->getVisibleEnemies();
+			std::vector<SenseAgentData*> enemies = m_xAgent->getSense()->getVisibleEnemies();
 			if (m_xAgent->getPathToVisibleTarget(enemies[0]))
 			{
 				return EBNodeStatus::Success;

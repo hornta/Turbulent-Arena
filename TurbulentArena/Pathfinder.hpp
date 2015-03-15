@@ -63,6 +63,8 @@ namespace bjoernligan
 		void setGoal(int x, int y);
 		void setGoal(const sf::Vector2i& position);
 		void setGoal(const Vector2i& position);
+		PathfinderGrid::PathfinderNode* getStart() const;
+		PathfinderGrid::PathfinderNode* getGoal() const;
 		PathfinderInfo::PathResult findPath(Path& path, const Options& options = Options());
 		PathfinderGrid& getGrid();
 	private:

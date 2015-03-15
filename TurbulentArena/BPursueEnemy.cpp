@@ -21,7 +21,7 @@ namespace bjoernligan
 			{*/
 				//at this time you only pursue the closest enemy.
 				//maybe add so you pursue enemies that flee or that are weak.
-				m_xAgent->GetSteering()->Pursuit(m_xAgent->getSense()->getVisibleEnemies().front()->getOwner()->getBody()->m_body);
+				m_xAgent->GetSteering()->Pursuit(m_xAgent->getSense()->getVisibleEnemies().front()->m_agent->getOwner()->getBody()->m_body);
 				return EBNodeStatus::Success;
 			//}
 

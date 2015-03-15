@@ -13,6 +13,7 @@ namespace bjoernligan
 		int32_t m_iCurrentHealth;
 		sf::Clock m_attackTimer;
 		float m_attackCooldown;
+		float m_social, m_brave, m_agression;
 
 	public:
 		sf::Clock* getAttackTimer();
@@ -24,5 +25,13 @@ namespace bjoernligan
 		int32_t GetDamage();
 		bool Alive();
 		float GetHealthPercentage();
+
+		void setSocial(float val);
+		void setBrave(float val);
+		void setAgression(float val);
+
+		float getSocial() const;
+		float getBrave() const;
+		float getAgression() const;
 	};
 }

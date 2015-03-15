@@ -20,6 +20,7 @@ namespace bjoernligan
 			{
 				return EBNodeStatus::Fail;
 			}
+			
 			return EBNodeStatus::Success;
 		}
 	}

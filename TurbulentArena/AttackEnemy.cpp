@@ -21,7 +21,7 @@ namespace bjoernligan
 			if (m_xAgent->IsEnemyWithinAttackRange() && m_xAgent->CanAttack())
 			{
 				// Get closest enemy
-				Agent* agent = m_xAgent->getSense()->getVisibleEnemies().front();
+				Agent* agent = m_xAgent->getSense()->getVisibleEnemies().front()->m_agent;
 				agent->getOwner()->GetCombat()->TakeDamage(1);
 
 				// Play attack sound

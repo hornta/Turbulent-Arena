@@ -25,13 +25,15 @@ namespace bjoernligan
 		xRootSelector;
 
 		// level 2
-		ai::BSequenceNode* seq0 = xRootSelector->AddChild<ai::BSequenceNode>();
+		ai::BSequenceNode* combatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		ai::BSequenceNode* friendHelpSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		xRootSelector->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent.get());
 
 		// level 3
-		ai::BSelectorNode* sel0 = seq0->AddChild<ai::BSelectorNode>();
-		ai::BSelectorNode* FightOrFlightSel = seq0->AddChild<ai::BSelectorNode>();
-		
+		ai::BSelectorNode* sel0 = combatSequence->AddChild<ai::BSelectorNode>();
+		ai::BSelectorNode* FightOrFlightSel = combatSequence->AddChild<ai::BSelectorNode>();
+		friendHelpSequence->AddChild<ai::HelpFriend>()->AttachAgent(m_xAgent.get());
+
 		// level 4
 		sel0->AddChild<ai::CanSeeEnemies>()->AttachAgent(m_xAgent.get());
 		//ai::BInverterNode* FleeInvert = seq0->AddChild<ai::BInverterNode>();

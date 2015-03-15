@@ -59,17 +59,29 @@ namespace bjoernligan
 
 	void Clan::SetSocial(const float &p_fNewValue)
 	{
-		SetMoodValues(ai::Mood::EMoodType::Social, p_fNewValue);
+		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		{
+			m_clanMembers[k]->GetCombat()->setSocial(p_fNewValue);
+		}
+		//SetMoodValues(ai::Mood::EMoodType::Social, p_fNewValue);
 	}
 
 	void Clan::SetBrave(const float &p_fNewValue)
 	{
-		SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
+		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		{
+			m_clanMembers[k]->GetCombat()->setBrave(p_fNewValue);
+		}
+		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}
 	
 	void Clan::SetAgression(const float &p_fNewValue)
 	{
-		SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
+		for (uint32_t k = 0; k < m_clanMembers.size(); ++k)
+		{
+			m_clanMembers[k]->GetCombat()->setAgression(p_fNewValue);
+		}
+		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}
 
 	void Clan::SetMoodValues(const ai::Mood::EMoodType &p_eMoodType, const float &p_fNewValue)

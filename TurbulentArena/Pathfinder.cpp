@@ -97,6 +97,16 @@ namespace bjoernligan
 		setGoal(position.x, position.y);
 	}
 
+	PathfinderGrid::PathfinderNode* Pathfinder::getStart() const
+	{
+		return m_start;
+	}
+
+	PathfinderGrid::PathfinderNode* Pathfinder::getGoal() const
+	{
+		return m_goal;
+	}
+
 	PathfinderInfo::PathResult Pathfinder::findPath(Pathfinder::Path& path, const Options& options)
 	{
 		sf::Clock clock;

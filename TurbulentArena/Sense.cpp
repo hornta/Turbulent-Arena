@@ -13,11 +13,11 @@ struct sortAgentsByDistance
 
 	}
 
-	bool operator()(bjoernligan::ai::Agent* a, bjoernligan::ai::Agent* b) 
+	bool operator()(std::unique_ptr<bjoernligan::ai::SenseAgentData>& a, std::unique_ptr<bjoernligan::ai::SenseAgentData>& b)
 	{
 		sf::Vector2f p0 = relative->getOwner()->getSprite()->getPosition();
-		sf::Vector2f p1 = a->getOwner()->getSprite()->getPosition();
-		sf::Vector2f p2 = b->getOwner()->getSprite()->getPosition();
+		sf::Vector2f p1 = a->m_agent->getOwner()->getSprite()->getPosition();
+		sf::Vector2f p2 = b->m_agent->getOwner()->getSprite()->getPosition();
 
 		float d0 = bjoernligan::Vector2f::dist(bjoernligan::Vector2f(p0), bjoernligan::Vector2f(p1));
 		float d1 = bjoernligan::Vector2f::dist(bjoernligan::Vector2f(p0), bjoernligan::Vector2f(p2));
@@ -29,21 +29,10 @@ namespace bjoernligan
 {
 	namespace ai
 	{
-
-		float sign(const sf::Vector2f& p1, const sf::Vector2f& p2, const sf::Vector2f& p3)
+		SenseAgentData::SenseAgentData(Agent* agent) :
+			m_agent(agent)
 		{
-			return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-		}
-
-		bool pointInTriangle(const sf::Vector2f& pt, const sf::Vector2f& v1, const sf::Vector2f& v2, const sf::Vector2f& v3)
-		{
-			bool b1, b2, b3;
-
-			b1 = sign(pt, v1, v2) < 0.0f;
-			b2 = sign(pt, v2, v3) < 0.0f;
-			b3 = sign(pt, v3, v1) < 0.0f;
-
-			return ((b1 == b2) && (b2 == b3));
+			m_lastSeenPosition = agent->getOwner()->getSprite()->getPosition();
 		}
 
 		SenseData::SenseData(Agent* me, Sense* sense, float radius) :
@@ -55,52 +44,8 @@ namespace bjoernligan
 
 		void SenseData::update()
 		{
-			m_visibleEnemies.clear();
-			m_visibleFriends.clear();
-
-			Physics* physics = ServiceLocator<Physics>::GetService();
-
-			// First check all agents are in our sense range
-			for (auto& agent : m_sense->getAgents())
-			{
-				// Dont check against myself
-				if (agent == m_me)
-					continue;
-
-				// Calculate distance from me and other agent
-				sf::Vector2f agentPosition = agent->getOwner()->getSprite()->getPosition();
-				sf::Vector2f myPosition = m_me->getOwner()->getSprite()->getPosition();
-				float distance = Vector2f::dist(Vector2f(agentPosition), Vector2f(myPosition));
-
-				// Is the agent in our sense range?
-				if (distance <= m_radius)
-				{
-					// Perform a raycasting to check if we REALLY can see the other agent
-					Physics::RaycastResult result = physics->raycast(m_me->getOwner()->getSprite()->getPosition(), agent->getOwner()->getSprite()->getPosition());
-					for (auto& object : result.bodies)
-					{
-						if (object->GetUserData() != NULL)
-						{
-							B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
-							if (ud->type == B2UserData::CLANMEMBER)
-							{
-								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
-								if (!m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
-								{
-									m_visibleEnemies.push_back(clanMemberUD->clanMember->getAgent());
-								}
-								else
-								{
-									m_visibleFriends.push_back(clanMemberUD->clanMember->getAgent());
-								}
-							}
-						}
-					}
-				}
-			}
-
-			std::sort(m_visibleEnemies.begin(), m_visibleEnemies.end(), sortAgentsByDistance(m_me));
-			std::sort(m_visibleFriends.begin(), m_visibleFriends.end(), sortAgentsByDistance(m_me));
+			m_visibleFriends = getVisibleFriendsInRadius(m_radius);
+			m_visibleEnemies = getVisibleEnemiesInRadius(m_radius);
 		}
 
 		void SenseData::setRadius(float radius)
@@ -113,14 +58,102 @@ namespace bjoernligan
 			return m_radius;
 		}
 
-		std::vector<Agent*> SenseData::getVisibleEnemies() const
+		std::vector<std::unique_ptr<SenseAgentData>> SenseData::getVisibleFriendsInRadius(float radius) const
 		{
-			return m_visibleEnemies;
+			std::vector<std::unique_ptr<SenseAgentData>> visibles;
+
+			Physics* physics = ServiceLocator<Physics>::GetService();
+
+			for (auto& agent : m_sense->getAgents())
+			{
+				if (agent == m_me)
+					continue;
+
+				sf::Vector2f agentPosition = agent->getOwner()->getSprite()->getPosition();
+				sf::Vector2f myPosition = m_me->getOwner()->getSprite()->getPosition();
+				float distance = Vector2f::dist(Vector2f(agentPosition), Vector2f(myPosition));
+
+				if (distance <= radius)
+				{
+					Physics::RaycastResult result = physics->raycast(m_me->getOwner()->getSprite()->getPosition(), agent->getOwner()->getSprite()->getPosition());
+					for (auto& object : result.bodies)
+					{
+						if (object->GetUserData() != NULL)
+						{
+							B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
+							if (ud->type == B2UserData::CLANMEMBER)
+							{
+								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
+								if (m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
+								{
+									visibles.emplace_back(std::make_unique<SenseAgentData>(clanMemberUD->clanMember->getAgent()));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return visibles;
 		}
 
-		std::vector<Agent*> SenseData::getVisibleFriends() const
+		std::vector<std::unique_ptr<SenseAgentData>> SenseData::getVisibleEnemiesInRadius(float radius) const
 		{
-			return m_visibleFriends;
+			std::vector<std::unique_ptr<SenseAgentData>> visibles;
+
+			Physics* physics = ServiceLocator<Physics>::GetService();
+
+			for (auto& agent : m_sense->getAgents())
+			{
+				if (agent == m_me)
+					continue;
+
+				sf::Vector2f agentPosition = agent->getOwner()->getSprite()->getPosition();
+				sf::Vector2f myPosition = m_me->getOwner()->getSprite()->getPosition();
+				float distance = Vector2f::dist(Vector2f(agentPosition), Vector2f(myPosition));
+
+				if (distance <= radius)
+				{
+					Physics::RaycastResult result = physics->raycast(m_me->getOwner()->getSprite()->getPosition(), agent->getOwner()->getSprite()->getPosition());
+					for (auto& object : result.bodies)
+					{
+						if (object->GetUserData() != NULL)
+						{
+							B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
+							if (ud->type == B2UserData::CLANMEMBER)
+							{
+								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
+								if (!m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
+								{
+									visibles.emplace_back(std::make_unique<SenseAgentData>(clanMemberUD->clanMember->getAgent()));
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return visibles;
+		}
+
+		std::vector<SenseAgentData*> SenseData::getVisibleEnemies() const
+		{
+			std::vector<SenseAgentData*> agents;
+			for (std::size_t i = 0; i < m_visibleEnemies.size(); ++i)
+			{
+				agents.push_back(m_visibleEnemies[i].get()); 
+			}
+			return agents;
+		}
+
+		std::vector<SenseAgentData*> SenseData::getVisibleFriends() const
+		{
+			std::vector<SenseAgentData*> agents;
+			for (std::size_t i = 0; i < m_visibleFriends.size(); ++i)
+			{
+				agents.push_back(m_visibleFriends[i].get());
+			}
+			return agents;
 		}
 
 		Sense::Sense()

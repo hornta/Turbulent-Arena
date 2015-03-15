@@ -14,3 +14,4 @@
 #include "BIsScared.hpp"
 #include "BFleeFromEnemies.hpp"
 #include "BPursueEnemy.hpp"
+#include "HelpFriend.h"

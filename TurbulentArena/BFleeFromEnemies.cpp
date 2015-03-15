@@ -22,7 +22,7 @@ namespace bjoernligan
 				m_xAgent->GetPath()->setDone();
 				for (unsigned int i = 0; i < m_xAgent->getSense()->getVisibleEnemies().size(); i++)
 				{
-					m_xAgent->GetSteering()->Flee(m_xAgent->getSense()->getVisibleEnemies()[i]->getOwner()->getSprite()->getPosition());
+					m_xAgent->GetSteering()->Flee(m_xAgent->getSense()->getVisibleEnemies()[i]->m_agent->getOwner()->getSprite()->getPosition());
 				}
 				return EBNodeStatus::Success;
 			}

@@ -18,7 +18,7 @@ namespace bjoernligan
 				return EBNodeStatus::Invalid;
 			if (!m_xAgent->getSense()->getVisibleFriends().empty())
 			{
-				m_xAgent->GetSteering()->Evade(m_xAgent->getSense()->getVisibleFriends().front()->getOwner()->getBody()->m_body);
+				m_xAgent->GetSteering()->Evade(m_xAgent->getSense()->getVisibleFriends().front()->m_agent->getOwner()->getBody()->m_body);
 				return EBNodeStatus::Success;
 			}
 			return EBNodeStatus::Fail;

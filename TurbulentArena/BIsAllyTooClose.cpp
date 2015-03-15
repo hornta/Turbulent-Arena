@@ -22,7 +22,7 @@ namespace bjoernligan
 			{
 				sf::Vector2f AgentVect = m_xAgent->getOwner()->GetPos();
 				//front element = closest friend
-				sf::Vector2f AllyVect = m_xAgent->getSense()->getVisibleFriends().front()->getOwner()->GetPos();
+				sf::Vector2f AllyVect = m_xAgent->getSense()->getVisibleFriends().front()->m_agent->getOwner()->GetPos();
 				float distance = distanceBetweenPoints(AgentVect.x, AgentVect.y, AllyVect.x, AllyVect.y);
 				//if distance is less then sprite size * 1,5 then return success
 				if (distance < (m_xAgent->getOwner()->getSprite()->getGlobalBounds().width * 1.5f) ||

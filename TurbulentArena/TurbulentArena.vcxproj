@@ -96,6 +96,7 @@
     <ClInclude Include="BDamageTarget.hpp" />
     <ClInclude Include="BFindTargetNode.hpp" />
     <ClInclude Include="BWalkToTarget.hpp" />
+    <ClInclude Include="HelpFriend.h" />
     <ClInclude Include="CanSeeEnemies.h" />
     <ClInclude Include="EnemyWithinRadius.hpp" />
     <ClInclude Include="GameOverChecker.hpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="BDamageTarget.cpp" />
     <ClCompile Include="BFindTargetNode.cpp" />
     <ClCompile Include="BWalkToTarget.cpp" />
+    <ClCompile Include="HelpFriend.cpp" />
     <ClCompile Include="CanSeeEnemies.cpp" />
     <ClCompile Include="easylogging++.h">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
