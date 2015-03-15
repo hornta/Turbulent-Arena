@@ -46,6 +46,9 @@ namespace bjoernligan
 		{
 			m_visibleFriends = getVisibleFriendsInRadius(m_radius);
 			m_visibleEnemies = getVisibleEnemiesInRadius(m_radius);
+
+			std::sort(m_visibleFriends.begin(), m_visibleFriends.end(), sortAgentsByDistance(m_me));
+			std::sort(m_visibleFriends.begin(), m_visibleFriends.end(), sortAgentsByDistance(m_me));
 		}
 
 		void SenseData::setRadius(float radius)
