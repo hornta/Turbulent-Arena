@@ -19,7 +19,7 @@ namespace bjoernligan
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(sf::Vector2f(150.f, 150.f));
+			m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(150.f);
 			m_xAgent->ChooseWanderPos(true, 20);
 
 			return EBNodeStatus::Success;

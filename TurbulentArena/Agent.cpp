@@ -236,7 +236,7 @@ namespace bjoernligan
 
 		bool Agent::getPathToRandomVisibleTarget()
 		{
-			m_xOwner->GetMovementStats().SetMaxVelocity(sf::Vector2f(250.f, 250.f));
+			m_xOwner->GetMovementStats().SetMaxVelocity(250.f);
 			std::vector<SenseAgentData*> visibleAgents = m_senseData->getVisibleEnemies();
 			std::size_t randomAgentIndex = random::random(0, visibleAgents.size() - 1);
 			return getPathToVisibleTarget(visibleAgents[randomAgentIndex]);
