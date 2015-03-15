@@ -9,7 +9,7 @@
 #include "Sense.hpp"
 #include "Map.hpp"
 
-#define AGENT_SENSE_DECIDE_TIMER 0.01f
+//#define AGENT_SENSE_DECIDE_TIMER 0.01f
 #define AGENT_SENSE_RADIUS_DEFAULT 300.f
 #define AGENT_SOCIAL_WANDER_TARGET 20.f
 #define AGENT_STUCK_COOLDOWN 3.f
@@ -33,7 +33,7 @@ namespace bjoernligan
 		void Agent::Update(const float &p_fDeltaTime)
 		{
 			p_fDeltaTime;
-			if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
+			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
 			{
 				m_senseDecideTimer.restart();
 				Sense();
@@ -45,7 +45,6 @@ namespace bjoernligan
 
 		void Agent::Sense()
 		{
-
 			m_xCurrentMapPos = m_map->getTilePosition(getOwner()->getSprite()->getPosition());
 			m_senseData->update();
 		}
@@ -104,6 +103,7 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos(bool originByFriend, int maxAreaSize)
 		{
+			m_xOwner->GetMovementStats().SetMaxVelocity(150.f);
 			if (m_CurrentPath.isDone())
 			{
 				m_stuckTimer.restart();

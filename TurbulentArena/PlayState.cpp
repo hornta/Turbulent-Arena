@@ -210,7 +210,7 @@ namespace bjoernligan
 			xDefs.m_fCurrent = .5f;
 			xDefs.m_fMax = 1;
 			xDefs.m_fMin = 0;
-			xDefs.m_fWidth = 240;
+			xDefs.m_fWidth = 200;
 			xDefs.m_sTextString = "Brave";
 			xDefs.m_xFunction = std::bind(&bjoernligan::Clan::SetBrave, m_xPlayerClan, std::placeholders::_1);
 			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing), 1.0f);
@@ -222,13 +222,13 @@ namespace bjoernligan
 			xDefs.m_fCurrent = .5f;
 			xDefs.m_fMax = 1;
 			xDefs.m_fMin = 0;
-			xDefs.m_fWidth = 240;
+			xDefs.m_fWidth = 200;
 			xDefs.m_sTextString = "Social";
 			xDefs.m_xFunction = std::bind(&bjoernligan::Clan::SetSocial, m_xPlayerClan, std::placeholders::_1);
 			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing * 2), 1.0f);
 		}
 
-		{
+		/*{
 			UISlider::SliderDef xDefs;
 			xDefs.m_bContinous = false;
 			xDefs.m_fCurrent = .5f;
@@ -238,19 +238,19 @@ namespace bjoernligan
 			xDefs.m_sTextString = "Agressive";
 			xDefs.m_xFunction = std::bind(&bjoernligan::Clan::SetAgression, m_xPlayerClan, std::placeholders::_1);
 			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing * 3), 1.0f);
-		}
+		}*/
 
 		{
 			UISlider::SliderDef xDef;
-			xDef.m_fCurrent = 5.0f;
-			xDef.m_fMin = 1.0f;
-			xDef.m_fMax = 20.0f;
-			xDef.m_fWidth = 240.0f;
+			xDef.m_fCurrent = 5.f;
+			xDef.m_fMin = 1.f;
+			xDef.m_fMax = 20.f;
+			xDef.m_fWidth = 240.f;
 			xDef.m_sTextString = "Scrollspeed";
 			xDef.m_xFunction = std::bind(&bjoernligan::PlayState::SetScrollSpeed, this, std::placeholders::_1);
 			xDef.m_bContinous = true;
 
-			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f), 1.0f);
+			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.f, (float)Settings::m_xWindowSize.y - 80.f), 1.f);
 		}
 
 		m_xUIManager->AddText("PauseInfo", "Game paused.", "PlayState", sf::Vector2f((float)Settings::m_xWindowSize.x / 2, ((float)Settings::m_xWindowSize.y / 2) - 64));
