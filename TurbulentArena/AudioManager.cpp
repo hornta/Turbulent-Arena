@@ -289,11 +289,7 @@ namespace bjoernligan
 				for (uint32_t i = 0; i < (*itr).second.size(); ++i)
 				{
 					sf::Sound* xSound = GetSound((*itr).second[i]);
-<<<<<<< HEAD
-					if (xSound != nullptr && xSound->getStatus() == sf::SoundSource::Status::Playing)
-=======
 					if (xSound && xSound->getStatus() == sf::SoundSource::Status::Playing)
->>>>>>> 512444611a4cb0aad9b10fda37766f43edacbeb7
 						return true;
 				}
 				++itr;
@@ -307,13 +303,8 @@ namespace bjoernligan
 			auto itr = m_axSounds.begin();
 			while (itr != m_axSounds.end())
 			{
-<<<<<<< HEAD
-				if ((*itr).first == p_sSoundName)
-					return (*itr).second;
-=======
 				if ((*itr).m_xSoundName == p_sSoundName)
 					return (*itr).m_xSound;
->>>>>>> 512444611a4cb0aad9b10fda37766f43edacbeb7
 				++itr;
 			}
 
