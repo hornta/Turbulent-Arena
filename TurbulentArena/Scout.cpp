@@ -7,12 +7,12 @@
 #include "BNodesInclude.hpp"
 #include "BFindTargetNode.hpp"
 #include "Clan.hpp"
+#include "Axeman.hpp"
 
 namespace bjoernligan
 {
-	Scout::EnlightendFriend::EnlightendFriend(bool enlightend, ai::SenseAgentData* agentData) :
-		enlightend(enlightend),
-		agentData(agentData)
+	Scout::EnlightendFriend::EnlightendFriend(bool enlightend) :
+		enlightend(enlightend)
 	{
 
 	}
@@ -20,6 +20,25 @@ namespace bjoernligan
 	Scout::Scout(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan)
 		: ClanMember(sense, p_xTeamColor, p_xClan)
 	{
+	}
+
+	Scout::~Scout()
+	{
+	}
+
+	void Scout::RemoveEnlightenedFriend(ai::Agent* p_xAgent)
+	{
+		if (p_xAgent->getOwner()->GetClass() == ClanMember::EClass::EClassScout)
+			return;
+
+		auto enl_itr = m_enlightendFriends.begin();
+		while (enl_itr != m_enlightendFriends.end())
+		{
+			if ((*enl_itr)->agent->m_agent == p_xAgent)
+				enl_itr = m_enlightendFriends.erase(enl_itr);
+			else
+				++enl_itr;
+		}
 	}
 
 	void Scout::initiate()
@@ -47,5 +66,57 @@ namespace bjoernligan
 	void Scout::update(float deltatime)
 	{
 		ClanMember::update(deltatime);
+
+		// Update friends vector
+		std::vector<ClanMember*> members = m_clan->getMembers();
+		if (m_enlightendFriends.empty())
+		{
+			for (std::size_t i = 0; i < members.size(); ++i)
+			{
+				if (members[i] != this && members[i]->GetClass() == EClass::EClassAxeman)
+				{
+					m_enlightendFriends.emplace_back(std::make_unique<EnlightendFriend>(true));
+					EnlightendFriend* f = m_enlightendFriends.back().get();
+					
+					if (members[i]->GetCombat()->Alive())
+						f->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
+				}
+			}
+		}
+
+		for (std::size_t i = 0; i < m_enlightendFriends.size(); ++i)
+		{
+			if (members[i]->getAgent())
+			{
+				m_enlightendFriends[i]->agent.release();
+				m_enlightendFriends[i]->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
+			}
+		}
+
+		for (std::size_t i = 0; i < m_enlightendFriends.size(); ++i)
+		{
+			if (m_enlightendFriends[i]->agent.get())
+			{
+				if (!m_enlightendFriends[i]->enlightend)
+				{
+					// Check if we are close to friend to report to him =)
+					sf::Vector2f p0 = m_enlightendFriends[i]->agent->m_agent->getOwner()->getSprite()->getPosition();
+					sf::Vector2f p1 = getSprite()->getPosition();
+
+					if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 40.f)
+					{
+						m_enlightendFriends[i]->enlightend = true;
+
+						bjoernligan::Axeman* axeman = static_cast<bjoernligan::Axeman*>(m_enlightendFriends[i]->agent->m_agent->getOwner());
+
+						for (std::size_t k = 0; k < m_enlightendFriends[i]->toReport.size(); ++k)
+						{
+							axeman->m_incomingReports.push_back(std::move(m_enlightendFriends[i]->toReport[k]));
+						}
+						m_enlightendFriends[i]->toReport.clear();
+					}
+				}
+			}
+		}
 	}
 }

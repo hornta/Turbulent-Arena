@@ -29,13 +29,15 @@ namespace bjoernligan
 		// level 2
 		ai::BSequenceNode* combatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		ai::BSequenceNode* friendHelpSequence = xRootSelector->AddChild<ai::BSequenceNode>();
-		xRootSelector->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent.get());
+		ai::BSelectorNode* wanderSelector = xRootSelector->AddChild<ai::BSelectorNode>();
 
 		// level 3
 		ai::BSelectorNode* sel0 = combatSequence->AddChild<ai::BSelectorNode>();
 		ai::BSelectorNode* FightOrFlightSel = combatSequence->AddChild<ai::BSelectorNode>();
 		friendHelpSequence->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
 		friendHelpSequence->AddChild<ai::HelpFriend>()->AttachAgent(m_xAgent.get());
+		wanderSelector->AddChild<ai::ProcessIncomingReports>()->AttachAgent(m_xAgent.get());
+		wanderSelector->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent.get());
 
 		// level 4
 		sel0->AddChild<ai::CanSeeEnemies>()->AttachAgent(m_xAgent.get());
@@ -56,5 +58,34 @@ namespace bjoernligan
 	void Axeman::update(float deltatime)
 	{
 		ClanMember::update(deltatime);
+
+		auto it = m_incomingReports.begin();
+		while (it != m_incomingReports.end())
+		{
+			sf::Vector2f p0 = it->get()->position;
+			sf::Vector2f p1 = m_sprite->getPosition();
+
+			if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 32.f)
+			{
+				it = m_incomingReports.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+
+	bool Axeman::processReports()
+	{
+		if (m_incomingReports.empty())
+		{
+			return false;
+		}
+
+		m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(220.f);
+		m_xAgent->setWanderPos(m_incomingReports[0]->position);
+
+		return true;
 	}
 }

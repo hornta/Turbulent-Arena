@@ -137,7 +137,7 @@ namespace bjoernligan
 			m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
 			m_xGameOverChecker.AddClan(m_xPlayerClan);
 
-			for (int32_t i = 0; i < 6; ++i)
+			for (int32_t i = 0; i < 15; ++i)
 			{
 				ClanMember* member = m_xPlayerClan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
@@ -146,7 +146,7 @@ namespace bjoernligan
 				member->initiate();
 			}
 
-			for (int32_t i = 0; i < 2; ++i)
+			for (int32_t i = 0; i < 1; ++i)
 			{
 				ClanMember* member = m_xPlayerClan->createMember<Scout>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
@@ -159,7 +159,7 @@ namespace bjoernligan
 			Clan* clan = m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70));
 			m_xGameOverChecker.AddClan(clan);
 
-			for (int32_t i = 0; i < 6; ++i)
+			for (int32_t i = 0; i < 16; ++i)
 			{
 				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
@@ -168,7 +168,7 @@ namespace bjoernligan
 				member->initiate();
 			}
 
-			for (int32_t i = 0; i < 2; ++i)
+			for (int32_t i = 0; i < 0; ++i)
 			{
 				ClanMember* member = clan->createMember<Scout>(m_sense.get());
 				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));

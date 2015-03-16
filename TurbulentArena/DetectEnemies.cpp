@@ -25,20 +25,27 @@ namespace bjoernligan
 			{
 				bool found = false;
 
-				// Check if we havent seen this enemy before
-				for (std::size_t k = 0; k < scout->m_toReport.size(); k++)
+				for (std::size_t k = 0; k < scout->m_enlightendFriends.size(); k++)
 				{
-					// We have seen this person before.
-					// Update position
-					if (enemies[i]->m_agent == scout->m_toReport[k].agent)
+					for (std::size_t l = 0; l < scout->m_enlightendFriends[k]->toReport.size(); ++l)
 					{
-						found = true;
-						scout->m_toReport[k].position = enemies[i]->m_agent->getOwner()->getSprite()->getPosition();
+						if (scout->m_enlightendFriends[k]->toReport[l]->agent == enemies[i]->m_agent)
+						{
+							scout->m_enlightendFriends[k]->toReport[l]->position = enemies[i]->m_agent->getOwner()->getSprite()->getPosition();
+							scout->m_enlightendFriends[k]->enlightend = false;
+							found = true;
+						}
 					}
 				}
 
 				if (!found)
-					scout->m_toReport.push_back({enemies[i]->m_agent, enemies[i]->m_agent->getOwner()->getSprite()->getPosition()});
+				{
+					for (std::size_t k = 0; k < scout->m_enlightendFriends.size(); k++)
+					{
+						scout->m_enlightendFriends[k]->toReport.emplace_back(std::make_unique<Scout::ReportData>(enemies[i]->m_agent, enemies[i]->m_agent->getOwner()->getSprite()->getPosition()));
+						scout->m_enlightendFriends[k]->enlightend = false;
+					}
+				}
 			}
 
 			return EBNodeStatus::Success;
