@@ -8,6 +8,7 @@
 #include "BFindTargetNode.hpp"
 #include "Clan.hpp"
 #include "Axeman.hpp"
+#include "AudioManager.hpp"
 
 namespace bjoernligan
 {
@@ -77,20 +78,20 @@ namespace bjoernligan
 				{
 					m_enlightendFriends.emplace_back(std::make_unique<EnlightendFriend>(true));
 					EnlightendFriend* f = m_enlightendFriends.back().get();
-					
+
 					if (members[i]->GetCombat()->Alive())
+					{
+						f->agent.release();
 						f->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
+					}
 				}
 			}
 		}
 
 		for (std::size_t i = 0; i < m_enlightendFriends.size(); ++i)
 		{
-			if (members[i]->getAgent())
-			{
-				m_enlightendFriends[i]->agent.release();
-				m_enlightendFriends[i]->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
-			}
+			m_enlightendFriends[i]->agent.release();
+			m_enlightendFriends[i]->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
 		}
 
 		for (std::size_t i = 0; i < m_enlightendFriends.size(); ++i)
@@ -106,6 +107,7 @@ namespace bjoernligan
 					if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 40.f)
 					{
 						m_enlightendFriends[i]->enlightend = true;
+						ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Scout_Inform");
 
 						bjoernligan::Axeman* axeman = static_cast<bjoernligan::Axeman*>(m_enlightendFriends[i]->agent->m_agent->getOwner());
 

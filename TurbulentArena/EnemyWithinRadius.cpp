@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnemyWithinRadius.hpp"
 #include "Agent.hpp"
+#include "ClanMember.hpp"
 
 namespace bjoernligan
 {
@@ -16,6 +17,10 @@ namespace bjoernligan
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
+			if (m_xAgent->getOwner()->GetClass() == ClanMember::EClass::EClassScout)
+			{
+
+			}
 			if (m_xAgent->IsEnemyWithinAttackRange())
 			{
 				return EBNodeStatus::Success;
