@@ -81,7 +81,7 @@ namespace bjoernligan
 
 					if (members[i]->GetCombat()->Alive())
 					{
-						f->agent.release();
+						f->agent.reset();
 						f->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
 					}
 				}
