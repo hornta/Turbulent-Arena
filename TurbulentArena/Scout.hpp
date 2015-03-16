@@ -20,14 +20,15 @@ namespace bjoernligan
 
 		struct EnlightendFriend
 		{
-			EnlightendFriend(bool enlightend, ai::SenseAgentData* agentData);
+			EnlightendFriend(bool enlightend);
+			
 
-			bool enlightend;
-			ai::SenseAgentData* agentData;
+			bool enlightend; 
+			std::unique_ptr<ai::SenseAgentData> agent;
 		};
 
 		std::vector<ReportData> m_toReport;
-		std::vector<EnlightendFriend> m_enlightendFriends;
+		std::vector<std::unique_ptr<EnlightendFriend>> m_enlightendFriends;
 
 		Scout(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);
 

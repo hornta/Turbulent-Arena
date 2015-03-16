@@ -103,7 +103,6 @@ namespace bjoernligan
 
 		void Agent::ChooseWanderPos(bool originByFriend, int maxAreaSize)
 		{
-			m_xOwner->GetMovementStats().SetMaxVelocity(150.f);
 			if (m_CurrentPath.isDone())
 			{
 				m_stuckTimer.restart();

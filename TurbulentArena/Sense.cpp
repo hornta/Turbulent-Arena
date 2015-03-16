@@ -4,7 +4,7 @@
 #include "ClanMember.hpp"
 #include "Map.hpp"
 
-struct sortAgentsByDistance 
+struct sortAgentsByDistance
 {
 	bjoernligan::ai::Agent* relative;
 	sortAgentsByDistance(bjoernligan::ai::Agent* relative) :
@@ -25,6 +25,7 @@ struct sortAgentsByDistance
 	}
 };
 
+
 namespace bjoernligan
 {
 	namespace ai
@@ -44,7 +45,6 @@ namespace bjoernligan
 
 		void SenseData::update()
 		{
-			m_friends = getVisibleFriendsInRadius(100000);
 			m_visibleFriends = getVisibleFriendsInRadius(m_radius);
 			m_visibleEnemies = getVisibleEnemiesInRadius(m_radius);
 

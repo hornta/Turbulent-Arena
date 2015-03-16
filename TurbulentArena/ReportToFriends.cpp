@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ReportToFriends.h"
 #include "Agent.hpp"
+#include "Scout.hpp"
 
 namespace bjoernligan
 {
@@ -16,7 +17,16 @@ namespace bjoernligan
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			//m_xAgent->getPathToVisibleTarget();
+			Scout* scout = static_cast<Scout*>(m_xAgent->getOwner());
+
+			for (std::size_t i = 0; i < scout->m_enlightendFriends.size(); ++i)
+			{
+				if (!scout->m_enlightendFriends[i]->enlightend)
+				{
+					m_xAgent->getPathToVisibleTarget(scout->m_enlightendFriends[i]->agent.get());
+					break;
+				}
+			}
 
 			return EBNodeStatus::Success;
 		}
