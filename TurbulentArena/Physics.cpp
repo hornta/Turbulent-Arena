@@ -107,6 +107,7 @@ namespace bjoernligan
 		b2Body* body = m_b2World->CreateBody(&params.m_xBodyDef);
 		body->SetLinearDamping(params.m_xBodyDef.linearDamping);
 		body->SetAngularDamping(params.m_xBodyDef.angularDamping);
+		body->SetFixedRotation(params.m_xBodyDef.fixedRotation);
 
 		b2PolygonShape xBoxShape;
 		b2CircleShape xCircleShape;

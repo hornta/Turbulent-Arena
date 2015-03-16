@@ -21,9 +21,9 @@ namespace bjoernligan
 	public:		
 		enum EClass : uint8_t
 		{
-			Invalid,
-			Axeman,
-			Scout,
+			EClassInvalid,
+			EClassAxeman,
+			EClassScout,
 		};
 
 		ClanMember(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);

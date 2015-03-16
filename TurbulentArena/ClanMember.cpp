@@ -8,7 +8,7 @@ namespace bjoernligan
 		: m_xHealthBar(sf::Vector2f(-16, -32), 32, p_xTeamColor)
 		, m_clan(p_xClan)
 		, m_xAgent(nullptr)
-		, m_eClass(EClass::Invalid)
+		, m_eClass(EClass::EClassInvalid)
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
 		m_xHealthBar.SetCombatStats(&m_xCombatStats);
@@ -17,9 +17,9 @@ namespace bjoernligan
 
 		m_xMood = { { 0.5f, 0.5f, 0.5f } };
 
-		m_xSelectionRect.setSize(sf::Vector2f(32,32));
+		m_xSelectionRect.setSize(sf::Vector2f(32, 32));
 		m_xSelectionRect.setOrigin(m_xSelectionRect.getSize() / 2.0f);
-		m_xSelectionRect.setFillColor(sf::Color(0,0,0,0));
+		m_xSelectionRect.setFillColor(sf::Color(0, 0, 0, 0));
 		m_xSelectionRect.setOutlineColor(sf::Color(0, 255, 0, 0));
 		m_xSelectionRect.setOutlineThickness(3);
 	}
@@ -33,6 +33,23 @@ namespace bjoernligan
 	void ClanMember::update(float deltatime)
 	{
 		Object::update(deltatime);
+		if (m_sprite && m_xPhysicsBody->m_body)
+		{
+			m_sprite->setRotation(DEGREES(m_xPhysicsBody->m_body->GetAngle()));
+
+			//sf::Vector2f x;
+
+			//float fAngle = dot(sf::Vector2f(0, 1), vectorToPix(m_xPhysicsBody->m_body->GetLinearVelocity()));
+
+			//float fTangent(m_xPhysicsBody->m_body->GetLinearVelocity().y);
+			//float fHypo(m_xPhysicsBody->m_body->GetLinearVelocity().Length());
+			//float fTangent(5);
+			//float fHypo(10);
+
+			//float fAngle = DEGREES(std::cos(fTangent / fHypo));
+			//m_sprite->setRotation(fAngle);
+		}
+
 		m_xHealthBar.Update(m_xPos);
 
 		if (m_sprite)
@@ -42,7 +59,7 @@ namespace bjoernligan
 
 		m_xSelectionRect.setPosition(m_xPos);
 	}
-	
+
 	void ClanMember::setBody(Physics::Body* body)
 	{
 		Object::setBody(body);
@@ -69,7 +86,7 @@ namespace bjoernligan
 				sf::RectangleShape nodeShape;
 				nodeShape.setSize(sf::Vector2f(size.x - 2, size.y - 2));
 				nodeShape.setOutlineThickness(1);
-				
+
 				for (int i = 0; i < m_xAgent->m_CurrentPath.length; ++i)
 				{
 					if (i < m_xAgent->m_CurrentPath.currentNode)
