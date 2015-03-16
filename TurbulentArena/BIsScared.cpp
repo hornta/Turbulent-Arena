@@ -32,23 +32,6 @@ namespace bjoernligan
 				{
 					EnemyHp += VisibleEnemies[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
 				}
-
-				/*if (!m_xAgent->getSense()->getVisibleEnemiesInRadius(150.f).empty())
-				{
-				float FriendHP = m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
-				float EnemyHp = 0.0f;
-				std::vector<std::unique_ptr<SenseAgentData>> VisibleFriends = m_xAgent->getSense()->getVisibleFriendsInRadius(150.f);
-				std::vector<std::unique_ptr<SenseAgentData>> VisibleEnemies = m_xAgent->getSense()->getVisibleEnemiesInRadius(150.f);
-
-				for (unsigned int i = 0; i < VisibleFriends.size(); i++)
-				{
-				FriendHP += VisibleFriends[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
-				}
-
-				for (unsigned int i = 0; i < VisibleEnemies.size(); i++)
-				{
-				EnemyHp += VisibleEnemies[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
-				}*/
 				float diff = FriendHP / EnemyHp;
 				float Brave = m_xAgent->getOwner()->GetCombat()->getBrave();
 				if (Brave < 0.9f && m_xAgent->getOwner()->GetCombat()->GetHealthPercentage() < 0.1f)
