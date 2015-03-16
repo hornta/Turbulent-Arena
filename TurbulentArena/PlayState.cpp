@@ -304,6 +304,10 @@ namespace bjoernligan
 		target.draw(*m_clanManager.get(), states);
 		m_physics->draw();
 		target.draw(m_xSelectionRect, states);
+
+		m_xDrawManager->getWindow()->setView(m_xUIManager->getView());
+
+
 	}
 
 	void PlayState::SetDebugMode(const bool &p_bValue)
