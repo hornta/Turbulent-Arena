@@ -13,6 +13,12 @@ namespace bjoernligan
 			AudioManager(const AudioManager&);
 			AudioManager& operator=(const AudioManager&);
 
+			struct PlayingSound
+			{
+				std::string m_xSoundName;
+				sf::Sound* m_xSound;
+			};
+
 		public:
 			typedef std::unique_ptr<AudioManager> Ptr;
 			static Ptr Create(float p_fMasterVolume = 0.50f, int p_iSoundVolume = 100, int p_iMusicVolume = 100);
@@ -42,8 +48,11 @@ namespace bjoernligan
 			//sound-groups
 			void AddSoundToGroup(const std::string &p_sSoundName, const std::string &p_sSoundGroup);
 			void PlaySoundFromGroup(const std::string &p_sSoundGroup);
+			bool IsGroupPlaying(const std::string &p_sSoundGroup);
 
 		private:
+			sf::Sound* GetSound(const std::string &p_sSoundName);
+
 			float m_fMasterVolume;
 			int m_iSoundVolume;
 			int m_iMusicVolume;
@@ -53,7 +62,7 @@ namespace bjoernligan
 			int m_iSoundCount;
 
 			std::map<std::string, sf::SoundBuffer*> m_axSoundbuffers;
-			std::map<std::string, sf::Sound*> m_axSounds;
+			std::vector<PlayingSound> m_axSounds;
 			std::map<std::string, sf::Music*> m_axMusics;
 			std::map<std::string, std::vector<std::string> > m_axSoundGroups;
 		};
