@@ -105,7 +105,7 @@ namespace bjoernligan
 				p_fMasterVolume = 0.0f;
 			if (p_fMasterVolume > 1.0f)
 				p_fMasterVolume = 1.0f;
-			
+
 			m_fMasterVolume = p_fMasterVolume;
 
 			ChangeMusicVolume(m_iMusicVolume);
@@ -180,7 +180,7 @@ namespace bjoernligan
 			{
 				std::string sSoundName = p_sSoundName + std::to_string(++m_iSoundCount);
 				m_axSounds.insert(std::pair<std::string, sf::Sound*>(sSoundName, new sf::Sound));
-			
+
 				auto xSoundsIt = m_axSounds.find(sSoundName);
 				(*xSoundsIt).second->setBuffer(*(*xBufferIt).second);
 				(*xSoundsIt).second->setVolume(m_fModifiedSoundVolume * p_fVolAdjPercent);
@@ -278,6 +278,34 @@ namespace bjoernligan
 			auto itr = m_axSoundGroups.find(p_sSoundGroup);
 			if (itr != m_axSoundGroups.end() || !(*itr).second.empty())
 				PlaySoundClip((*itr).second[random::random(0, (*itr).second.size() - 1)]);
+		}
+
+		bool AudioManager::IsGroupPlaying(const std::string &p_sSoundGroup)
+		{
+			auto itr = m_axSoundGroups.find(p_sSoundGroup);
+			while (itr != m_axSoundGroups.end())
+			{
+				for (uint32_t i = 0; i < (*itr).second.size(); ++i)
+				{
+					sf::Sound* xSound = GetSound((*itr).second[0]);
+					if (xSound && xSound->getStatus() == sf::SoundSource::Status::Playing)
+						return true;
+				}
+			}
+
+			return false;
+		}
+
+		sf::Sound* AudioManager::GetSound(const std::string &p_sSoundName)
+		{
+			auto itr = m_axSounds.begin();
+			while (itr != m_axSounds.end())
+			{
+				if ((*itr).first == p_sSoundName)
+					return (*itr).second;
+			}
+
+			return nullptr;
 		}
 	}
 }
