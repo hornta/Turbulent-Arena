@@ -39,6 +39,9 @@ namespace bjoernligan
 		std::vector<std::unique_ptr<EnlightendFriend>> m_enlightendFriends;
 
 		Scout(ai::Sense* sense, const sf::Color &p_xTeamColor, Clan* p_xClan);
+		~Scout();
+
+		void RemoveEnlightenedFriend(ai::Agent* p_xAgent);
 
 		void initiate();
 		void update(float deltatime);

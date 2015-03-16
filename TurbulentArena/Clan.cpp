@@ -15,18 +15,36 @@ namespace bjoernligan
 
 	void Clan::Update(const float &p_fDeltaTime)
 	{
-		auto itr = m_clanMembers.begin();
-		while (itr != m_clanMembers.end())
+		//dead-check
 		{
-			if (!(*itr)->m_xCombatStats.Alive())
+			auto itr = m_clanMembers.begin();
+			while (itr != m_clanMembers.end())
 			{
-				itr = m_clanMembers.erase(itr);
-				ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death");
-				continue;
+				if (!(*itr)->m_xCombatStats.Alive())
+				{
+					RemoveEnlightenedFriend((*itr)->getAgent());
+					ServiceLocator<ai::Sense>::GetService()->removeAgent((*itr)->getAgent());
+					ServiceLocator<Physics>::GetService()->destroyBody((*itr)->getBody());
+
+					ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death");
+
+					itr = m_clanMembers.erase(itr);
+					continue;
+				}
+				(*itr)->update(p_fDeltaTime);
+				++itr;
 			}
-			(*itr)->update(p_fDeltaTime);
-			++itr;
 		}
+
+		//update
+		/*{
+			auto itr = m_clanMembers.begin();
+			while (itr != m_clanMembers.end())
+			{
+				(*itr)->update(p_fDeltaTime);
+				++itr;
+			}
+		}*/
 	}
 
 	void Clan::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -55,7 +73,10 @@ namespace bjoernligan
 		std::vector<ClanMember*> members;
 		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
 		{
-			members.push_back(m_clanMembers[i].get());
+			if (m_clanMembers[i]->GetCombat()->Alive())
+				members.push_back(m_clanMembers[i].get());
+			else
+				members.push_back(nullptr);
 		}
 		return members;
 	}
@@ -102,7 +123,7 @@ namespace bjoernligan
 		}
 		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}
-	
+
 	void Clan::SetAgression(const float &p_fNewValue)
 	{
 		if (!m_selectedAgents.empty())
@@ -139,12 +160,26 @@ namespace bjoernligan
 			}
 		}
 	}
-	
+
+	void Clan::RemoveEnlightenedFriend(ai::Agent* p_xAgent)
+	{
+		if (p_xAgent->getOwner()->GetClass() == ClanMember::EClass::EClassScout)
+			return;
+
+		auto itr = m_clanMembers.begin();
+		while (itr != m_clanMembers.end())
+		{
+			if ((*itr)->GetClass() == ClanMember::EClass::EClassScout)
+				static_cast<Scout*>((*itr).get())->RemoveEnlightenedFriend(p_xAgent);
+			++itr;
+		}
+	}
+
 	const std::string &Clan::GetName() const
 	{
 		return m_name;
 	}
-	
+
 	void Clan::SelectAgentsInRect(const sf::FloatRect &p_xShape)
 	{
 		m_selectedAgents.clear();
@@ -159,7 +194,7 @@ namespace bjoernligan
 				m_clanMembers[k]->SetSelection(false);
 		}
 	}
-	
+
 	void Clan::DamageRandomMember(const float &p_iAmount)
 	{
 		if (m_clanMembers.empty())

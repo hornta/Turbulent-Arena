@@ -16,7 +16,7 @@ namespace bjoernligan
 
 	void Axeman::initiate()
 	{
-		m_eClass = EClass::Axeman;
+		m_eClass = EClass::EClassAxeman;
 
 		m_xCombatStats.Initiate(1, 10);
 		m_MovementStats.Initiate(sf::Vector2f(300, 300.0f));

@@ -124,13 +124,14 @@ namespace bjoernligan
 
 		Physics::Params clanMemberBodyDef;
 		clanMemberBodyDef.m_xBodyDef.linearDamping = 3.0f;
-		clanMemberBodyDef.m_xBodyDef.angularDamping = 1.5f;
+		clanMemberBodyDef.m_xBodyDef.angularDamping = 0.5f;
 		clanMemberBodyDef.m_eShapeType = Physics::Circle;
 		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
 		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
 		clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
 		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 15.f;
 		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
+		//clanMemberBodyDef.m_xBodyDef.fixedRotation = false;
 
 		{
 			m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));

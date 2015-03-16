@@ -17,7 +17,7 @@ namespace bjoernligan
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			if (m_xAgent->getOwner()->GetClass() == ClanMember::EClass::Scout)
+			if (m_xAgent->getOwner()->GetClass() == ClanMember::EClass::EClassScout)
 			{
 
 			}

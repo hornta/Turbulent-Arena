@@ -9,6 +9,7 @@ namespace bjoernligan
 	namespace ai
 	{
 		class Sense;
+		class Agent;
 	}
 
 	class Clan : public sf::Drawable
@@ -30,6 +31,8 @@ namespace bjoernligan
 		void SetBrave(const float &p_fNewValue);
 		void SetAgression(const float &p_fNewValue);
 		void SetMoodValues(const ai::Mood::EMoodType &p_eMoodType, const float &p_fNewValue);
+
+		void RemoveEnlightenedFriend(ai::Agent* p_xAgent);
 
 		const std::string &GetName() const;
 

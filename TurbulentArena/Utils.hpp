@@ -221,6 +221,11 @@ namespace bjoernligan
 		}
 	}
 
+	float dot(const sf::Vector2f& p_xFirst, const sf::Vector2f& p_xSecond)
+	{
+		return p_xFirst.x * p_xSecond.x + p_xFirst.y * p_xSecond.y;
+	}
+
 	struct PathfinderInfo
 	{
 		enum Heuristic

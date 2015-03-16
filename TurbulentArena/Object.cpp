@@ -21,6 +21,7 @@ namespace bjoernligan
 		if (m_xPhysicsBody && m_xPhysicsBody->m_body)
 		{
 			m_xPos = vectorToPix(m_xPhysicsBody->m_body->GetPosition());
+
 		}
 	}
 
