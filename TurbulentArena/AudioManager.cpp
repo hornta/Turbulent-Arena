@@ -287,10 +287,11 @@ namespace bjoernligan
 			{
 				for (uint32_t i = 0; i < (*itr).second.size(); ++i)
 				{
-					sf::Sound* xSound = GetSound((*itr).second[0]);
-					if (xSound && xSound->getStatus() == sf::SoundSource::Status::Playing)
+					sf::Sound* xSound = GetSound((*itr).second[i]);
+					if (xSound != nullptr && xSound->getStatus() == sf::SoundSource::Status::Playing)
 						return true;
 				}
+				++itr;
 			}
 
 			return false;
@@ -303,6 +304,7 @@ namespace bjoernligan
 			{
 				if ((*itr).first == p_sSoundName)
 					return (*itr).second;
+				++itr;
 			}
 
 			return nullptr;

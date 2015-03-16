@@ -55,11 +55,13 @@ namespace bjoernligan
 		xRootSelector;
 
 		// level 2
+		//ai::BSequenceNode* attackSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		ai::BSequenceNode* reportSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		xRootSelector->AddChild<ai::DetectEnemies>()->AttachAgent(m_xAgent.get());
 		xRootSelector->AddChild<ai::Explore>()->AttachAgent(m_xAgent.get());
 
 		// level 3
+		//attackSequence->AddChild<ai::
 		reportSequence->AddChild<ai::HasSomethingToReport>()->AttachAgent(m_xAgent.get());
 		reportSequence->AddChild<ai::ReportToFriends>()->AttachAgent(m_xAgent.get());
 	}
@@ -107,7 +109,6 @@ namespace bjoernligan
 					if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 40.f)
 					{
 						m_enlightendFriends[i]->enlightend = true;
-						ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Scout_Inform");
 
 						bjoernligan::Axeman* axeman = static_cast<bjoernligan::Axeman*>(m_enlightendFriends[i]->agent->m_agent->getOwner());
 
