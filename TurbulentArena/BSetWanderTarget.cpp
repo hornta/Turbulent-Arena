@@ -19,7 +19,9 @@ namespace bjoernligan
 			if (!m_xAgent)
 				return EBNodeStatus::Invalid;
 
-			m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(150.f);
+			//Set new Max velocity depending on injury
+			float MoveSpeed = 50.f + 100.0f * m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
+			m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(MoveSpeed);
 			m_xAgent->ChooseWanderPos(true, 20);
 
 			return EBNodeStatus::Success;

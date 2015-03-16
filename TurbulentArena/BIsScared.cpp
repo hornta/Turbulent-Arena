@@ -2,6 +2,9 @@
 #include "BIsScared.hpp"
 #include "Agent.hpp"
 #include "ClanMember.hpp"
+#include "Clan.hpp"
+#include "ServiceLocator.hpp"
+#include "ClanManager.hpp"
 
 namespace bjoernligan
 {
@@ -18,53 +21,59 @@ namespace bjoernligan
 				return EBNodeStatus::Invalid;
 
 			if (!m_xAgent->getSense()->getVisibleEnemies().empty())
-			{
-				std::vector<SenseAgentData*> VisibleFriends = m_xAgent->getSense()->getVisibleFriends();
-				std::vector<SenseAgentData*> VisibleEnemies = m_xAgent->getSense()->getVisibleEnemies();
-
-				float FriendHP = m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
-				for (unsigned int i = 0; i < VisibleFriends.size(); i++)
+			{	
+				//Axeman
+				if (m_xAgent->getOwner()->GetClass() == ClanMember::EClassAxeman)
 				{
-					FriendHP += VisibleFriends[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
+					std::vector<SenseAgentData*> VisibleFriends = m_xAgent->getSense()->getVisibleFriends();
+					std::vector<SenseAgentData*> VisibleEnemies = m_xAgent->getSense()->getVisibleEnemies();
+					float FriendHP = m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
+					for (unsigned int i = 0; i < VisibleFriends.size(); i++)
+					{
+						FriendHP += VisibleFriends[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
+					}
+					float EnemyHp = 0.0f;
+					for (unsigned int i = 0; i < VisibleEnemies.size(); i++)
+					{
+						EnemyHp += VisibleEnemies[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
+					}
+					float diff = FriendHP / EnemyHp;
+					float Brave = m_xAgent->getOwner()->GetCombat()->getBrave();
+					if (Brave < 0.9f && m_xAgent->getOwner()->GetCombat()->GetHealthPercentage() < 0.1f)
+					{
+						return EBNodeStatus::Success;
+					}
+					if (Brave < 1.0f && diff < 0.3f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.9f && diff < 0.4f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.8f && diff < 0.5f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.7f && diff < 0.6f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.6f && diff < 0.7f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.5f && diff < 1.0f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.4f && diff < 1.6f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.3f && diff < 2.0f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.2f && diff < 3.0f)
+						return EBNodeStatus::Success;
+					else if (Brave < 0.1f && diff < 5.0f)
+						return EBNodeStatus::Success;
 				}
-				float EnemyHp = 0.0f;
-				for (unsigned int i = 0; i < VisibleEnemies.size(); i++)
+				//Scout
+				else if (m_xAgent->getOwner()->GetClass() == ClanMember::EClassScout)
 				{
-					EnemyHp += VisibleEnemies[i]->m_agent->getOwner()->GetCombat()->GetHealthPercentage();
-				}
-				float diff = FriendHP / EnemyHp;
-				float Brave = m_xAgent->getOwner()->GetCombat()->getBrave();
-				if (Brave < 0.9f && m_xAgent->getOwner()->GetCombat()->GetHealthPercentage() < 0.1f)
-				{
-					return EBNodeStatus::Success;
-				}
-				if (Brave < 1.0f && diff < 0.3f)
-				{
-					return EBNodeStatus::Success;
-				}
-				else if (Brave < 0.8f && diff < 0.5f)
-				{
-					return EBNodeStatus::Success;
-				}
-				else if (Brave < 0.6f && diff < 0.6f)
-				{
-					//if (m_xAgent->getOwner()->GetCombat()->GetHealthPercentage() > 0.9f)
-					//if (diff < 1.8f && diff > 0.2f)
-					/*	return EBNodeStatus::Fail;
-					else if*/
-					return EBNodeStatus::Success;
-				}
-				else if (Brave < 0.4f && diff < 2.0f)
-				{
-					return EBNodeStatus::Success;
-				}
-				else if (Brave < 0.2f && diff < 3.0f)
-				{
-					return EBNodeStatus::Success;
+					int NumVisibleFriends = m_xAgent->getSense()->getVisibleFriends().size();
+					if (NumVisibleFriends < 2)
+					{
+						return EBNodeStatus::Success;
+					}
 				}
 			}
-
-			//Maybe add a check to Success also if some Enemy is puruing agent.
 			return EBNodeStatus::Fail;
 		}
 	}

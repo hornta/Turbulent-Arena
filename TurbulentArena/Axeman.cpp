@@ -19,7 +19,7 @@ namespace bjoernligan
 		m_eClass = EClass::EClassAxeman;
 
 		m_xCombatStats.Initiate(1, 10);
-		m_MovementStats.Initiate(sf::Vector2f(300, 300.0f));
+		m_MovementStats.Initiate(0.0f);
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 

@@ -5,9 +5,9 @@
 
 namespace bjoernligan
 {
-	void MovementStats::Initiate(const sf::Vector2f p_MaxVelocity)
+	void MovementStats::Initiate(const float &p_MaxVelocity)
 	{
-		m_MaxVelocity = p_MaxVelocity;
+		m_MaxVelocity = sf::Vector2f(p_MaxVelocity, p_MaxVelocity);
 		//m_Acceleration = p_Acceleration;
 	}
 	const sf::Vector2f& MovementStats::GetMaxVelocity()
