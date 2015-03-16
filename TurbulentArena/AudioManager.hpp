@@ -13,6 +13,12 @@ namespace bjoernligan
 			AudioManager(const AudioManager&);
 			AudioManager& operator=(const AudioManager&);
 
+			struct PlayingSound
+			{
+				std::string m_xSoundName;
+				sf::Sound* m_xSound;
+			};
+
 		public:
 			typedef std::unique_ptr<AudioManager> Ptr;
 			static Ptr Create(float p_fMasterVolume = 0.50f, int p_iSoundVolume = 100, int p_iMusicVolume = 100);
@@ -56,7 +62,7 @@ namespace bjoernligan
 			int m_iSoundCount;
 
 			std::map<std::string, sf::SoundBuffer*> m_axSoundbuffers;
-			std::map<std::string, sf::Sound*> m_axSounds;
+			std::vector<PlayingSound> m_axSounds;
 			std::map<std::string, sf::Music*> m_axMusics;
 			std::map<std::string, std::vector<std::string> > m_axSoundGroups;
 		};

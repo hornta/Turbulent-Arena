@@ -30,8 +30,8 @@ namespace bjoernligan
 				auto xIt = m_axSounds.begin();
 				while (xIt != m_axSounds.end())
 				{
-					delete xIt->second;
-					(*xIt).second = nullptr;
+					delete (*xIt).m_xSound;
+					(*xIt).m_xSound = nullptr;
 					++xIt;
 				}
 				m_axSounds.clear();
@@ -62,20 +62,24 @@ namespace bjoernligan
 
 		void AudioManager::CreateSoundBuffer(std::string p_sName, std::string p_sFilename, const std::string &p_sGroup)
 		{
-			auto xIt = m_axSounds.find(p_sName);
-			if (xIt == m_axSounds.end())
+			auto xIt = m_axSounds.begin();
+			if (xIt != m_axSounds.end())
 			{
-				std::pair<std::string, sf::SoundBuffer*> xPair(p_sName, new sf::SoundBuffer);
-				if (xPair.second->loadFromFile("../data/audio/sounds/" + p_sFilename))
-				{
-					if (m_axSoundbuffers.insert(xPair).second && p_sGroup != "")
-						AddSoundToGroup(p_sName, p_sGroup);
-				}
-				else
-				{
-					delete xPair.second;
-					xPair.second = nullptr;
-				}
+				if ((*xIt).m_xSoundName == p_sName)
+					return;
+				++xIt;
+			}
+
+			std::pair<std::string, sf::SoundBuffer*> xPair(p_sName, new sf::SoundBuffer);
+			if (xPair.second->loadFromFile("../data/audio/sounds/" + p_sFilename))
+			{
+				if (m_axSoundbuffers.insert(xPair).second && p_sGroup != "")
+					AddSoundToGroup(p_sName, p_sGroup);
+			}
+			else
+			{
+				delete xPair.second;
+				xPair.second = nullptr;
 			}
 		}
 
@@ -125,8 +129,8 @@ namespace bjoernligan
 			auto xIt = m_axSounds.begin();
 			while (xIt != m_axSounds.end())
 			{
-				xIt->second->setVolume(m_fModifiedSoundVolume);
-				xIt++;
+				(*xIt).m_xSound->setVolume(m_fModifiedSoundVolume);
+				++xIt;
 			}
 		}
 
@@ -178,13 +182,12 @@ namespace bjoernligan
 			auto xBufferIt = m_axSoundbuffers.find(p_sSoundName);
 			if (xBufferIt != m_axSoundbuffers.end())
 			{
-				std::string sSoundName = p_sSoundName + std::to_string(++m_iSoundCount);
-				m_axSounds.insert(std::pair<std::string, sf::Sound*>(sSoundName, new sf::Sound));
-
-				auto xSoundsIt = m_axSounds.find(sSoundName);
-				(*xSoundsIt).second->setBuffer(*(*xBufferIt).second);
-				(*xSoundsIt).second->setVolume(m_fModifiedSoundVolume * p_fVolAdjPercent);
-				(*xSoundsIt).second->play();
+				std::string sSoundName = p_sSoundName;
+				sf::Sound* xSound = new sf::Sound;
+				xSound->setBuffer(*(*xBufferIt).second);
+				xSound->setVolume(m_fModifiedSoundVolume * p_fVolAdjPercent);
+				xSound->play();
+				m_axSounds.push_back({ sSoundName, xSound });
 			}
 
 			SoundsCleanUp();
@@ -218,9 +221,9 @@ namespace bjoernligan
 				auto xBufferIt = m_axSoundbuffers.begin();
 				while (xBufferIt != m_axSoundbuffers.end())
 				{
-					if ((*xIt).second->getBuffer() == xBufferIt->second && xBufferIt->first == p_sSoundName)
+					if ((*xIt).m_xSound->getBuffer() == xBufferIt->second && xBufferIt->first == p_sSoundName)
 					{
-						(*xIt).second->stop();
+						(*xIt).m_xSound->stop();
 					}
 					++xBufferIt;
 				}
@@ -248,16 +251,14 @@ namespace bjoernligan
 			auto xIt = m_axSounds.begin();
 			while (xIt != m_axSounds.end())
 			{
-				if (xIt->second->getStatus() != sf::Music::Playing)
+				if (xIt->m_xSound->getStatus() != sf::Music::Playing)
 				{
-					delete (*xIt).second;
-					(*xIt).second = nullptr;
+					delete (*xIt).m_xSound;
+					(*xIt).m_xSound = nullptr;
 					xIt = m_axSounds.erase(xIt);
+					continue;
 				}
-				else
-				{
-					xIt++;
-				}
+				++xIt;
 			}
 		}
 
@@ -288,7 +289,11 @@ namespace bjoernligan
 				for (uint32_t i = 0; i < (*itr).second.size(); ++i)
 				{
 					sf::Sound* xSound = GetSound((*itr).second[i]);
+<<<<<<< HEAD
 					if (xSound != nullptr && xSound->getStatus() == sf::SoundSource::Status::Playing)
+=======
+					if (xSound && xSound->getStatus() == sf::SoundSource::Status::Playing)
+>>>>>>> 512444611a4cb0aad9b10fda37766f43edacbeb7
 						return true;
 				}
 				++itr;
@@ -302,8 +307,13 @@ namespace bjoernligan
 			auto itr = m_axSounds.begin();
 			while (itr != m_axSounds.end())
 			{
+<<<<<<< HEAD
 				if ((*itr).first == p_sSoundName)
 					return (*itr).second;
+=======
+				if ((*itr).m_xSoundName == p_sSoundName)
+					return (*itr).m_xSound;
+>>>>>>> 512444611a4cb0aad9b10fda37766f43edacbeb7
 				++itr;
 			}
 
