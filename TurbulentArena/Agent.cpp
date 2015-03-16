@@ -250,7 +250,7 @@ namespace bjoernligan
 				sf::Vector2f p1 = agentData->m_agent->getOwner()->getSprite()->getPosition();
 
 				float distance = Vector2f::dist(Vector2f(p0), Vector2f(p1));
-				if (distance <= 64.f)
+				if (distance <= 48.f)
 				{
 					m_CurrentPath.setDone();
 					return true;

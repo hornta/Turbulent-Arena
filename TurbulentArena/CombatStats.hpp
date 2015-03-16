@@ -8,9 +8,7 @@ namespace bjoernligan
 	struct CombatStats
 	{
 	private:
-		int32_t m_iDamage;
-		int32_t m_iMaxHealth;
-		int32_t m_iCurrentHealth;
+		float m_fDamage, m_fMaxHealth, m_fCurrentHealth;
 		sf::Clock m_attackTimer;
 		float m_attackCooldown;
 		float m_social, m_brave, m_agression;
@@ -18,20 +16,21 @@ namespace bjoernligan
 	public:
 		sf::Clock* getAttackTimer();
 		float GetAttackCooldown() const;
-		void SetAttackCooldown(float cooldown);
-		void SetAttackCooldown() const;
+		void SetAttackCooldown(const float &cooldown);
 		void Initiate(const int32_t &p_iDamage, const int32_t &p_iHealth);
-		void TakeDamage(const int32_t &p_iValue);
-		int32_t GetDamage();
-		bool Alive();
+		void Initiate(const float &p_fDamage, const float &p_fHealth);
+		void TakeDamage(const float &p_iValue);
+		float GetDamage();
+
 		float GetHealthPercentage();
+		bool Alive();
 
-		void setSocial(float val);
-		void setBrave(float val);
-		void setAgression(float val);
+		void setSocial(const float &val);
+		void setBrave(const float &val);
+		void setAgression(const float &val);
 
-		float getSocial() const;
-		float getBrave() const;
-		float getAgression() const;
+		const float &getSocial() const;
+		const float &getBrave() const;
+		const float &getAgression() const;
 	};
 }

@@ -8,6 +8,7 @@ namespace bjoernligan
 		: m_xHealthBar(sf::Vector2f(-16, -32), 32, p_xTeamColor)
 		, m_clan(p_xClan)
 		, m_xAgent(nullptr)
+		, m_eClass(EClass::Invalid)
 	{
 		m_sprite = std::make_unique<sf::Sprite>();
 		m_xHealthBar.SetCombatStats(&m_xCombatStats);
@@ -88,12 +89,16 @@ namespace bjoernligan
 		}
 
 		target.draw(m_xSelectionRect, states);
-		target.draw(m_xHealthBar, states);
 	}
 
 	sf::Sprite* ClanMember::getSprite()
 	{
 		return m_sprite.get();
+	}
+
+	void ClanMember::drawHpBar(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(m_xHealthBar, states);
 	}
 
 	ai::Agent* ClanMember::getAgent() const
@@ -149,5 +154,10 @@ namespace bjoernligan
 			m_xSelectionRect.getOutlineColor().g,
 			m_xSelectionRect.getOutlineColor().b,
 			0));
+	}
+
+	const ClanMember::EClass &ClanMember::GetClass() const
+	{
+		return m_eClass;
 	}
 }

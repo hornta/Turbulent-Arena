@@ -15,10 +15,18 @@ namespace bjoernligan
 
 		m_xHealthRect.setFillColor(p_xHealthColor);
 		m_xHealthRect.setSize(sf::Vector2f((float)p_iWidth, fRectHeight));
+		m_xHealthRect.setOutlineThickness(2);
+		m_xHealthRect.setOutlineColor(sf::Color::Black);
+		
+		m_xTeamRect.setFillColor(p_xBgColor);
+		m_xTeamRect.setSize(sf::Vector2f((float)p_iWidth, fRectHeight));
+		m_xTeamRect.setOutlineThickness(4);
+		m_xTeamRect.setOutlineColor(p_xTeamColor);
+
 		m_xBgRect.setFillColor(p_xBgColor);
 		m_xBgRect.setSize(sf::Vector2f((float)p_iWidth, fRectHeight));
-		m_xBgRect.setOutlineThickness(3);
-		m_xBgRect.setOutlineColor(p_xTeamColor);
+		m_xBgRect.setOutlineThickness(6);
+		m_xBgRect.setOutlineColor(sf::Color::Black);
 	}
 
 	void HealthBar::SetCombatStats(CombatStats* p_xCombatStats)
@@ -29,6 +37,7 @@ namespace bjoernligan
 	void HealthBar::Update(const sf::Vector2f &p_xPos)
 	{
 		m_xHealthRect.setPosition(m_xOffset + p_xPos);
+		m_xTeamRect.setPosition(m_xOffset + p_xPos);
 		m_xBgRect.setPosition(m_xOffset + p_xPos);
 
 		if (!m_xCombatStats)
@@ -40,6 +49,7 @@ namespace bjoernligan
 	void HealthBar::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
 		target.draw(m_xBgRect, states);
+		target.draw(m_xTeamRect, states);
 		target.draw(m_xHealthRect, states);
 	}
 }
