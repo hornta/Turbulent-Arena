@@ -7,6 +7,7 @@
 #include "BNodesInclude.hpp"
 #include "BFindTargetNode.hpp"
 #include "Clan.hpp"
+#include "Axeman.hpp"
 
 namespace bjoernligan
 {
@@ -53,9 +54,9 @@ namespace bjoernligan
 		{
 			for (std::size_t i = 0; i < members.size(); ++i)
 			{
-				if (members[i] != this)
+				if (members[i] != this && members[i]->GetClass() == EClass::Axeman)
 				{
-					m_enlightendFriends.emplace_back(std::make_unique<EnlightendFriend>(false));
+					m_enlightendFriends.emplace_back(std::make_unique<EnlightendFriend>(true));
 					EnlightendFriend* f = m_enlightendFriends.back().get();
 					f->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
 				}
@@ -70,13 +71,24 @@ namespace bjoernligan
 
 		for (std::size_t i = 0; i < m_enlightendFriends.size(); ++i)
 		{
-			// Check if we are close to friend to report to him =)
-			sf::Vector2f p0 = m_enlightendFriends[i]->agent->m_agent->getOwner()->getSprite()->getPosition();
-			sf::Vector2f p1 = getSprite()->getPosition();
-
-			if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 40.f)
+			if (!m_enlightendFriends[i]->enlightend)
 			{
-				m_enlightendFriends[i]->enlightend = true;
+				// Check if we are close to friend to report to him =)
+				sf::Vector2f p0 = m_enlightendFriends[i]->agent->m_agent->getOwner()->getSprite()->getPosition();
+				sf::Vector2f p1 = getSprite()->getPosition();
+
+				if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 40.f)
+				{
+					m_enlightendFriends[i]->enlightend = true;
+
+					bjoernligan::Axeman* axeman = static_cast<bjoernligan::Axeman*>(m_enlightendFriends[i]->agent->m_agent->getOwner());
+
+					for (std::size_t k = 0; k < m_enlightendFriends[i]->toReport.size(); ++k)
+					{
+						axeman->m_incomingReports.push_back(std::move(m_enlightendFriends[i]->toReport[k]));
+					}
+					m_enlightendFriends[i]->toReport.clear();
+				}
 			}
 		}
 	}

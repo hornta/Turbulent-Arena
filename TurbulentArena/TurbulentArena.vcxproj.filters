@@ -321,6 +321,9 @@
     <ClInclude Include="Explore.h">
       <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessIncomingReports.h">
+      <Filter>Header Files\AI\BT\Nodes\Leafs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -537,6 +540,9 @@
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
     <ClCompile Include="Explore.cpp">
+      <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessIncomingReports.cpp">
       <Filter>Source Files\AI\BT\Nodes\Leafs</Filter>
     </ClCompile>
   </ItemGroup>

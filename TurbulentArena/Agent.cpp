@@ -140,6 +140,35 @@ namespace bjoernligan
 			}
 		}
 
+		void Agent::setWanderPos(const sf::Vector2f& position)
+		{
+			Map* map = ServiceLocator<Map>::GetService();
+			Pathfinder* pathfinder = ServiceLocator<Pathfinder>::GetService();
+
+			sf::Vector2i goalPosition;
+			if (!m_CurrentPath.isDone())
+			{
+				Pathfinder::PathNode* node = &m_CurrentPath.nodes.back();
+				goalPosition.x = node->x;
+				goalPosition.y = node->y;
+			}
+
+			sf::Vector2i newGoalPosition = map->getTilePosition(position);
+
+			if (goalPosition != newGoalPosition)
+			{
+				pathfinder->setStart(map->getTilePosition(m_xOwner->getSprite()->getPosition()));
+				pathfinder->setGoal(newGoalPosition);
+
+				Pathfinder::Options options;
+				options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
+				options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
+
+				pathfinder->findPath(m_CurrentPath, options);
+			}
+		}
+
 		void Agent::MoveToTargetPos()
 		{
 			if (!m_CurrentPath.isDone())
