@@ -12,7 +12,7 @@ namespace bjoernligan
 		//float m_Acceleration;
 
 	public:
-		void Initiate(const sf::Vector2f p_MaxVelocity);
+		void Initiate(const float &p_MaxVelocity);
 	
 		const sf::Vector2f& GetMaxVelocity();
 		void SetMaxVelocity(const float &p_NewMaxVelocity);
