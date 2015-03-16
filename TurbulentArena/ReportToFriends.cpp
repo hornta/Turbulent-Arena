@@ -23,6 +23,7 @@ namespace bjoernligan
 			{
 				if (!scout->m_enlightendFriends[i]->enlightend)
 				{
+					m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(600);
 					m_xAgent->getPathToVisibleTarget(scout->m_enlightendFriends[i]->agent.get());
 					break;
 				}

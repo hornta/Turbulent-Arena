@@ -14,6 +14,13 @@ namespace bjoernligan
 	public:
 		struct ReportData
 		{
+			ReportData(ai::Agent* agent, const sf::Vector2f& position) :
+				agent(agent),
+				position(position)
+			{
+
+			}
+
 			ai::Agent* agent;
 			sf::Vector2f position;
 		};
@@ -25,6 +32,7 @@ namespace bjoernligan
 
 			bool enlightend; 
 			std::unique_ptr<ai::SenseAgentData> agent;
+			std::vector<std::unique_ptr<ReportData>> toReport;
 		};
 
 		std::vector<ReportData> m_toReport;

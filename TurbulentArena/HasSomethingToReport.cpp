@@ -19,13 +19,18 @@ namespace bjoernligan
 
 			Scout* scout = static_cast<Scout*>(m_xAgent->getOwner());
 
-			if (scout->m_toReport.empty())
+			bool toReport = false;
+			for (std::size_t i = 0; i < scout->m_enlightendFriends.size(); ++i)
 			{
-				return EBNodeStatus::Fail;
+				if (!scout->m_enlightendFriends[i]->enlightend)
+				{
+					toReport = true;
+				}
 			}
 
-			return EBNodeStatus::Success;
+			if (toReport)
+				return EBNodeStatus::Success;
+			return EBNodeStatus::Fail;
 		}
-
 	}
 }

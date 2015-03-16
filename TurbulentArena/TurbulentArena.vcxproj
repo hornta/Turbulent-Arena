@@ -106,6 +106,7 @@
     <ClInclude Include="GetPathToEnemy.hpp" />
     <ClInclude Include="HealthBar.hpp" />
     <ClInclude Include="Mood.hpp" />
+    <ClInclude Include="ProcessIncomingReports.h" />
     <ClInclude Include="ReportToFriends.h" />
     <ClInclude Include="SelectionRect.hpp" />
     <ClInclude Include="Sense.hpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="GetPathToEnemy.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="Mood.cpp" />
+    <ClCompile Include="ProcessIncomingReports.cpp" />
     <ClCompile Include="ReportToFriends.cpp" />
     <ClCompile Include="SelectionRect.cpp" />
     <ClCompile Include="Sense.cpp" />

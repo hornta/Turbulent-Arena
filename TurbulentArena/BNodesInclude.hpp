@@ -19,3 +19,4 @@
 #include "ReportToFriends.h"
 #include "HasSomethingToReport.h"
 #include "Explore.h"
+#include "ProcessIncomingReports.h"

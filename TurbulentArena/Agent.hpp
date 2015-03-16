@@ -46,6 +46,7 @@ namespace bjoernligan
 			//tomas BT-methods (bad solution)
 			int32_t SensedEnemyCount();
 			void ChooseWanderPos(bool originByFriend, int maxAreaSize);
+			void setWanderPos(const sf::Vector2f& position);
 			bool AtMoveTarget();
 			bool canFindTarget();
 			bool getPathToVisibleTarget(SenseAgentData* senseAgentData);
