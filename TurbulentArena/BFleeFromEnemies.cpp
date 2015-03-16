@@ -20,7 +20,7 @@ namespace bjoernligan
 			if (!m_xAgent->getSense()->getVisibleEnemies().empty())
 			{
 				m_xAgent->GetPath()->setDone();
-				float fFleeSpeed = 150.f + 200.0f * m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
+				float fFleeSpeed = 200.f + 150.0f * m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
 				m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(fFleeSpeed);
 				m_xAgent->GetSteering()->Flee(m_xAgent->getSense()->getVisibleEnemies().front()->m_agent->getOwner()->getSprite()->getPosition());
 				m_xAgent->GetSteering()->Update();
