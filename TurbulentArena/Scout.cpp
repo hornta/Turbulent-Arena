@@ -8,6 +8,7 @@
 #include "BFindTargetNode.hpp"
 #include "Clan.hpp"
 #include "Axeman.hpp"
+#include "AudioManager.hpp"
 
 namespace bjoernligan
 {
@@ -79,6 +80,9 @@ namespace bjoernligan
 
 				if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 40.f)
 				{
+					system::AudioManager* audioManager = ServiceLocator<system::AudioManager>::GetService();
+					audioManager->PlaySoundFromGroup("Scout_Inform");
+					
 					m_enlightendFriends[i]->enlightend = true;
 
 					bjoernligan::Axeman* axeman = static_cast<bjoernligan::Axeman*>(m_enlightendFriends[i]->agent->m_agent->getOwner());

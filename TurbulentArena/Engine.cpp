@@ -67,6 +67,9 @@ namespace bjoernligan
 			m_xAudioManager->CreateSoundBuffer("Battle4", "battle_sword_clang.wav", "Battle");
 			m_xAudioManager->CreateSoundBuffer("Battle5", "battle_sword_clang2.wav", "Battle");
 			m_xAudioManager->CreateSoundBuffer("Punch", "punch.wav");
+			m_xAudioManager->CreateSoundBuffer("Scout_Inform_1", "scout_inform_1.ogg", "Scout_Inform");
+			m_xAudioManager->CreateSoundBuffer("Scout_Inform_2", "scout_inform_2.ogg", "Scout_Inform");
+			m_xAudioManager->CreateSoundBuffer("Scout_Inform_3", "scout_inform_3.ogg", "Scout_Inform");
 			m_xAudioManager->CreateMusic("Battle", "dragons_lair.ogg");
 			m_xAudioManager->CreateMusic("Menu", "song_of_the_north.ogg");
 			m_xAudioManager->CreateMusic("Victory", "mtw_vikings_victory.ogg");
