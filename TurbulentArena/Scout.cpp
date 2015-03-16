@@ -90,7 +90,7 @@ namespace bjoernligan
 
 		for (std::size_t i = 0; i < m_enlightendFriends.size(); ++i)
 		{
-			m_enlightendFriends[i]->agent.release();
+			m_enlightendFriends[i]->agent.reset();
 			m_enlightendFriends[i]->agent = std::make_unique<ai::SenseAgentData>(members[i]->getAgent());
 		}
 
