@@ -42,7 +42,7 @@ namespace bjoernligan
 		m_bContinous = p_xDefinition.m_bContinous;
 
 		std::stringstream xStream;
-		xStream << m_sTextString << ": " << std::fixed << std::setprecision(4) << GetValue();
+		xStream << m_sTextString << ": " << std::fixed << std::setprecision(2) << GetValue();
 		m_xText.setString(xStream.str());
 
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
@@ -92,7 +92,7 @@ namespace bjoernligan
 				m_xFunction(GetValue());
 
 			std::stringstream xStream;
-			xStream << m_sTextString << ": " << std::fixed << std::setprecision(4) << GetValue();
+			xStream << m_sTextString << ": " << std::fixed << std::setprecision(2) << GetValue();
 			m_xText.setString(xStream.str());
 
 			return true;
@@ -120,7 +120,7 @@ namespace bjoernligan
 
 	float UISlider::GetValue()
 	{
-		return m_fMin + (m_fMax - m_fMin) * m_fCurrent;
+		return (m_fMax - m_fMin) * m_fCurrent;
 	}
 
 	float UISlider::GetAllowedX(float p_fX)
