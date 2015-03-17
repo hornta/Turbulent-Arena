@@ -2,6 +2,13 @@
 #include "ClanManager.hpp"
 #include "Keyboard.hpp"
 #include "Clan.hpp"
+#include "ClanMember.hpp"
+#include "Axeman.hpp"
+#include "Scout.hpp"
+#include "Sense.hpp"
+#include "SpriteManager.hpp"
+
+#include "Physics.hpp"
 
 namespace bjoernligan
 {
@@ -14,10 +21,43 @@ namespace bjoernligan
 	{
 	}
 
-	Clan* ClanManager::createClan(const std::string& name, const sf::Color &p_xTeamColor)
+	Clan* ClanManager::createClan(const std::string& name, const sf::Color &p_xTeamColor, const uint32_t &p_iAxemanCount, const uint32_t &p_iScoutCount)
 	{
 		m_clans.emplace_back(std::make_unique<Clan>(name, p_xTeamColor));
-		return m_clans.back().get();
+		Clan* xClan = m_clans.back().get();
+
+		Physics::Params clanMemberBodyDef;
+		clanMemberBodyDef.m_xBodyDef.linearDamping = 3.0f;
+		clanMemberBodyDef.m_xBodyDef.angularDamping = 0.5f;
+		clanMemberBodyDef.m_eShapeType = Physics::Circle;
+		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
+		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
+		clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
+		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 15.f;
+		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
+
+		ai::Sense* xSense = ServiceLocator<ai::Sense>::GetService();
+		system::SpriteManager* xSpriteManager = ServiceLocator<system::SpriteManager>::GetService();
+
+		for (uint32_t i = 0; i < p_iAxemanCount; ++i)
+		{
+			ClanMember* member = xClan->createMember<Axeman>(xSense);
+			member->getSprite()->setTexture(*xSpriteManager->GetTexture("classes/axeman.png"));
+			member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+			member->setBody(ServiceLocator<Physics>::GetService()->createBody(clanMemberBodyDef));
+			member->initiate();
+		}
+
+		for (uint32_t i = 0; i < p_iScoutCount; ++i)
+		{
+			ClanMember* member = xClan->createMember<Scout>(xSense);
+			member->getSprite()->setTexture(*xSpriteManager->GetTexture("classes/scout.png"));
+			member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
+			member->setBody(ServiceLocator<Physics>::GetService()->createBody(clanMemberBodyDef));
+			member->initiate();
+		}
+
+		return xClan;
 	}
 	
 	std::size_t ClanManager::getAmount() const

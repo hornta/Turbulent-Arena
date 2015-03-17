@@ -123,61 +123,10 @@ namespace bjoernligan
 			++teamSpawnsIt;
 		}
 
-		Physics::Params clanMemberBodyDef;
-		clanMemberBodyDef.m_xBodyDef.linearDamping = 3.0f;
-		clanMemberBodyDef.m_xBodyDef.angularDamping = 0.5f;
-		clanMemberBodyDef.m_eShapeType = Physics::Circle;
-		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
-		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
-		clanMemberBodyDef.m_xFixtureDef.restitution = 0.2f;
-		clanMemberBodyDef.m_xShapeSize.m_fCircleRadius = 15.f;
-		clanMemberBodyDef.m_xBodyDef.type = b2_dynamicBody;
-		//clanMemberBodyDef.m_xBodyDef.fixedRotation = false;
+		m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255), 20, 3);
+		m_xGameOverChecker.AddClan(m_xPlayerClan);
 
-		{
-			m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255));
-			m_xGameOverChecker.AddClan(m_xPlayerClan);
-
-			for (int32_t i = 0; i < 20; ++i)
-			{
-				ClanMember* member = m_xPlayerClan->createMember<Axeman>(m_sense.get());
-				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
-				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
-				member->setBody(m_physics->createBody(clanMemberBodyDef));
-				member->initiate();
-			}
-
-			for (int32_t i = 0; i < 3; ++i)
-			{
-				ClanMember* member = m_xPlayerClan->createMember<Scout>(m_sense.get());
-				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
-				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
-				member->setBody(m_physics->createBody(clanMemberBodyDef));
-				member->initiate();
-			}
-		}
-		{
-			Clan* clan = m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70));
-			m_xGameOverChecker.AddClan(clan);
-
-			for (int32_t i = 0; i < 20; ++i)
-			{
-				ClanMember* member = clan->createMember<Axeman>(m_sense.get());
-				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/axeman.png"));
-				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
-				member->setBody(m_physics->createBody(clanMemberBodyDef));
-				member->initiate();
-			}
-
-			for (int32_t i = 0; i < 3; ++i)
-			{
-				ClanMember* member = clan->createMember<Scout>(m_sense.get());
-				member->getSprite()->setTexture(*m_xSpriteManager->GetTexture("classes/scout.png"));
-				member->getSprite()->setOrigin(member->getSprite()->getGlobalBounds().width * 0.5f, member->getSprite()->getGlobalBounds().height * 0.5f);
-				member->setBody(m_physics->createBody(clanMemberBodyDef));
-				member->initiate();
-			}
-		}
+		m_xGameOverChecker.AddClan(m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70), 20, 3));
 
 		std::vector<Clan*> clans = m_clanManager->getClans();
 		std::vector<ClanMember*> members;
@@ -259,7 +208,7 @@ namespace bjoernligan
 			UISlider::SliderDef xDef;
 			xDef.m_fCurrent = 1.0f;
 			xDef.m_fMin = 0.1f;
-			xDef.m_fMax = 5.f;
+			xDef.m_fMax = 2.f;
 			xDef.m_fWidth = 240.f;
 			xDef.m_sTextString = "Gamespeed";
 			xDef.m_xFunction = std::bind(&bjoernligan::PlayState::SetGameSpeed, this, std::placeholders::_1);
