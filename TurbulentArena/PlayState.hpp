@@ -49,6 +49,7 @@ namespace bjoernligan
 		void SetDebugMode(const bool &p_bValue);
 		void ToggleDebugPathfinder(bool value);
 		void SetScrollSpeed(const float &p_fNewSpeed);
+		void SetGameSpeed(const float &p_fNewSpeed);
 
 		void ToggleGamePaused();
 
@@ -82,5 +83,6 @@ namespace bjoernligan
 		bool m_bGameOver;
 
 		bool m_bGamePaused;
+		float m_fGameSpeed;
 	};
 }
