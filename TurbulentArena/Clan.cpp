@@ -73,7 +73,7 @@ namespace bjoernligan
 		std::vector<ClanMember*> members;
 		for (std::size_t i = 0; i < m_clanMembers.size(); ++i)
 		{
-			if (m_clanMembers[i]->GetCombat()->Alive())
+			if (m_clanMembers[i] && m_clanMembers[i]->GetCombat()->Alive())
 				members.push_back(m_clanMembers[i].get());
 			else
 				members.push_back(nullptr);

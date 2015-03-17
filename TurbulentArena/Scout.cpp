@@ -77,7 +77,7 @@ namespace bjoernligan
 		{
 			for (std::size_t i = 0; i < members.size(); ++i)
 			{
-				if (members[i] != this && members[i]->GetClass() == EClass::EClassAxeman)
+				if (members[i] && members[i] != this && members[i]->GetClass() == EClass::EClassAxeman)
 				{
 					m_enlightendFriends.emplace_back(std::make_unique<EnlightendFriend>(true));
 					EnlightendFriend* f = m_enlightendFriends.back().get();
