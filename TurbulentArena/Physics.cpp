@@ -25,15 +25,18 @@ namespace bjoernligan
 		float end_x = start.x + cosf(direction) * distance;
 		float end_y = start.y + sinf(direction) * distance;
 
-		
 		m_world->RayCast(this, start, b2Vec2(end_x, end_y));
 	}
 
 	float32 Physics::Raycast::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 	{
-		m_result.bodies.push_back(fixture->GetBody());
+		if (m_result.bodies.empty())
+			m_result.bodies.push_back(fixture->GetBody());
+		else
+			m_result.bodies[0] = fixture->GetBody();
 		normal;
 		point;
+		fraction;
 		return fraction;
 	}
 	void Physics::Body::setPosition(const sf::Vector2f& p_position)

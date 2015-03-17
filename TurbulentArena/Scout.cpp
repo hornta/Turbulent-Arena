@@ -61,7 +61,8 @@ namespace bjoernligan
 		xRootSelector->AddChild<ai::Explore>()->AttachAgent(m_xAgent.get());
 
 		// level 3
-		//attackSequence->AddChild<ai::
+		//attackSequence->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
+		//attackSequence->AddChild<
 		reportSequence->AddChild<ai::HasSomethingToReport>()->AttachAgent(m_xAgent.get());
 		reportSequence->AddChild<ai::ReportToFriends>()->AttachAgent(m_xAgent.get());
 	}
