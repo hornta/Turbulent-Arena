@@ -38,7 +38,7 @@ namespace bjoernligan
 			m_xStateManager = GameStateManager::Create();
 			m_xDrawManager = DrawManager::Create();
 			m_xSpriteManager = SpriteManager::Create();
-			m_xAudioManager = AudioManager::Create(0.5, 100, 50);
+			m_xAudioManager = AudioManager::Create(.5f, 100, 100);
 			m_xKeyboard = input::Keyboard::Create();
 			m_xMouse = input::Mouse::Create();
 			m_xUtility = Utility::Create();
@@ -76,7 +76,7 @@ namespace bjoernligan
 
 			if (!m_xDrawManager->Initialize())
 				return false;
-			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
+			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena", sf::Style::None);
 
 			if (!m_xUIManager->Initialize())
 				return false;

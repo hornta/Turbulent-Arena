@@ -2,7 +2,6 @@
 #include "BIsAllyTooClose.hpp"
 #include "Agent.hpp"
 #include "ClanMember.hpp"
-#include "Utils.hpp"
 
 namespace bjoernligan
 {

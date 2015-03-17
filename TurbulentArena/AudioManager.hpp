@@ -47,7 +47,7 @@ namespace bjoernligan
 
 			//sound-groups
 			void AddSoundToGroup(const std::string &p_sSoundName, const std::string &p_sSoundGroup);
-			void PlaySoundFromGroup(const std::string &p_sSoundGroup);
+			void PlaySoundFromGroup(const std::string &p_sSoundGroup, const float &p_fVolume = 1.0f);
 			bool IsGroupPlaying(const std::string &p_sSoundGroup);
 
 		private:

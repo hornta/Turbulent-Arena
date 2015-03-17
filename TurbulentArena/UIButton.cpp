@@ -35,10 +35,13 @@ namespace bjoernligan
 		const std::string &p_sName,
 		const sf::IntRect &p_xSize,
 		std::function<void(bool)> p_xFunction,
+		const bool &p_bActive,
 		const sf::Color &p_xIdleColor,
 		const sf::Color &p_xHoverColor,
 		const sf::Color &p_xPressedColor)
 	{
+		m_bActive = p_bActive;
+
 		m_xButtonText.setString(p_sName);
 
 		m_xFunction = p_xFunction;

@@ -33,7 +33,7 @@ namespace bjoernligan
 		void Agent::Update(const float &p_fDeltaTime)
 		{
 			p_fDeltaTime;
-			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
+			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= 0.1f)
 			{
 				m_senseDecideTimer.restart();
 				Sense();
@@ -130,7 +130,7 @@ namespace bjoernligan
 				if (m_map->GetRandomTopmostWalkableTile(originPos, target, searchArea))
 				{
 					Pathfinder::Options options;
-					options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+					options.algorithm = PathfinderInfo::ALGORITHM_JPS;
 					options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
 					options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
 					xPathFinder->setStart(m_xCurrentMapPos);
@@ -161,7 +161,7 @@ namespace bjoernligan
 				pathfinder->setGoal(newGoalPosition);
 
 				Pathfinder::Options options;
-				options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+				options.algorithm = PathfinderInfo::ALGORITHM_JPS;
 				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
 				options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
 
@@ -250,7 +250,7 @@ namespace bjoernligan
 				pathfinder->setGoal(newGoalPosition);
 
 				Pathfinder::Options options;
-				options.algorithm = PathfinderInfo::ALGORITHM_ASTAR;
+				options.algorithm = PathfinderInfo::ALGORITHM_JPS;
 				options.diagonal = PathfinderInfo::DIAGONAL_NO_OBSTACLES;
 				options.heuristic = PathfinderInfo::HEURISTIC_DIAGONAL;
 

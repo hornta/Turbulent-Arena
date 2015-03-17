@@ -4,9 +4,14 @@
 #define SQRT2 1.41421356237f;
 #define DEGREES(rad) rad * 180 / PI
 #define RADIANS(deg) deg * PI / 180
+#include <SFML\Graphics.hpp>
+#include <Box2D\Box2D.h>
 
 namespace bjoernligan
 {
+	float dotDegrees(const sf::Vector2f &p_xFirst, const sf::Vector2f &p_xSecond);
+	float dotDegrees(const b2Vec2 &p_xFirst, const b2Vec2 &p_xSecond);
+
 	namespace random
 	{
 		std::mt19937 getEngine();
@@ -219,11 +224,6 @@ namespace bjoernligan
 				break;
 			}
 		}
-	}
-
-	float dot(const sf::Vector2f& p_xFirst, const sf::Vector2f& p_xSecond)
-	{
-		return p_xFirst.x * p_xSecond.x + p_xFirst.y * p_xSecond.y;
 	}
 
 	struct PathfinderInfo

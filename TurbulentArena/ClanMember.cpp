@@ -35,17 +35,12 @@ namespace bjoernligan
 		{
 			m_sprite->setRotation(DEGREES(m_xPhysicsBody->m_body->GetAngle()));
 
-			//sf::Vector2f x;
-
-			//float fAngle = dot(sf::Vector2f(0, 1), vectorToPix(m_xPhysicsBody->m_body->GetLinearVelocity()));
-
-			//float fTangent(m_xPhysicsBody->m_body->GetLinearVelocity().y);
-			//float fHypo(m_xPhysicsBody->m_body->GetLinearVelocity().Length());
-			//float fTangent(5);
-			//float fHypo(10);
-
-			//float fAngle = DEGREES(std::cos(fTangent / fHypo));
-			//m_sprite->setRotation(fAngle);
+			//b2Vec2 xVelocity = m_xPhysicsBody->m_body->GetLinearVelocity();
+			//if (xVelocity.Length() > 0.01f)
+			//{
+			//	float fAngle = /*acos(*/ dotDegrees(sf::Vector2f(0, 1), vectorToPix(xVelocity));
+			//	m_xPhysicsBody->m_body->SetTransform(m_xPhysicsBody->m_body->GetPosition(), /*RADIANS*/(fAngle));// setRotation(dot(sf::Vector2f(0, 1), vectorToPix(xVelocity))/* - 90.f*/);
+			//}
 		}
 
 		m_xHealthBar.Update(m_xPos);
