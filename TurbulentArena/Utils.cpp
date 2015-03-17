@@ -7,6 +7,18 @@ namespace bjoernligan
 	float toBox2D = 1.f / Box2D_Unit;
 	float toPixel = 1.f * Box2D_Unit;
 
+	float dotDegrees(const sf::Vector2f &p_xFirst, const sf::Vector2f &p_xSecond)
+	{
+		//return atan2(p_xSecond.y - p_xFirst.y, p_xSecond.x - p_xFirst.x);
+		return atan2(p_xSecond.y, p_xSecond.y) - atan2(p_xFirst.y, p_xFirst.x);
+		//return p_xFirst.x * p_xSecond.x + p_xFirst.y * p_xSecond.y;
+	}
+
+	float dotDegrees(const b2Vec2 &p_xFirst, const b2Vec2 &p_xSecond)
+	{
+		return p_xFirst.x * p_xSecond.x + p_xFirst.y * p_xSecond.y;
+	}
+
 	namespace random
 	{
 		std::random_device rd;

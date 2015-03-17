@@ -18,7 +18,7 @@ namespace bjoernligan
 				return EBNodeStatus::Invalid;
 
 			m_xAgent->getOwner()->GetMovementStats().SetMaxVelocity(350.f);
-			m_xAgent->ChooseWanderPos(false, 40);
+			m_xAgent->ChooseWanderPos(false, 80);
 
 			return EBNodeStatus::Success;
 		}

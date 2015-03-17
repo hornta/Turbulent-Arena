@@ -191,6 +191,10 @@ namespace bjoernligan
 
 		m_xSelectionRect.SetTargetClan(m_xPlayerClan);
 
+		m_xClanStats = std::make_unique<ClanStats>(true);
+		m_xClanStats->Initialize(m_clanManager->getClans());
+		m_xClanStats->SetPos(sf::Vector2f(16, 96));
+
 		UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: World", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32),
 			std::bind(&bjoernligan::PlayState::SetDebugMode, this, std::placeholders::_1));
@@ -202,6 +206,10 @@ namespace bjoernligan
 		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: Pathfinder", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 170, 140, 32),
 			std::bind(&bjoernligan::PlayState::ToggleDebugPathfinder, this, std::placeholders::_1));
+
+		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+		xButton->Initialize("Member count", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 207, 140, 32),
+			std::bind(&bjoernligan::ClanStats::SetActive, &*m_xClanStats, std::placeholders::_1), true);
 
 		float fSliderSpacing = 80.0f;
 
@@ -293,6 +301,8 @@ namespace bjoernligan
 
 		GameOverCheck(p_fDeltaTime);
 
+		m_xClanStats->Update();
+
 		return true;
 	}
 
@@ -307,7 +317,7 @@ namespace bjoernligan
 
 		m_xDrawManager->getWindow()->setView(m_xUIManager->getView());
 
-
+		target.draw(*m_xClanStats.get(), states);
 	}
 
 	void PlayState::SetDebugMode(const bool &p_bValue)

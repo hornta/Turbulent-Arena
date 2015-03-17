@@ -96,6 +96,7 @@
     <ClInclude Include="BDamageTarget.hpp" />
     <ClInclude Include="BFindTargetNode.hpp" />
     <ClInclude Include="BWalkToTarget.hpp" />
+    <ClInclude Include="ClanStats.hpp" />
     <ClInclude Include="DetectEnemies.h" />
     <ClInclude Include="Explore.h" />
     <ClInclude Include="HasSomethingToReport.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="BDamageTarget.cpp" />
     <ClCompile Include="BFindTargetNode.cpp" />
     <ClCompile Include="BWalkToTarget.cpp" />
+    <ClCompile Include="ClanStats.cpp" />
     <ClCompile Include="DetectEnemies.cpp" />
     <ClCompile Include="Explore.cpp" />
     <ClCompile Include="HasSomethingToReport.cpp" />

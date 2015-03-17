@@ -274,11 +274,11 @@ namespace bjoernligan
 				m_axSoundGroups.insert(std::pair<std::string, std::vector<std::string> >(p_sSoundGroup, { p_sSoundName }));
 		}
 
-		void AudioManager::PlaySoundFromGroup(const std::string &p_sSoundGroup)
+		void AudioManager::PlaySoundFromGroup(const std::string &p_sSoundGroup, const float &p_fVolume)
 		{
 			auto itr = m_axSoundGroups.find(p_sSoundGroup);
 			if (itr != m_axSoundGroups.end() || !(*itr).second.empty())
-				PlaySoundClip((*itr).second[random::random(0, (*itr).second.size() - 1)]);
+				PlaySoundClip((*itr).second[random::random(0, (*itr).second.size() - 1)], p_fVolume);
 		}
 
 		bool AudioManager::IsGroupPlaying(const std::string &p_sSoundGroup)

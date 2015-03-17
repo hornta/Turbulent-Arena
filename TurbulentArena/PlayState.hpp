@@ -6,6 +6,7 @@
 #include "GameOverChecker.hpp"
 #include "Timer.hpp"
 #include "SelectionRect.hpp"
+#include "ClanStats.hpp"
 
 namespace bjoernligan
 {
@@ -62,6 +63,7 @@ namespace bjoernligan
 		SelectionRect m_xSelectionRect;
 
 		//play state specific
+		std::unique_ptr<ClanStats> m_xClanStats;
 		std::unique_ptr<Map> m_map;
 		std::unique_ptr<ai::Sense> m_sense;
 		std::unique_ptr<Physics> m_physics;

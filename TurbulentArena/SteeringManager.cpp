@@ -4,8 +4,8 @@
 #include "ServiceLocator.hpp"
 #include "MovementStats.hpp"
 #include "Utility.hpp"
-#include <Box2D\Box2D.h>
-#include <cmath>
+//#include <Box2D\Box2D.h>
+//#include <cmath>
 
 namespace bjoernligan
 {

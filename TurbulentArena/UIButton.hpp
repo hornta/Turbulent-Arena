@@ -36,6 +36,7 @@ namespace bjoernligan
 			const std::string &p_sName,
 			const sf::IntRect &p_xSize,
 			std::function<void(bool)> p_xFunction,
+			const bool &p_bActive = false,
 			const sf::Color &p_xIdleColor = m_xDefaultIdleColor,
 			const sf::Color &p_xHoverColor = m_xDefaultHoverColor,
 			const sf::Color &p_xPressedColor = m_xDefaultPressedColor);
