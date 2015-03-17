@@ -76,7 +76,7 @@ namespace bjoernligan
 
 			if (!m_xDrawManager->Initialize())
 				return false;
-			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena"/*, sf::Style::None*/);
+			m_xDrawManager->getWindow()->create(sf::VideoMode(Settings::m_xWindowSize.x, Settings::m_xWindowSize.y), "Turbulent Arena", sf::Style::None);
 
 			if (!m_xUIManager->Initialize())
 				return false;

@@ -33,7 +33,7 @@ namespace bjoernligan
 		void Agent::Update(const float &p_fDeltaTime)
 		{
 			p_fDeltaTime;
-			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= AGENT_SENSE_DECIDE_TIMER)
+			//if (m_senseDecideTimer.getElapsedTime().asSeconds() >= 0.1f)
 			{
 				m_senseDecideTimer.restart();
 				Sense();

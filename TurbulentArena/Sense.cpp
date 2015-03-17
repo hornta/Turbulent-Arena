@@ -122,13 +122,13 @@ namespace bjoernligan
 					Physics::RaycastResult result = physics->raycast(m_me->getOwner()->getSprite()->getPosition(), agent->getOwner()->getSprite()->getPosition());
 					for (auto& object : result.bodies)
 					{
-						if (object->GetUserData() != NULL)
+						if (object->GetUserData() != nullptr)
 						{
 							B2UserData* ud = static_cast<B2UserData*>(object->GetUserData());
 							if (ud->type == B2UserData::CLANMEMBER)
 							{
 								ClanMemberUD* clanMemberUD = static_cast<ClanMemberUD*>(ud);
-								if (!m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
+								if (clanMemberUD->clanMember != m_me->getOwner() && !m_me->getOwner()->IsFriend(clanMemberUD->clanMember))
 								{
 									visibles.emplace_back(std::make_unique<SenseAgentData>(clanMemberUD->clanMember->getAgent()));
 								}
