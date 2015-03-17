@@ -24,6 +24,7 @@
 #include "GameStateManager.hpp"
 #include "MainMenuState.hpp"
 #include "WinMenu.hpp"
+#include "UIBase.hpp"
 
 namespace bjoernligan
 {
@@ -145,25 +146,41 @@ namespace bjoernligan
 		m_xClanStats->Initialize(m_clanManager->getClans());
 		m_xClanStats->SetPos(sf::Vector2f(16, 96));
 
-		UIButton* xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
-		xButton->Initialize("FPS", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32),
-			std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow, std::placeholders::_1));
+		UIButton* xButton(nullptr);
+
+		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+		xButton->Initialize("Debug Options", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 59, 140, 32),
+			std::bind(&bjoernligan::PlayState::SetDebugOptionsActive, this, std::placeholders::_1));
 
 		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: Physics", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 96, 140, 32),
 			std::bind(&bjoernligan::PlayState::SetDebugMode, this, std::placeholders::_1));
+		xButton->SetElementActive(false);
+		m_axDebugOptions.push_back(xButton);
+
+		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+		xButton->Initialize("FPS", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 133, 140, 32),
+			std::bind(&bjoernligan::DebugWindow::SetActive, &*m_xDebugWindow, std::placeholders::_1));
+		xButton->SetElementActive(false);
+		m_axDebugOptions.push_back(xButton);
 
 		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Debug: Paths", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 170, 140, 32),
 			std::bind(&bjoernligan::PlayState::ToggleDebugPathfinder, this, std::placeholders::_1));
+		xButton->SetElementActive(false);
+		m_axDebugOptions.push_back(xButton);
 
 		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Member count", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 207, 140, 32),
 			std::bind(&bjoernligan::ClanStats::SetActive, &*m_xClanStats, std::placeholders::_1), true);
+		xButton->SetElementActive(false);
+		m_axDebugOptions.push_back(xButton);
 
 		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
 		xButton->Initialize("Healthbars", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 244, 140, 32),
 			std::bind(&bjoernligan::ClanManager::SetDrawHealthBars, &*m_clanManager, std::placeholders::_1), true);
+		xButton->SetElementActive(false);
+		m_axDebugOptions.push_back(xButton);
 
 		float fSliderSpacing = 80.0f;
 
@@ -191,6 +208,10 @@ namespace bjoernligan
 			m_xUIManager->AddSlider("PlayState", xDefs, sf::Vector2f((float)Settings::m_xWindowSize.x - 300.0f, (float)Settings::m_xWindowSize.y - 80.0f - fSliderSpacing * 1), 1.0f);
 		}
 
+		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+		xButton->Initialize("Program Options", sf::IntRect(32, Settings::m_xWindowSize.y - 37, 160, 32),
+			std::bind(&bjoernligan::PlayState::SetProgramOptionsActive, this, std::placeholders::_1));
+
 		{
 			UISlider::SliderDef xDef;
 			xDef.m_fCurrent = 5.f;
@@ -201,7 +222,8 @@ namespace bjoernligan
 			xDef.m_xFunction = std::bind(&bjoernligan::PlayState::SetScrollSpeed, this, std::placeholders::_1);
 			xDef.m_bContinous = true;
 
-			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f), 1.f);
+			m_axProgramOptions.push_back( m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f), 1.f) );
+			m_axProgramOptions.back()->SetElementActive(false);
 		}
 
 		{
@@ -214,7 +236,50 @@ namespace bjoernligan
 			xDef.m_xFunction = std::bind(&bjoernligan::PlayState::SetGameSpeed, this, std::placeholders::_1);
 			xDef.m_bContinous = true;
 
-			m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f - fSliderSpacing * 1), 1.f);
+			m_axProgramOptions.push_back(m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f - fSliderSpacing * 1), 1.f));
+			m_axProgramOptions.back()->SetElementActive(false);
+		}
+
+		{
+			UISlider::SliderDef xDef;
+			xDef.m_fCurrent = (float)m_xAudioManager->GetSoundVolume();
+			xDef.m_fMin = 0.f;
+			xDef.m_fMax = 100.f;
+			xDef.m_fWidth = 240.f;
+			xDef.m_sTextString = "Sound FX Volume";
+			xDef.m_xFunction = std::bind(&bjoernligan::system::AudioManager::ChangeSoundVolume, m_xAudioManager, std::placeholders::_1);
+			xDef.m_bContinous = true;
+
+			m_axProgramOptions.push_back(m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f - fSliderSpacing * 2), 1.f));
+			m_axProgramOptions.back()->SetElementActive(false);
+		}
+
+		{
+			UISlider::SliderDef xDef;
+			xDef.m_fCurrent = (float)m_xAudioManager->GetMusicVolume();
+			xDef.m_fMin = 0.f;
+			xDef.m_fMax = 100.f;
+			xDef.m_fWidth = 240.f;
+			xDef.m_sTextString = "Music Volume";
+			xDef.m_xFunction = std::bind(&bjoernligan::system::AudioManager::ChangeMusicVolume, m_xAudioManager, std::placeholders::_1);
+			xDef.m_bContinous = true;
+
+			m_axProgramOptions.push_back(m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f - fSliderSpacing * 3), 1.f));
+			m_axProgramOptions.back()->SetElementActive(false);
+		}
+
+		{
+			UISlider::SliderDef xDef;
+			xDef.m_fCurrent = m_xAudioManager->GetMasterVolume();
+			xDef.m_fMin = 0.f;
+			xDef.m_fMax = 1.f;
+			xDef.m_fWidth = 240.f;
+			xDef.m_sTextString = "Master Volume";
+			xDef.m_xFunction = std::bind(&bjoernligan::system::AudioManager::ChangeMasterVolume, m_xAudioManager, std::placeholders::_1);
+			xDef.m_bContinous = true;
+
+			m_axProgramOptions.push_back(m_xUIManager->AddSlider("PlayState", xDef, sf::Vector2f(/*(float)Settings::m_xWindowSize.x -*/ 60.f, (float)Settings::m_xWindowSize.y - 80.f - fSliderSpacing * 4), 1.f));
+			m_axProgramOptions.back()->SetElementActive(false);
 		}
 
 		m_xUIManager->AddText("PauseInfo", "Game paused.", "PlayState", sf::Vector2f((float)Settings::m_xWindowSize.x / 2, ((float)Settings::m_xWindowSize.y / 2) - 64));
@@ -323,6 +388,22 @@ namespace bjoernligan
 	void PlayState::SetGameSpeed(const float &p_fNewSpeed)
 	{
 		m_fGameSpeed = p_fNewSpeed;
+	}
+
+	void PlayState::SetProgramOptionsActive(const bool &p_bValue)
+	{
+		for (uint32_t i = 0; i < m_axProgramOptions.size(); ++i)
+		{
+			m_axProgramOptions[i]->SetElementActive(p_bValue);
+		}
+	}
+
+	void PlayState::SetDebugOptionsActive(const bool &p_bValue)
+	{
+		for (uint32_t i = 0; i < m_axDebugOptions.size(); ++i)
+		{
+			m_axDebugOptions[i]->SetElementActive(p_bValue);
+		}
 	}
 
 	void PlayState::ToggleGamePaused()

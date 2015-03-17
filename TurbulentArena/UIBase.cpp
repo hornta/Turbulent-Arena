@@ -8,6 +8,7 @@ namespace bjoernligan
 	UIBase::UIBase(const std::string &p_sLabel, const float &p_fDepth)
 		: m_sLabel(p_sLabel)
 		, m_fDepth(p_fDepth)
+		, m_bActive(true)
 	{
 
 	}
@@ -53,5 +54,15 @@ namespace bjoernligan
 			p_xSprite->setOrigin(p_xSprite->getLocalBounds().width / 2.0f, p_xSprite->getLocalBounds().height / 2.0f);
 			m_axSprites.push_back(p_xSprite);
 		}
+	}
+
+	void UIBase::SetElementActive(const bool &p_bActive)
+	{
+		m_bActive = p_bActive;
+	}
+
+	const bool &UIBase::GetElementActive() const
+	{
+		return m_bActive;
 	}
 }

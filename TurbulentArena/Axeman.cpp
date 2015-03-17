@@ -22,9 +22,9 @@ namespace bjoernligan
 		m_MovementStats.Initiate(0.0f);
 
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
+		xBT->AttachAgent(m_xAgent.get());
 
 		ai::BSelectorNode* xRootSelector = xBT->CreateRoot<ai::BSelectorNode>();
-		xRootSelector;
 
 		// level 2
 		ai::BSequenceNode* combatSequence = xRootSelector->AddChild<ai::BSequenceNode>();
@@ -34,25 +34,25 @@ namespace bjoernligan
 		// level 3
 		ai::BSelectorNode* sel0 = combatSequence->AddChild<ai::BSelectorNode>();
 		ai::BSelectorNode* FightOrFlightSel = combatSequence->AddChild<ai::BSelectorNode>();
-		friendHelpSequence->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
-		friendHelpSequence->AddChild<ai::HelpFriend>()->AttachAgent(m_xAgent.get());
-		wanderSelector->AddChild<ai::ProcessIncomingReports>()->AttachAgent(m_xAgent.get());
-		wanderSelector->AddChild<ai::BSetWanderTarget>()->AttachAgent(m_xAgent.get());
+		friendHelpSequence->AddChild<ai::BIsScared>();
+		friendHelpSequence->AddChild<ai::HelpFriend>();
+		wanderSelector->AddChild<ai::ProcessIncomingReports>();
+		wanderSelector->AddChild<ai::BSetWanderTarget>();
 
 		// level 4
-		sel0->AddChild<ai::CanSeeEnemies>()->AttachAgent(m_xAgent.get());
+		sel0->AddChild<ai::CanSeeEnemies>();
 		ai::BSequenceNode* FleeSeq = FightOrFlightSel->AddChild<ai::BSequenceNode>();
 		ai::BSelectorNode* FightSel = FightOrFlightSel->AddChild<ai::BSelectorNode>();
 		
 		// level 5
-		FleeSeq->AddChild<ai::BIsScared>()->AttachAgent(m_xAgent.get());
-		FleeSeq->AddChild<ai::BFleeFromEnemies>()->AttachAgent(m_xAgent.get());
+		FleeSeq->AddChild<ai::BIsScared>();
+		FleeSeq->AddChild<ai::BFleeFromEnemies>();
 		ai::BSequenceNode* FightSeq = FightSel->AddChild<ai::BSequenceNode>();
-		FightSel->AddChild<ai::GetPathToEnemy>()->AttachAgent(m_xAgent.get());
+		FightSel->AddChild<ai::GetPathToEnemy>();
 
 		// level 6
-		FightSeq->AddChild<ai::EnemyWithinRadius>()->AttachAgent(m_xAgent.get());
-		FightSeq->AddChild<ai::AttackEnemy>()->AttachAgent(m_xAgent.get());
+		FightSeq->AddChild<ai::EnemyWithinRadius>();
+		FightSeq->AddChild<ai::AttackEnemy>();
 	}
 
 	void Axeman::update(float deltatime)
