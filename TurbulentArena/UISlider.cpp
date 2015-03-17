@@ -42,7 +42,7 @@ namespace bjoernligan
 		m_bContinous = p_xDefinition.m_bContinous;
 
 		std::stringstream xStream;
-		xStream << m_sTextString << ": " << std::fixed << std::setprecision(1) << GetValue();
+		xStream << m_sTextString << ": " << std::fixed << std::setprecision(4) << GetValue();
 		m_xText.setString(xStream.str());
 
 		if (m_axSprites.size() >= 4 && m_axSprites[3])
@@ -92,7 +92,7 @@ namespace bjoernligan
 				m_xFunction(GetValue());
 
 			std::stringstream xStream;
-			xStream << m_sTextString << ": " << std::fixed << std::setprecision(1) << GetValue();
+			xStream << m_sTextString << ": " << std::fixed << std::setprecision(4) << GetValue();
 			m_xText.setString(xStream.str());
 
 			return true;

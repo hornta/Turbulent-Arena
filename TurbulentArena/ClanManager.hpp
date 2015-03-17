@@ -15,7 +15,11 @@ namespace bjoernligan
 		void Update(const float &p_fDeltaTime);
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		std::vector<Clan*> getClans() const;
+
+		void SetDrawHealthBars(const bool &p_bValue);
+
 	private:
 		std::vector<std::unique_ptr<Clan>> m_clans;
+		bool m_bDrawHealthBars;
 	};
 }

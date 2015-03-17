@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "ClanManager.hpp"
+#include "Keyboard.hpp"
 #include "Clan.hpp"
 
 namespace bjoernligan
 {
 	ClanManager::ClanManager()
+		: m_bDrawHealthBars(true)
 	{
 	}
 
@@ -37,9 +39,12 @@ namespace bjoernligan
 		{
 			target.draw(*m_clans[i].get(), states);
 		}
-		for (std::size_t i = 0; i < m_clans.size(); ++i)
+		if (m_bDrawHealthBars || ServiceLocator<input::Keyboard>::GetService()->IsDown(sf::Keyboard::LAlt) || ServiceLocator<input::Keyboard>::GetService()->IsDown(sf::Keyboard::LAlt))
 		{
-			m_clans[i]->drawHpBars(target, states);
+			for (std::size_t i = 0; i < m_clans.size(); ++i)
+			{
+				m_clans[i]->drawHpBars(target, states);
+			}
 		}
 	}
 
@@ -51,5 +56,10 @@ namespace bjoernligan
 			clans.push_back(m_clans[i].get());
 		}
 		return clans;
+	}
+
+	void ClanManager::SetDrawHealthBars(const bool &p_bValue)
+	{
+		m_bDrawHealthBars = p_bValue;
 	}
 }

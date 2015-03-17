@@ -211,6 +211,10 @@ namespace bjoernligan
 		xButton->Initialize("Member count", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 207, 140, 32),
 			std::bind(&bjoernligan::ClanStats::SetActive, &*m_xClanStats, std::placeholders::_1), true);
 
+		xButton = static_cast<UIButton*>(m_xUIManager->AddElement<UIButton>("PlayState", 1.0f));
+		xButton->Initialize("Healthbars", sf::IntRect(Settings::m_xWindowSize.x - (128 + 32), 244, 140, 32),
+			std::bind(&bjoernligan::ClanManager::SetDrawHealthBars, &*m_clanManager, std::placeholders::_1), true);
+
 		float fSliderSpacing = 80.0f;
 
 		{
