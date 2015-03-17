@@ -38,7 +38,7 @@ namespace bjoernligan
 		m_fWidth = p_xDefinition.m_fWidth;
 		m_fMin = p_xDefinition.m_fMin;
 		m_fMax = p_xDefinition.m_fMax;
-		m_fCurrent = p_xDefinition.m_fCurrent / (m_fMax - m_fMin);
+		m_fCurrent = (p_xDefinition.m_fCurrent - m_fMin) / (m_fMax - m_fMin);
 		m_bContinous = p_xDefinition.m_bContinous;
 
 		std::stringstream xStream;
@@ -120,7 +120,7 @@ namespace bjoernligan
 
 	float UISlider::GetValue()
 	{
-		return (m_fMax - m_fMin) * m_fCurrent;
+		return m_fMin + (m_fMax - m_fMin) * m_fCurrent;
 	}
 
 	float UISlider::GetAllowedX(float p_fX)
