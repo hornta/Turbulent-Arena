@@ -52,20 +52,27 @@ namespace bjoernligan
 		ai::BehaviorTree* xBT = m_xAgent->getBehaviorTree();
 		xBT->AttachAgent(m_xAgent.get());
 
+		//Root
 		ai::BSelectorNode* xRootSelector = xBT->CreateRoot<ai::BSelectorNode>();
 
-		// level 2
-		ai::BSequenceNode* attackSequence = xRootSelector->AddChild<ai::BSequenceNode>();
+		ai::BSequenceNode* xCombatSeq = xRootSelector->AddChild<ai::BSequenceNode>();
 		ai::BSequenceNode* reportSequence = xRootSelector->AddChild<ai::BSequenceNode>();
 		xRootSelector->AddChild<ai::DetectEnemies>();
 		xRootSelector->AddChild<ai::Explore>();
 
-		// level 3
-		attackSequence->AddChild<ai::CanSeeEnemies>();
-		ai::BInverterNode* xScaredInverter = attackSequence->AddChild<ai::BInverterNode>();
-		xScaredInverter->AddChild<ai::BIsScared>();
-		attackSequence->AddChild<ai::EnemyWithinRadius>();
-		attackSequence->AddChild<ai::AttackEnemy>();
+		//Combat
+		xCombatSeq->AddChild<ai::CanSeeEnemies>();
+		{
+			ai::BInverterNode* xScaredInverter = xCombatSeq->AddChild<ai::BInverterNode>();
+			xScaredInverter->AddChild<ai::BIsScared>();
+		}
+		ai::BSelectorNode* xFightSelector = xCombatSeq->AddChild<ai::BSelectorNode>();
+		ai::BSequenceNode* xAttackSeq = xFightSelector->AddChild<ai::BSequenceNode>();
+		xFightSelector->AddChild<ai::GetPathToEnemy>();
+		xAttackSeq->AddChild<ai::EnemyWithinRadius>();
+		xAttackSeq->AddChild<ai::AttackEnemy>();
+
+		//Report
 		reportSequence->AddChild<ai::HasSomethingToReport>();
 		reportSequence->AddChild<ai::ReportToFriends>();
 	}

@@ -32,7 +32,7 @@ namespace bjoernligan
 		ai::BSelectorNode* wanderSelector = xRootSelector->AddChild<ai::BSelectorNode>();
 
 		// level 3
-		ai::BSelectorNode* sel0 = combatSequence->AddChild<ai::BSelectorNode>();
+		combatSequence->AddChild<ai::CanSeeEnemies>();
 		ai::BSelectorNode* FightOrFlightSel = combatSequence->AddChild<ai::BSelectorNode>();
 		friendHelpSequence->AddChild<ai::BIsScared>();
 		friendHelpSequence->AddChild<ai::HelpFriend>();
@@ -40,7 +40,6 @@ namespace bjoernligan
 		wanderSelector->AddChild<ai::BSetWanderTarget>();
 
 		// level 4
-		sel0->AddChild<ai::CanSeeEnemies>();
 		ai::BSequenceNode* FleeSeq = FightOrFlightSel->AddChild<ai::BSequenceNode>();
 		ai::BSelectorNode* FightSel = FightOrFlightSel->AddChild<ai::BSelectorNode>();
 		
@@ -65,7 +64,7 @@ namespace bjoernligan
 			sf::Vector2f p0 = it->get()->position;
 			sf::Vector2f p1 = m_sprite->getPosition();
 
-			if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 32.f)
+			if (Vector2f::dist(Vector2f(p0), Vector2f(p1)) <= 64.f)
 			{
 				it = m_incomingReports.erase(it);
 			}

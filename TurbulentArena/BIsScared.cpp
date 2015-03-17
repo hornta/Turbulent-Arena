@@ -67,8 +67,18 @@ namespace bjoernligan
 				//Scout
 				else if (m_xAgent->getOwner()->GetClass() == ClanMember::EClassScout)
 				{
-					int NumVisibleFriends = m_xAgent->getSense()->getVisibleFriends().size();
-					if (NumVisibleFriends < 4)
+					if (m_xAgent->getSense()->getVisibleFriends().size() < 4)
+						return EBNodeStatus::Success;
+
+					float fBrave = m_xAgent->getOwner()->GetCombat()->getBrave();
+					float fHealthPercent = m_xAgent->getOwner()->GetCombat()->GetHealthPercentage();
+					if (fBrave > 0.90f)
+						return EBNodeStatus::Fail;
+					if (fBrave < 0.90f && fHealthPercent < 0.25f)
+						return EBNodeStatus::Success;
+					if (fBrave < 0.60f && fHealthPercent < 0.5f)
+						return EBNodeStatus::Success;
+					if (fBrave < 0.30f && fHealthPercent < 0.75f)
 						return EBNodeStatus::Success;
 				}
 			}
