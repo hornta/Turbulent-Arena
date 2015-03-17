@@ -68,7 +68,7 @@ namespace bjoernligan
 				else if (m_xAgent->getOwner()->GetClass() == ClanMember::EClassScout)
 				{
 					int NumVisibleFriends = m_xAgent->getSense()->getVisibleFriends().size();
-					if (NumVisibleFriends < 2)
+					if (NumVisibleFriends < 5)
 					{
 						return EBNodeStatus::Success;
 					}
