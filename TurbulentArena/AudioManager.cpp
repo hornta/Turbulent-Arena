@@ -277,8 +277,9 @@ namespace bjoernligan
 		void AudioManager::PlaySoundFromGroup(const std::string &p_sSoundGroup, const float &p_fVolume)
 		{
 			auto itr = m_axSoundGroups.find(p_sSoundGroup);
-			if (itr != m_axSoundGroups.end() || !(*itr).second.empty())
-				PlaySoundClip((*itr).second[random::random(0, (*itr).second.size() - 1)], p_fVolume);
+			if (itr != m_axSoundGroups.end())
+				if (!(*itr).second.empty())
+					PlaySoundClip((*itr).second[random::random(0, (*itr).second.size() - 1)], p_fVolume);
 		}
 
 		bool AudioManager::IsGroupPlaying(const std::string &p_sSoundGroup)

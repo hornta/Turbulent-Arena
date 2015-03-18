@@ -61,6 +61,9 @@ namespace bjoernligan
 			m_xAudioManager->CreateSoundBuffer("Death1", "clanmember_death1.wav", "Death");
 			m_xAudioManager->CreateSoundBuffer("Death2", "clanmember_death2.wav", "Death");
 			m_xAudioManager->CreateSoundBuffer("Death3", "clanmember_death3.wav", "Death");
+			m_xAudioManager->CreateSoundBuffer("DeathGirly1", "clanmember_girly_death1.wav", "DeathGirly");
+			m_xAudioManager->CreateSoundBuffer("DeathGirly2", "clanmember_girly_death2.wav", "DeathGirly");
+			m_xAudioManager->CreateSoundBuffer("DeathGirly3", "clanmember_girly_death3.wav", "DeathGirly");
 			m_xAudioManager->CreateSoundBuffer("Battle1", "battle_chop_meat.wav", "Battle");
 			m_xAudioManager->CreateSoundBuffer("Battle2", "battle_chop_meat2.wav", "Battle");
 			m_xAudioManager->CreateSoundBuffer("Battle3", "battle_knife_flesh.wav", "Battle");
