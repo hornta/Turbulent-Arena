@@ -2,6 +2,7 @@
 #include "Physics.hpp"
 #include "ContactListener.hpp"
 #include "Box2DWorldDraw.h"
+#include "UserData.hpp"
 
 namespace bjoernligan
 {
@@ -30,13 +31,31 @@ namespace bjoernligan
 
 	float32 Physics::Raycast::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 	{
-		if (m_result.bodies.empty())
-			m_result.bodies.push_back(fixture->GetBody());
-		else
-			m_result.bodies[0] = fixture->GetBody();
 		normal;
 		point;
 		fraction;
+
+		B2UserData* userData = static_cast<B2UserData*>(fixture->GetBody()->GetUserData());
+
+		if (userData->type == B2UserData::NATURE)
+		{
+			NatureUD* nature = static_cast<NatureUD*>(userData);
+			if (!nature->m_see_through)
+			{
+				if (m_result.bodies.empty())
+					m_result.bodies.push_back(fixture->GetBody());
+				else
+					m_result.bodies[0] = fixture->GetBody();
+			}
+		}
+		else if (userData->type == B2UserData::CLANMEMBER)
+		{
+			if (m_result.bodies.empty())
+				m_result.bodies.push_back(fixture->GetBody());
+			else
+				m_result.bodies[0] = fixture->GetBody();
+		}
+
 		return fraction;
 	}
 	void Physics::Body::setPosition(const sf::Vector2f& p_position)
