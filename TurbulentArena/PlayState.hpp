@@ -16,6 +16,7 @@ namespace bjoernligan
 	class Map;
 	class ClanManager;
 	class Physics;
+	class UIBase;
 	namespace ai
 	{
 		class Sense;
@@ -50,6 +51,8 @@ namespace bjoernligan
 		void ToggleDebugPathfinder(bool value);
 		void SetScrollSpeed(const float &p_fNewSpeed);
 		void SetGameSpeed(const float &p_fNewSpeed);
+		void SetProgramOptionsActive(const bool &p_bValue);
+		void SetDebugOptionsActive(const bool &p_bValue);
 
 		void ToggleGamePaused();
 
@@ -84,5 +87,8 @@ namespace bjoernligan
 
 		bool m_bGamePaused;
 		float m_fGameSpeed;
+
+		std::vector<UIBase*> m_axDebugOptions;
+		std::vector<UIBase*> m_axProgramOptions;
 	};
 }

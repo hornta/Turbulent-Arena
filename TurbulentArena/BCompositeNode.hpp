@@ -27,7 +27,9 @@ namespace bjoernligan
 		T* BCompositeNode::AddChild()
 		{
 			m_axChildren.emplace_back(std::make_unique<T>());
-			return static_cast<T*>(m_axChildren.back().get());
+			T* xBack = static_cast<T*>(m_axChildren.back().get());
+			xBack->AttachAgent(m_xAgent);
+			return xBack;
 		}
 	}
 }

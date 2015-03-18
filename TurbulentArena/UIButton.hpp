@@ -45,12 +45,8 @@ namespace bjoernligan
 		void SetPos(const sf::Vector2f &p_xPos);
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-		const bool HasNewValue(const float &p_bResetNew);
-		const bool GetActive() const;
-
 	private:
-		bool m_bNewValue;
-		bool m_bActive;
+		bool m_bButtonValue;
 		bool m_bFunction;
 		std::function<void(bool)> m_xFunction;
 		sf::Text m_xButtonText;

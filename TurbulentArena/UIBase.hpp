@@ -22,11 +22,15 @@ namespace bjoernligan
 		virtual void SetPos(const sf::Vector2f &p_xPos);
 		void AddSprite(sf::Sprite* p_xSprite);
 
+		void SetElementActive(const bool &p_bActive);
+		const bool &GetElementActive() const;
+
 	protected:
 		sf::Vector2f m_xPos;
 		std::string m_sLabel;
 
 		std::vector<sf::Sprite*> m_axSprites;
 		float m_fDepth;
+		bool m_bActive;
 	};
 }

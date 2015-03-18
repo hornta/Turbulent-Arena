@@ -15,8 +15,7 @@ namespace bjoernligan
 
 	UIButton::UIButton(const std::string &p_sLabel, const float &p_fDepth)
 		: UIBase(p_sLabel, p_fDepth)
-		, m_bActive(false)
-		, m_bNewValue(false)
+		, m_bButtonValue(false)
 		, m_eState(EButtonState::Idle)
 		, m_xButtonRect(nullptr)
 	{
@@ -40,7 +39,7 @@ namespace bjoernligan
 		const sf::Color &p_xHoverColor,
 		const sf::Color &p_xPressedColor)
 	{
-		m_bActive = p_bActive;
+		m_bButtonValue = p_bActive;
 
 		m_xButtonText.setString(p_sName);
 
@@ -73,12 +72,12 @@ namespace bjoernligan
 		{
 			if (!m_xMouse->IsDown(sf::Mouse::Button::Left) && m_eState == EButtonState::Pressed)
 			{
-				m_bActive = !m_bActive;
+				m_bButtonValue = !m_bButtonValue;
 				m_eState = EButtonState::Idle;
 				ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button3");
 
 				if (m_xFunction)
-					m_xFunction(m_bActive);
+					m_xFunction(m_bButtonValue);
 
 				return true;
 			}
@@ -100,10 +99,8 @@ namespace bjoernligan
 					m_xButtonRect->setFillColor(m_xPressedColor);
 					ServiceLocator<system::AudioManager>::GetService()->PlaySoundClip("Button1");
 				}
-
 				return true;
 			}
-
 			return false;
 		}
 		else
@@ -125,7 +122,6 @@ namespace bjoernligan
 				m_xButtonRect->setFillColor(m_xIdleColor);
 			}
 		}
-
 		return false;
 	}
 
@@ -143,21 +139,5 @@ namespace bjoernligan
 			target.draw(*m_xButtonRect.get(), states);
 
 		target.draw(m_xButtonText, states);
-	}
-
-	const bool UIButton::GetActive() const
-	{
-		return m_bActive;
-	}
-
-	const bool UIButton::HasNewValue(const float &p_bResetNew)
-	{
-		if (p_bResetNew)
-		{
-			m_bNewValue = !m_bNewValue;
-			return !m_bNewValue;
-		}
-
-		return m_bNewValue;
 	}
 }

@@ -59,7 +59,7 @@ namespace bjoernligan
 
 		for (uint32_t i = 0; i < m_axElements.size(); ++i)
 		{
-			if (m_axElements[i]->Update(p_fDeltaTime))
+			if (m_axElements[i]->GetElementActive() && m_axElements[i]->Update(p_fDeltaTime))
 				m_bUsedThisUpdate = true;
 		}
 	}
@@ -68,7 +68,8 @@ namespace bjoernligan
 	{
 		for (auto& element : m_axElements)
 		{
-			target.draw(*element, states);
+			if (element->GetElementActive())
+				target.draw(*element, states);
 		}
 		for (auto& text : m_axTexts)
 		{

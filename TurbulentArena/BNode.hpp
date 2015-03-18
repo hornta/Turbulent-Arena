@@ -26,8 +26,6 @@ namespace bjoernligan
 
 			void AttachAgent(Agent* p_xAgent);
 
-			//virtual void CleanUp();
-
 		protected:
 			Agent* m_xAgent;
 		};
