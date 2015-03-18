@@ -43,4 +43,21 @@ namespace bjoernligan
 
 		ClanMember* clanMember;
 	};
+
+	struct NatureUD : public B2UserData
+	{
+		NatureUD(bool see_through) :
+			B2UserData(NATURE),
+			m_see_through(see_through)
+		{
+
+		}
+
+		~NatureUD()
+		{
+
+		}
+
+		bool m_see_through;
+	};
 }
