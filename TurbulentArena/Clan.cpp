@@ -15,7 +15,6 @@ namespace bjoernligan
 
 	void Clan::Update(const float &p_fDeltaTime)
 	{
-		//dead-check
 		{
 			auto itr = m_clanMembers.begin();
 			while (itr != m_clanMembers.end())
@@ -26,7 +25,7 @@ namespace bjoernligan
 					ServiceLocator<ai::Sense>::GetService()->removeAgent((*itr)->getAgent());
 					ServiceLocator<Physics>::GetService()->destroyBody((*itr)->getBody());
 
-					ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death");
+					ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death", 0.6f);
 
 					itr = m_clanMembers.erase(itr);
 					continue;
@@ -35,16 +34,6 @@ namespace bjoernligan
 				++itr;
 			}
 		}
-
-		//update
-		/*{
-			auto itr = m_clanMembers.begin();
-			while (itr != m_clanMembers.end())
-			{
-				(*itr)->update(p_fDeltaTime);
-				++itr;
-			}
-		}*/
 	}
 
 	void Clan::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -102,7 +91,6 @@ namespace bjoernligan
 				m_clanMembers[k]->GetCombat()->setSocial(p_fNewValue);
 			}
 		}
-		//SetMoodValues(ai::Mood::EMoodType::Social, p_fNewValue);
 	}
 
 	void Clan::SetBrave(const float &p_fNewValue)
@@ -121,7 +109,6 @@ namespace bjoernligan
 				m_clanMembers[k]->GetCombat()->setBrave(p_fNewValue);
 			}
 		}
-		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}
 
 	void Clan::SetAgression(const float &p_fNewValue)
@@ -140,7 +127,6 @@ namespace bjoernligan
 				m_clanMembers[k]->GetCombat()->setAgression(p_fNewValue);
 			}
 		}
-		//SetMoodValues(ai::Mood::EMoodType::Agression, p_fNewValue);
 	}
 
 	void Clan::SetMoodValues(const ai::Mood::EMoodType &p_eMoodType, const float &p_fNewValue)
