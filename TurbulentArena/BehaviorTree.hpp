@@ -14,7 +14,6 @@ namespace bjoernligan
 		public:
 			BehaviorTree();
 
-			void Break();
 			void Process();
 
 			template<class T>

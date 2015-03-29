@@ -16,11 +16,6 @@ namespace bjoernligan
 
 		}
 
-		void BehaviorTree::Break()
-		{
-			m_xCurrentRunning = nullptr;
-		}
-
 		void BehaviorTree::Process()
 		{
 			if (m_xRoot)
