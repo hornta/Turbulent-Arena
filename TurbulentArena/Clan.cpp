@@ -25,7 +25,10 @@ namespace bjoernligan
 					ServiceLocator<ai::Sense>::GetService()->removeAgent((*itr)->getAgent());
 					ServiceLocator<Physics>::GetService()->destroyBody((*itr)->getBody());
 
-					ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death", 0.6f);
+					if ((*itr)->GetClass() == ClanMember::EClass::EClassAxeman)
+						ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("Death", 0.6f);
+					else if ((*itr)->GetClass() == ClanMember::EClass::EClassScout)
+						ServiceLocator<system::AudioManager>::GetService()->PlaySoundFromGroup("DeathGirly", 0.6f);
 
 					itr = m_clanMembers.erase(itr);
 					continue;

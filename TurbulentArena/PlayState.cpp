@@ -99,6 +99,15 @@ namespace bjoernligan
 
 						Physics::Body* body = m_physics->createBody(xParams);
 						body->setPosition(x * tileSize.x + tileSize.x * 0.5f, y * tileSize.y + tileSize.y * 0.5f);
+
+						bool seeThrough = false;
+						if (tile->getTileInfo()->m_properties.hasProperty("see_through"))
+						{
+							seeThrough = true;
+						}
+
+						body->m_b2UserData = std::make_unique<NatureUD>(seeThrough);
+						body->m_body->SetUserData(body->m_b2UserData.get());
 					}
 				}
 			}
@@ -124,10 +133,10 @@ namespace bjoernligan
 			++teamSpawnsIt;
 		}
 
-		m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255), 20, 3);
+		m_xPlayerClan = m_clanManager->createClan("MacDonald", sf::Color(70, 70, 255), 1, 0);
 		m_xGameOverChecker.AddClan(m_xPlayerClan);
 
-		m_xGameOverChecker.AddClan(m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70), 20, 3));
+		m_xGameOverChecker.AddClan(m_clanManager->createClan("MacMuffin", sf::Color(255, 70, 70), 1, 0));
 
 		std::vector<Clan*> clans = m_clanManager->getClans();
 		std::vector<ClanMember*> members;

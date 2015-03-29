@@ -28,7 +28,7 @@ namespace bjoernligan
 
 		Physics::Params clanMemberBodyDef;
 		clanMemberBodyDef.m_xBodyDef.linearDamping = 3.0f;
-		clanMemberBodyDef.m_xBodyDef.angularDamping = 0.5f;
+		clanMemberBodyDef.m_xBodyDef.angularDamping = 2.5f;
 		clanMemberBodyDef.m_eShapeType = Physics::Circle;
 		clanMemberBodyDef.m_xFixtureDef.friction = 0.5f;
 		clanMemberBodyDef.m_xFixtureDef.density = 0.15f;
@@ -47,6 +47,8 @@ namespace bjoernligan
 			member->setBody(ServiceLocator<Physics>::GetService()->createBody(clanMemberBodyDef));
 			member->initiate();
 		}
+
+		clanMemberBodyDef.m_xFixtureDef.friction = 1.f;
 
 		for (uint32_t i = 0; i < p_iScoutCount; ++i)
 		{

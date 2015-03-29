@@ -1,4 +1,5 @@
 #pragma once
+#include "UserData.hpp"
 
 namespace bjoernligan
 {
@@ -14,6 +15,7 @@ namespace bjoernligan
 			void setPosition(float x, float y);
 
 			b2Body* m_body;
+			std::unique_ptr<B2UserData> m_b2UserData;
 		};
 
 		enum EB2ShapeType
